@@ -25,7 +25,7 @@
 		<log4j-version>1.2.15</log4j-version>
 
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
-
+		<mysql.driver.version>5.1.38</mysql.driver.version>
 	</properties>
 	<dependencies>
 		<!-- Oracle Driver -->
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.38</version>
+			<version>${mysql.driver.version}</version>
 		</dependency>
 
 		<!-- Jackson -->
