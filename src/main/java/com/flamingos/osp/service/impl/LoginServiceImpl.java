@@ -1,15 +1,9 @@
 package com.flamingos.osp.service.impl;
 
-import java.util.logging.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.controller.ProfessionalController;
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
@@ -56,8 +50,8 @@ public class LoginServiceImpl implements LoginService {
 			int check = loginDao.checkForUser(userBean);
 			String userMessage;
 			if (check > 0) {
-				String Uuid = userBean.getUUID();
-				userBean.setUUID(Uuid);
+			//	String Uuid = userBean.getUUID();
+			//	userBean.setUUID(Uuid);
 				loginDao.addFUPAccessToken(userBean);
 
 				userMessage = sendLinkForForgotPassword(userBean, request);
@@ -82,7 +76,7 @@ public class LoginServiceImpl implements LoginService {
 		String linkTobeSend = request.getScheme() + "://"
 				+ request.getServerName() + ":" + request.getServerPort()
 				+ request.getContextPath() + "/verifyForgotPassword?username="
-				+ encryptedUserName + "&UUID=" + userBean.getUUID();
+				+ encryptedUserName + "&UUID=" + userBean.getFupUUID();
 		return linkTobeSend;
 	}
 

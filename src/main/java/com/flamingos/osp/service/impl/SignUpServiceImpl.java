@@ -6,6 +6,9 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -20,19 +23,30 @@ import com.flamingos.osp.service.SignUpService;
 import com.flamingos.osp.util.encoderDecoder;
 
 @Service
+@Configuration
+@PropertySource("classpath:root/osp.properties")
 public class SignUpServiceImpl implements SignUpService {
 
+	@Value("${osp.properties.emailExpireTimestamp}")
+	private String emailExpireTime;
+	
+	@Value("${osp.properties.smsExpireTimestamp}")
+	private String smsExpireTime;
+	
+	@Value("${osp.properties.fupExpireTimestamp}")
+	private String fupExpireTime;
+	
 	@Autowired
 	SignUpDao signUpDao;
 
-	// private static final Logger logger =
-	// Logger.getLogger(LoginServiceImpl.class);
+	//private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
 	@Override
 	public String createUser(UserBean userBean, HttpServletRequest request)throws OspServiceException {
 		try {
 			checkUniqueness(userBean);
-			String returnMessage = createNewUser(userBean, "1", request);
-			String userMessage = sendVerificationLink(userBean, request);
+			String returnMessage = createNewUser(userBean, "1", request,emailExpireTime,smsExpireTime);
+			String userMessageForEmail = sendVerificationLinkinEmail(userBean, request);
+			String userMessageForSMS = sendVerificationLinkinSms(userBean, request);
 			return returnMessage;
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -40,6 +54,7 @@ public class SignUpServiceImpl implements SignUpService {
 		}
 	}
 
+	@Override
 	public void checkUniqueness(UserBean loginBean) throws OspServiceException {
 
 		// if(userDTO!=null &&
@@ -74,10 +89,11 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	private String createNewUser(UserBean userBean, String role,
-			HttpServletRequest request) throws OspServiceException {
+			HttpServletRequest request,String emailExpireTime,String smsExpireTime) throws OspServiceException {
 		try {
-			String Uuid = String.valueOf(UUID.randomUUID());
-			userBean.setUUID(Uuid);
+			
+			userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
+			userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
 			String encryptedPassword = new encoderDecoder()
 					.getEncodedValue(userBean.getPassword());
 			userBean.setUserName(userBean.getUserName());
@@ -90,7 +106,7 @@ public class SignUpServiceImpl implements SignUpService {
 			userBean.setMiddleName(userBean.getMiddleName());
 			userBean.setLastName(userBean.getLastName());
 			userBean.setRole_id(Integer.parseInt("role"));
-			signUpDao.createNewUser(userBean);
+			signUpDao.createNewUser(userBean,emailExpireTime,smsExpireTime);
 			return "success";
 		} catch (Exception e) {
 			throw new OspServiceException();
@@ -99,15 +115,30 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	@Override
-	public String sendVerificationLink(UserBean userBean,
+	public String sendVerificationLinkinEmail(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
 		String encryptedUserName = new encoderDecoder()
 				.getEncodedValue(userBean.getUserName());
-		String Uuid = userBean.getUUID();
+		String Uuid = userBean.getEmailUUID();
 		String linkTobeSend = request.getScheme() + "://"
 				+ request.getServerName() + ":" + request.getServerPort()
 				+ request.getContextPath() + "/verifyEmail?username="
+				+ encryptedUserName + "&UUID=" + Uuid;
+		return linkTobeSend;
+
+	}
+	
+	@Override
+	public String sendVerificationLinkinSms(UserBean userBean,
+			HttpServletRequest request) throws OspServiceException {
+		// logger.debug("sending mail... ");
+		String encryptedUserName = new encoderDecoder()
+				.getEncodedValue(userBean.getUserName());
+		String Uuid = userBean.getSmsUUID();
+		String linkTobeSend = request.getScheme() + "://"
+				+ request.getServerName() + ":" + request.getServerPort()
+				+ request.getContextPath() + "/verifySms?username="
 				+ encryptedUserName + "&UUID=" + Uuid;
 		return linkTobeSend;
 

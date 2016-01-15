@@ -29,16 +29,7 @@ public class ProfessionalController {
     public ResponseEntity<String> createUser(@RequestBody UserBean userBean, HttpServletRequest request) {
         logger.debug("Entring professional controller");
         String successMessage =null;
-      try
-      {
-    	  successMessage= profService.checkUniqueness(userBean, request);
-    	  
-      }catch(OspServiceException serv)
-      {
-    	  logger.debug(serv);
-    	  return new ResponseEntity<String>(serv.getMessage(), HttpStatus.OK);
-    	  
-      }
+      
      
         logger.info("Exiting professional controller");
         return new ResponseEntity<String>(successMessage, HttpStatus.OK);

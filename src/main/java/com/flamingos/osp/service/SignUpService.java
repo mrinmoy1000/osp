@@ -16,6 +16,8 @@ public interface SignUpService {
 
 	public void checkUniqueness(UserBean userBean) throws OspServiceException;
 
-	public String sendVerificationLink(UserBean userBean,HttpServletRequest request) throws OspServiceException;
+	public String sendVerificationLinkinEmail(UserBean userBean,HttpServletRequest request) throws OspServiceException;
+	
+	public String sendVerificationLinkinSms(UserBean userBean,HttpServletRequest request) throws OspServiceException;
 
 }

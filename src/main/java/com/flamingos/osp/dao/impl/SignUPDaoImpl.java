@@ -122,39 +122,54 @@ public class SignUPDaoImpl implements SignUpDao {
 	}
 
 	@Override
-	public int createNewUser(UserBean user) throws OspDaoException {
-		  String sql = "INSERT INTO user_login VALUES (:id,:username,:password,:contact,:email,:active_status,:insert_ts,:SMSVERIFIED,:EMAILVERIFIED,:USERTYPECD);";
+	public int createNewUser(UserBean user,String emailExpireTime,String smsExpireTime) throws OspDaoException {
+		  String sql = "INSERT INTO osp_user_password VALUES (:user_name,:role_id,:record_type,:password,:email_veryfied,:sms_verified,:activation_status,:created_by,:created_ts,:email,:first_name,:middle_name,:last_name,:login_ts);";
 	        Map<String, Object> userDetailsMap = new HashMap<String, Object>();
-	        userDetailsMap.put("id", user.getId());
-	        userDetailsMap.put("username", user.getUserName());
+	        userDetailsMap.put("user_name", user.getUserName());
+	        userDetailsMap.put("role_id", 2);
+	        userDetailsMap.put("record_type", user.getRecord_type());
 	        userDetailsMap.put("password", user.getPassword());
-	        userDetailsMap.put("contact", user.getContactNumber());
+	        //userDetailsMap.put("salt", );
+	        //userDetailsMap.put("expiry_date", new Timestamp(new Date().getTime()));
+	        //userDetailsMap.put("no_of_attempts", user.getSmsVerfied());
+	        userDetailsMap.put("email_veryfied", "N");
+	        userDetailsMap.put("sms_verified", "N");
+	        userDetailsMap.put("activation_status", "I");
+	        userDetailsMap.put("created_by", user.getUserName());
+	        userDetailsMap.put("created_ts", new Timestamp(new Date().getTime()));
+	     //   userDetailsMap.put("updated_by", user.getUserTypeCD());
+	     //   userDetailsMap.put("contact_number", user.getUserTypeCD());
 	        userDetailsMap.put("email", user.getEmail());
-	        userDetailsMap.put("active_status", user.getActiveStatus());
-	        userDetailsMap.put("insert_ts", new Timestamp(new Date().getTime()));
-	        userDetailsMap.put("SMSVERIFIED", user.getSmsVerfied());
-	        userDetailsMap.put("EMAILVERIFIED", user.getEmailVerified());
-	        userDetailsMap.put("USERTYPECD", user.getUserTypeCD());
+	        userDetailsMap.put("first_name", user.getFirstName());
+	        userDetailsMap.put("middle_name", user.getMiddleName());
+	        userDetailsMap.put("last_name", user.getLastName());
+	        userDetailsMap.put("login_ts", new Timestamp(new Date().getTime()));
 	        int count = namedJdbcTemplate.update(sql, userDetailsMap);
 	        if (count > 0) {
-	            String getUserSql = "select id from user_login  where username = ?";
+	            String getUserSql = "select record_id from osp_user_password  where user_name = ?";
 	            int getInsertedUser = jdbcTemplate.queryForObject(getUserSql, new Object[]{user.getUserName()}, Integer.class);
-	            String insertAccessToken = "INSERT INTO access_token VALUES (:id,:userid,:type,:uuid,:expire_time,:active_indicator);";
+	            String insertAccessToken = "INSERT INTO osp_access_token VALUES (:user_id,:type,:uuid,:expiry_ts,:is_used,:created_by,:created_ts,:updated_by,:updated_ts);";
 	            Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
-	            accessTokenMapforEmail.put("id", 0);
 	            accessTokenMapforEmail.put("userid", getInsertedUser);
-	            accessTokenMapforEmail.put("type", "mail");
-	            accessTokenMapforEmail.put("uuid", user.getUUID());
-	            accessTokenMapforEmail.put("expire_time", new Timestamp(new Date().getTime() + (1 * 24 * 60 * 60 * 1000)));
-	            accessTokenMapforEmail.put("active_indicator", "Y");
+	            accessTokenMapforEmail.put("type", 0);
+	            accessTokenMapforEmail.put("uuid", user.getEmailUUID());
+	            accessTokenMapforEmail.put("expire_time", new Timestamp(new Date().getTime() + (1 * Integer.parseInt(emailExpireTime) * 60 * 60 * 1000)));
+	            accessTokenMapforEmail.put("is_used", 0);
+	            accessTokenMapforEmail.put("created_by", user.getUserName());
+	            accessTokenMapforEmail.put("created_ts", new Timestamp(new Date().getTime()));
+	           // accessTokenMapforEmail.put("updated_by", "Y");
+	          //  accessTokenMapforEmail.put("updated_ts", "Y");
 	            namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
 	            Map<String, Object> accessTokenMapforSms = new HashMap<String, Object>();
-	            accessTokenMapforSms.put("id", 0);
-	            accessTokenMapforSms.put("userid", getInsertedUser);
-	            accessTokenMapforSms.put("type", "sms");
-	            accessTokenMapforSms.put("uuid", user.getUUID());
-	            accessTokenMapforSms.put("expire_time", new Timestamp(new Date().getTime() + (1 * 24 * 60 * 60 * 1000)));
-	            accessTokenMapforSms.put("active_indicator", "Y");
+	            accessTokenMapforEmail.put("userid", getInsertedUser);
+	            accessTokenMapforEmail.put("type", 1);
+	            accessTokenMapforEmail.put("uuid", user.getSmsUUID());
+	            accessTokenMapforEmail.put("expire_time", new Timestamp(new Date().getTime() + (1 * Integer.parseInt(smsExpireTime) * 60 * 60 * 1000)));
+	            accessTokenMapforEmail.put("is_used", 0);
+	            accessTokenMapforEmail.put("created_by", user.getUserName());
+	            accessTokenMapforEmail.put("created_ts", new Timestamp(new Date().getTime()));
+	          //  accessTokenMapforEmail.put("updated_by", "Y");
+	          //  accessTokenMapforEmail.put("updated_ts", "Y");
 	            namedJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
 	        } else {
 	           throw new EmptyResultDataAccessException(1);

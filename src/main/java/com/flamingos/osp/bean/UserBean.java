@@ -1,17 +1,52 @@
 package com.flamingos.osp.bean;
 
 public class UserBean {
+	public String getEmailUUID() {
+		return emailUUID;
+	}
+
+	public void setEmailUUID(String emailUUID) {
+		this.emailUUID = emailUUID;
+	}
+
+	public String getSmsUUID() {
+		return smsUUID;
+	}
+
+	public void setSmsUUID(String smsUUID) {
+		this.smsUUID = smsUUID;
+	}
+
 	private int id;
 	private String userName;
 	private String password;
 	private long contactNumber;
 	private String email;
 	private String activeStatus;
-	private String UUID;
+	private String emailUUID;
+	private String smsUUID;
+	private String fupUUID;
+	public String getFupUUID() {
+		return fupUUID;
+	}
+
+	public void setFupUUID(String fupUUID) {
+		this.fupUUID = fupUUID;
+	}
+
 	private String smsVerfied;
 	private String emailVerified;
 	private int userTypeCD;
 	private int role_id;
+	private String record_type;
+
+	public String getRecord_type() {
+		return record_type;
+	}
+
+	public void setRecord_type(String record_type) {
+		this.record_type = record_type;
+	}
 
 	public int getRole_id() {
 		return role_id;
@@ -184,19 +219,5 @@ public class UserBean {
 		this.userTypeCD = userTypeCD;
 	}
 
-	/**
-	 * @return the UUID
-	 */
-	public String getUUID() {
-		return UUID;
-	}
-
-	/**
-	 * @param UUID
-	 *            the UUID to set
-	 */
-	public void setUUID(String UUID) {
-		this.UUID = UUID;
-	}
 
 }

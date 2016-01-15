@@ -84,7 +84,7 @@ public class LoginDaoImpl {
         accessTokenMapforEmail.put("id", 0);
         accessTokenMapforEmail.put("userid", getInsertedUser);
         accessTokenMapforEmail.put("type", "fup");
-        accessTokenMapforEmail.put("uuid", user.getUUID());
+       // accessTokenMapforEmail.put("uuid", user.getUUID());
         accessTokenMapforEmail.put("expire_time", new Timestamp(new Date().getTime() + (1 * 4 * 60 * 60 * 1000)));
         accessTokenMapforEmail.put("active_indicator", "Y");
         int count = namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);

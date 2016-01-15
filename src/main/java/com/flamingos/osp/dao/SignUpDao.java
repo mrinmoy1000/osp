@@ -15,7 +15,7 @@ public interface SignUpDao {
 
 	public UserDTO findByContact(Long contact) throws OspDaoException;
 
-	public int createNewUser(UserBean user) throws OspDaoException;
+	public int createNewUser(UserBean user,String emailExpireTime,String smsExpireTime) throws OspDaoException;
 
 	public String updateUser(UserBean user) throws OspDaoException;
 }
