@@ -1,4 +1,4 @@
-package com.flamingos.osp.dao;
+package com.flamingos.osp.dao.impl;
 
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.exception.OspDaoException;

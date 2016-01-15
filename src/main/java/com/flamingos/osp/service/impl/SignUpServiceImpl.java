@@ -1,4 +1,4 @@
-package com.flamingos.osp.service;
+package com.flamingos.osp.service.impl;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -16,6 +16,7 @@ import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
+import com.flamingos.osp.service.SignUpService;
 import com.flamingos.osp.util.encoderDecoder;
 
 @Service

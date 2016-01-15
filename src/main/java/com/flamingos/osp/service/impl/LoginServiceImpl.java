@@ -1,4 +1,4 @@
-package com.flamingos.osp.service;
+package com.flamingos.osp.service.impl;
 
 import java.util.logging.Logger;
 
@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.controller.ProfessionalController;
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
+import com.flamingos.osp.service.LoginService;
 import com.flamingos.osp.util.encoderDecoder;
 
 @Service

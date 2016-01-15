@@ -1,4 +1,4 @@
-package com.flamingos.osp.dao;
+package com.flamingos.osp.dao.impl;
 
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.exception.OspDaoException;
@@ -18,6 +18,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
 
 @Transactional(propagation = Propagation.REQUIRED)
