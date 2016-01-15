@@ -9,8 +9,13 @@
 
 	<bean id="ticketService" class="com.flamingos.osp.service.TicketService"></bean>
 	<bean id="ticketDao" class="com.flamingos.osp.dao.TicketDao"></bean>
+        <bean id="profService" class="com.flamingos.osp.service.ProfessionalService"></bean>
+	    <bean id="profDao" class="com.flamingos.osp.dao.ProfessionalDao"></bean>
+        <bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
+        
+        
 	
 	<!-- Properties File -->
-	<context:property-placeholder location="file:${CATALINA_HOME}/conf/osp.properties" />
+	<context:property-placeholder location="file:/home/computer2/installation/apache-tomcat-8.0.30/conf/osp.properties" />
 	
 </beans>

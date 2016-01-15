@@ -25,7 +25,7 @@
 		<log4j-version>1.2.15</log4j-version>
 
 		<org.springframework-version>4.0.0.RELEASE</org.springframework-version>
-		<mysql.driver.version>5.1.38</mysql.driver.version>
+
 	</properties>
 	<dependencies>
 		<!-- Oracle Driver -->
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.driver.version}</version>
+			<version>5.1.38</version>
 		</dependency>
 
 		<!-- Jackson -->
@@ -95,7 +95,7 @@
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
-			<version>${log4j-version}</version>
+			<version>1.2.15</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.mail</groupId>
@@ -114,7 +114,13 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<scope>runtime</scope>
+			<type>jar</type>
+		</dependency>
+		<!-- cypher code -->
+		<dependency>
+			<groupId>javax.xml.crypto</groupId>
+			<artifactId>jsr105-api</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 		<!-- @Inject -->
 		<dependency>
@@ -145,6 +151,12 @@
 			<artifactId>junit</artifactId>
 			<version>${junit-version}</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.eaio.uuid</groupId>
+			<artifactId>uuid</artifactId>
+			<version>3.2</version>
 		</dependency>
 
 	</dependencies>
