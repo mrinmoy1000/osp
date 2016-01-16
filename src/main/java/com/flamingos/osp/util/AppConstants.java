@@ -7,5 +7,6 @@ public class AppConstants {
 	public static String LOG_TYPE_ERROR="ERROR";
 	public static String PIPE_SEPARATOR="||";
 	
+	public static String CONFIG_LOADING_MODULE="CONFIG_LOADING_MODULE";
 
 }
