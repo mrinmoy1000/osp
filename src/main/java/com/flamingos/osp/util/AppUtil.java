@@ -14,7 +14,7 @@ public class AppUtil {
 	public static void writeToLog(String moduleName, String loggingType,
 			Map infoToLog) {
 		StringBuffer sb = new StringBuffer();
-		Set<Map.Entry<String, String>> entrySet = infoToLog.entrySet();
+		Set<Map.Entry<String, Object>> entrySet = infoToLog.entrySet();
 		sb.append("Module Name:" + moduleName + AppConstants.PIPE_SEPARATOR);
 		for (Entry entry : entrySet) {
 			sb.append(entry.getKey() + ":" + entry.getValue()
