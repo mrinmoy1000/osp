@@ -9,7 +9,7 @@ import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.LoginService;
-import com.flamingos.osp.util.encoderDecoder;
+import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -19,12 +19,12 @@ public class LoginServiceImpl implements LoginService {
 
 	// private static final Logger logger =
 	// Logger.getLogger(LoginServiceImpl.class);
-
-	public UserDTO createUser(UserBean loginBean) throws OspServiceException {
+@Override
+	public UserDTO login(UserBean loginBean) throws OspServiceException {
 
 		// if(userDTO!=null &&
 		// !loginBean.getPassword().equals(encryptionUtil.decryptPIData(userDTO.getUserPass())))
-		String encryptedPassword = new encoderDecoder()
+		String encryptedPassword = new EncoderDecoderUtil()
 				.getEncodedValue(loginBean.getPassword());
 		loginBean.setPassword(encryptedPassword);
 		try {
@@ -70,7 +70,7 @@ public class LoginServiceImpl implements LoginService {
 
 	public String sendLinkForForgotPassword(UserBean userBean,
 			HttpServletRequest request) throws RuntimeException {
-		String encryptedUserName = new encoderDecoder()
+		String encryptedUserName = new EncoderDecoderUtil()
 				.getEncodedValue(userBean.getUserName());
 
 		String linkTobeSend = request.getScheme() + "://"
@@ -80,10 +80,4 @@ public class LoginServiceImpl implements LoginService {
 		return linkTobeSend;
 	}
 
-	@Override
-	public UserDTO createUser(UserBean loginBean, HttpServletRequest request)
-			throws OspServiceException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

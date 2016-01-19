@@ -1,7 +1,7 @@
 package com.flamingos.osp.controller;
 
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.constant.OSPConstant;
+import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.exception.OspServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class LoginController {
-
-    @Autowired
+@Autowired
     LoginService loginService;
 private static final Logger logger = Logger.getLogger(ProfessionalController.class);
     @RequestMapping(value = "/login",method = RequestMethod.POST)
@@ -42,7 +41,7 @@ private static final Logger logger = Logger.getLogger(ProfessionalController.cla
             return new ResponseEntity<String>(userMessage, HttpStatus.OK);
 		} catch (OspServiceException e) {
 			 logger.debug(e);
-			 return new ResponseEntity<String>(OSPConstant.ERROR, HttpStatus.OK);
+			 return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.OK);
 		}
         
     }

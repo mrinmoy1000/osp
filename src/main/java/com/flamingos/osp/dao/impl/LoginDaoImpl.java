@@ -15,13 +15,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dto.UserDTO;
 
 @Transactional(propagation = Propagation.REQUIRED)
-public class LoginDaoImpl {
+@Repository
+public class LoginDaoImpl implements LoginDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -58,7 +61,7 @@ public class LoginDaoImpl {
 			return null;
 		}
 	}
-	
+	@Override
     public UserBean login(UserBean usrBean) {
         String sql = "select id,username,password,contact,email from user_login  where username = ? and active_status =? or active_status=? ";
         Object[] values = new Object[]{usrBean.getUserName(), "ACTV", "APRV"};
@@ -67,6 +70,7 @@ public class LoginDaoImpl {
         return user;
     }
 
+    @Override
     public int checkForUser(UserBean usrBean)throws OspDaoException {
         String sql1 = "select count(*) from user_login  where username = ? ";
         Object[] value1 = new Object[]{usrBean.getUserName()};
@@ -75,7 +79,8 @@ public class LoginDaoImpl {
         return countForUser;
     }
 
-    public String addFUPAccessToken(UserBean user) {
+    @Override
+    public String addFUPAccessToken(UserBean user)throws OspDaoException {
 
         String getUserSql = "select id from user_login  where username = ?";
         int getInsertedUser = jdbcTemplate.queryForObject(getUserSql, new Object[]{user.getUserName()}, Integer.class);

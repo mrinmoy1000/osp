@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 public class ProfessionalController {
 
     private static final Logger logger = Logger.getLogger(ProfessionalController.class);
-    @Autowired
+
     ProfessionalService profService;
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")

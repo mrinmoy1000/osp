@@ -1,6 +1,41 @@
 package com.flamingos.osp.bean;
 
 public class UserBean {
+
+
+	private int id;
+	private String userName;
+	private String password;
+	private long contactNumber;
+	private String email;
+	private String activeStatus;
+	private String emailUUID;
+	private String smsUUID;
+	private String fupUUID;
+	private String smsVerfied;
+	private String emailVerified;
+	private int userTypeCD;
+	private int role_id;
+	private String record_type;
+	private String tokenType;
+	private Long prof_id;
+	
+	public Long getProf_id() {
+		return prof_id;
+	}
+
+	public void setProf_id(Long prof_id) {
+		this.prof_id = prof_id;
+	}
+
+	public String getTokenType() {
+		return tokenType;
+	}
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
+	}
+
 	public String getEmailUUID() {
 		return emailUUID;
 	}
@@ -16,16 +51,6 @@ public class UserBean {
 	public void setSmsUUID(String smsUUID) {
 		this.smsUUID = smsUUID;
 	}
-
-	private int id;
-	private String userName;
-	private String password;
-	private long contactNumber;
-	private String email;
-	private String activeStatus;
-	private String emailUUID;
-	private String smsUUID;
-	private String fupUUID;
 	public String getFupUUID() {
 		return fupUUID;
 	}
@@ -34,11 +59,7 @@ public class UserBean {
 		this.fupUUID = fupUUID;
 	}
 
-	private String smsVerfied;
-	private String emailVerified;
-	private int userTypeCD;
-	private int role_id;
-	private String record_type;
+	
 
 	public String getRecord_type() {
 		return record_type;

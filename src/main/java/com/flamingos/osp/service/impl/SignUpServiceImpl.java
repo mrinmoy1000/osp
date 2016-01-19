@@ -20,21 +20,21 @@ import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.SignUpService;
-import com.flamingos.osp.util.encoderDecoder;
+import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
-@Configuration
-@PropertySource("classpath:root/osp.properties")
+//@Configuration
+//@PropertySource("classpath:osp.properties")
 public class SignUpServiceImpl implements SignUpService {
 
-	@Value("${osp.properties.emailExpireTimestamp}")
-	private String emailExpireTime;
+	//@Value("${osp.properties.emailExpireTimestamp}")
+	private int emailExpireTime;
 	
-	@Value("${osp.properties.smsExpireTimestamp}")
-	private String smsExpireTime;
+	//@Value("${osp.properties.smsExpireTimestamp}")
+	private int smsExpireTime;
 	
-	@Value("${osp.properties.fupExpireTimestamp}")
-	private String fupExpireTime;
+	//@Value("${osp.properties.fupExpireTimestamp}")
+	private int fupExpireTime;
 	
 	@Autowired
 	SignUpDao signUpDao;
@@ -45,6 +45,14 @@ public class SignUpServiceImpl implements SignUpService {
 		try {
 			checkUniqueness(userBean);
 			String returnMessage = createNewUser(userBean, "1", request,emailExpireTime,smsExpireTime);
+			if(userBean.getProf_id()!=null)
+			{
+				int profId = signUpDao.checkForProfessional(userBean);
+
+					int updatedProf = signUpDao.mapUserAndProfessional(profId, profId);				
+			}
+			
+			
 			String userMessageForEmail = sendVerificationLinkinEmail(userBean, request);
 			String userMessageForSMS = sendVerificationLinkinSms(userBean, request);
 			return returnMessage;
@@ -89,12 +97,12 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	private String createNewUser(UserBean userBean, String role,
-			HttpServletRequest request,String emailExpireTime,String smsExpireTime) throws OspServiceException {
+			HttpServletRequest request,int emailExpireTime,int smsExpireTime) throws OspServiceException {
 		try {
 			
 			userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
 			userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
-			String encryptedPassword = new encoderDecoder()
+			String encryptedPassword = new EncoderDecoderUtil()
 					.getEncodedValue(userBean.getPassword());
 			userBean.setUserName(userBean.getUserName());
 			userBean.setPassword(encryptedPassword);
@@ -105,7 +113,7 @@ public class SignUpServiceImpl implements SignUpService {
 			userBean.setFirstName(userBean.getFirstName());
 			userBean.setMiddleName(userBean.getMiddleName());
 			userBean.setLastName(userBean.getLastName());
-			userBean.setRole_id(Integer.parseInt("role"));
+			userBean.setRole_id(1);
 			signUpDao.createNewUser(userBean,emailExpireTime,smsExpireTime);
 			return "success";
 		} catch (Exception e) {
@@ -118,7 +126,7 @@ public class SignUpServiceImpl implements SignUpService {
 	public String sendVerificationLinkinEmail(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = new encoderDecoder()
+		String encryptedUserName = new EncoderDecoderUtil()
 				.getEncodedValue(userBean.getUserName());
 		String Uuid = userBean.getEmailUUID();
 		String linkTobeSend = request.getScheme() + "://"
@@ -133,7 +141,7 @@ public class SignUpServiceImpl implements SignUpService {
 	public String sendVerificationLinkinSms(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = new encoderDecoder()
+		String encryptedUserName = new EncoderDecoderUtil()
 				.getEncodedValue(userBean.getUserName());
 		String Uuid = userBean.getSmsUUID();
 		String linkTobeSend = request.getScheme() + "://"

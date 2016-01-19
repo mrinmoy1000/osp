@@ -3,6 +3,8 @@ package com.flamingos.osp.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +20,12 @@ import com.flamingos.osp.service.SignUpService;
 @RestController
 @RequestMapping("/register")
 public class SignUpController {
-   @Autowired
-   SignUpService signUpService;
+    @Autowired
+	private SignUpService signUpService;
 
-   @RequestMapping(produces="application/json",method = RequestMethod.POST,consumes="application/json")
+
+
+@RequestMapping(produces="application/json",method = RequestMethod.POST,consumes="application/json")
    public ResponseEntity<String> signupUser(@RequestBody UserBean   userBean,HttpServletRequest request) throws Exception {
       String successMessage =  signUpService.createUser(userBean, request);
 	

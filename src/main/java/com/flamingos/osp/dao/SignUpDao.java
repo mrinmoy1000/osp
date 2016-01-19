@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import com.flamingos.osp.dto.UserDTO;
 
-@Transactional(propagation = Propagation.REQUIRED)
 public interface SignUpDao {
 
 	public UserDTO findByUserName(String userName) throws OspDaoException;
@@ -15,7 +14,11 @@ public interface SignUpDao {
 
 	public UserDTO findByContact(Long contact) throws OspDaoException;
 
-	public int createNewUser(UserBean user,String emailExpireTime,String smsExpireTime) throws OspDaoException;
+	public int createNewUser(UserBean user,int emailExpireTime,int smsExpireTime) throws OspDaoException;
 
 	public String updateUser(UserBean user) throws OspDaoException;
+	
+	public int checkForProfessional(UserBean user) throws OspDaoException;
+	
+	public int mapUserAndProfessional(int userId,int professionalId) throws OspDaoException;
 }
