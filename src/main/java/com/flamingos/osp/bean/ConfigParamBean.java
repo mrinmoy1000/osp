@@ -20,11 +20,11 @@ public class ConfigParamBean {
 	private ConfigParamLoaderService configParamLoaderService;
 	@Autowired
 	private OSPErrorHandler ospErrorHandler;
-	private Map<String, ConfigParamDto> mapByParamId = new HashMap<String, ConfigParamDto>();
-	private List<ConfigParamDto> listParam = new ArrayList<ConfigParamDto>();
-	private Map<String, ConfigParamDto> mapByParamCodeAndName = new HashMap<String, ConfigParamDto>();
-	private Map<String, List<ConfigParamDto>> mapByParamCode = new HashMap<String, List<ConfigParamDto>>();
-	private Map<String, String> templateMap = new HashMap<String, String>();
+	private static Map<String, ConfigParamDto> mapByParamId = new HashMap<String, ConfigParamDto>();
+	private static List<ConfigParamDto> listParam = new ArrayList<ConfigParamDto>();
+	private static Map<String, ConfigParamDto> mapByParamCodeAndName = new HashMap<String, ConfigParamDto>();
+	private static Map<String, List<ConfigParamDto>> mapByParamCode = new HashMap<String, List<ConfigParamDto>>();
+	private static Map<String, TemplateBean> templateMap = new HashMap<String, TemplateBean>();
 
 	public void loadConfigParam() {
 		Map<String, String> logMap = new HashMap<String, String>();
@@ -42,7 +42,7 @@ public class ConfigParamBean {
 			List<TemplateBean> templateBeanList = configParamLoaderService
 					.getAllTemplate();
 			for (TemplateBean tb : templateBeanList) {
-				templateMap.put(tb.getTempName(), tb.getTempFilePath());
+				templateMap.put(tb.getTempName(), tb);
 			}
 		} catch (OSPBusinessException ospEx) {
 			if ("".equalsIgnoreCase(ospEx.getModuleName())) {
@@ -55,6 +55,9 @@ public class ConfigParamBean {
 					AppConstants.CONFIG_LOADING_MODULE, gne);
 		}
 
+	}
+	public TemplateBean getTemplateByName(String templateName){
+		return templateMap.get(templateName);
 	}
 
 }
