@@ -23,6 +23,12 @@ public class Mail {
 	private String templateName;
 
 	private String contentType;
+	
+	private String firstName;
+	
+	private String middleName;
+	
+	private String lastName;
 
 	private Map<String, String> mapInlineImages;
 
@@ -117,6 +123,30 @@ public class Mail {
 		lBuilder.append("Mail Send Date:- ").append(getMailSendDate());
 		lBuilder.append("Mail Content:- ").append(getMailContent());
 		return lBuilder.toString();
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }

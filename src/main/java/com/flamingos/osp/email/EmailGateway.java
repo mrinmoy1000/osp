@@ -47,6 +47,8 @@ public class EmailGateway {
 
         Template template = velocityEngine.getTemplate(mail.getTemplateName());
         VelocityContext velocityContext = new VelocityContext();
+        velocityContext.put("name", mail.getFirstName()+mail.getMiddleName()+mail.getLastName());
+        velocityContext.put("content", mail.getMailContent());
         StringWriter stringWriter = new StringWriter();
         template.merge(velocityContext, stringWriter);
         Map<String, String> mapInlineImages = mail.getMapInlineImages();

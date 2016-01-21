@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.email.EmailGateway;
 import com.flamingos.osp.email.Mail;
 import com.flamingos.osp.exception.OspServiceException;
@@ -21,12 +22,14 @@ public class EmailServiceImpl implements EmailService {
   private String mailFrom;
   @Autowired
   private EmailGateway emailGateway;
+  @Autowired
+  private ConfigParamBean configParamBean;
 
   public void sendMail(String templateName, String toemailId, String url, String subject)
       throws OspServiceException {
     try {
       Mail mail = new Mail();
-      mail.setTemplateName(templateName);
+      mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
       mail.setMailTo(toemailId);
       mail.setMailContent(url);
       mail.setMailFrom(mailFrom);
