@@ -116,13 +116,6 @@
 			</exclusions>
 			<type>jar</type>
 		</dependency>
-		<!--Mail dependency -->
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <!--Mail dependency -->
 		<!-- cypher code -->
 		<dependency>
 			<groupId>javax.xml.crypto</groupId>
@@ -165,6 +158,32 @@
 			<artifactId>uuid</artifactId>
 			<version>3.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.activation</groupId>
+			<artifactId>activation</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring</artifactId>
+			<version>2.5.6</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -201,3 +220,4 @@
 		</plugins>
 	</build>
 </project>
+>>>>>>> 77bebe6 context config for param chaching added
