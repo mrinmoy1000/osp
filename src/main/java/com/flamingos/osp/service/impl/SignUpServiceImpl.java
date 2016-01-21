@@ -25,20 +25,19 @@ public class SignUpServiceImpl implements SignUpService {
 
 	@Value("${email.expire.time}")
 	private String emailExpireTime;
-	
+
 	@Value("${sms.expire.time}")
 	private String smsExpireTime;
-	
-	@Value("${fup.expire.time}")
-	private String fupExpireTime;
-	
+
 	@Autowired
 	SignUpDao signUpDao;
-	
+
 	@Autowired
 	EncoderDecoderUtil encDecUtil;
 
-	private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
+	private static final Logger logger = Logger
+			.getLogger(SignUpServiceImpl.class);
+
 	@Override
 	public UserDTO createUser(UserBean userBean, HttpServletRequest request)
 			throws OspServiceException {
@@ -48,17 +47,20 @@ public class SignUpServiceImpl implements SignUpService {
 					Integer.parseInt(emailExpireTime),
 					Integer.parseInt(smsExpireTime));
 			if (returnMessage.equals("success")) {
-				UserDTO userDto = signUpDao.findByUserName(userBean.getUserName());
+				UserDTO userDto = signUpDao.findByUserName(userBean
+						.getUserName());
 				if (userBean.getProf_id() != null) {
-					 UserDTO prof = signUpDao.checkForProfessional(userBean);
-					signUpDao.mapUserAndProfessional(userDto.getUserId(),prof.getUserId());
+					UserDTO prof = signUpDao.checkForProfessional(userBean);
+					signUpDao.mapUserAndProfessional(userDto.getUserId(),
+							prof.getUserId());
 				}
 				String userMessageForEmail = sendVerificationLinkinEmail(
 						userBean, request);
 				String userMessageForSMS = sendVerificationLinkinSms(userBean,
 						request);
-				logger.info("verfication email  link send"+userMessageForEmail );
-				logger.info("verfication sms link send"+userMessageForSMS );
+				logger.info("verfication email  link send"
+						+ userMessageForEmail);
+				logger.info("verfication sms link send" + userMessageForSMS);
 				return userDto;
 			} else {
 
@@ -66,7 +68,7 @@ public class SignUpServiceImpl implements SignUpService {
 			}
 		} catch (OspDaoException e) {
 			// TODO: handle exception
-			throw new OspServiceException();
+			throw new OspServiceException(e);
 		}
 	}
 
@@ -79,20 +81,20 @@ public class SignUpServiceImpl implements SignUpService {
 			UserDTO userDTOForUserName = signUpDao.findByUserName(loginBean
 					.getUserName());
 			if (userDTOForUserName != null) {
-				throw new OspServiceException(
+				throw new OspDaoException(
 						"UserName already exists. Please use different one.");
 
 			}
 			UserDTO userDTOForContact = signUpDao.findByContact(loginBean
 					.getContactNumber());
 			if (userDTOForContact != null) {
-				throw new OspServiceException(
+				throw new OspDaoException(
 						"Contact Number already exists. Please use forgot username/pass to retrieve account details if not able to login.");
 			}
 			UserDTO userDTOForEmail = signUpDao.findByEmailAddress(loginBean
 					.getEmail());
 			if (userDTOForEmail != null) {
-				throw new OspServiceException(
+				throw new OspDaoException(
 						"Email id already exists. Please use forgot username/pass to retrieve account details if not able to login.");
 			}
 
@@ -105,12 +107,14 @@ public class SignUpServiceImpl implements SignUpService {
 	}
 
 	private String createNewUser(UserBean userBean, String role,
-			HttpServletRequest request,int emailExpireTime,int smsExpireTime) throws OspServiceException {
+			HttpServletRequest request, int emailExpireTime, int smsExpireTime)
+			throws OspServiceException {
 		try {
-			
+
 			userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
 			userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
-			String encryptedPassword = encDecUtil.getEncodedValue(userBean.getPassword());
+			String encryptedPassword = encDecUtil.getEncodedValue(userBean
+					.getPassword());
 			userBean.setUserName(userBean.getUserName());
 			userBean.setPassword(encryptedPassword);
 			userBean.setActiveStatus("PEND");
@@ -121,7 +125,7 @@ public class SignUpServiceImpl implements SignUpService {
 			userBean.setMiddleName(userBean.getMiddleName());
 			userBean.setLastName(userBean.getLastName());
 			userBean.setRole_id(1);
-			signUpDao.createNewUser(userBean,emailExpireTime,smsExpireTime);
+			signUpDao.createNewUser(userBean, emailExpireTime, smsExpireTime);
 			return "success";
 		} catch (Exception e) {
 			throw new OspServiceException();
@@ -133,8 +137,8 @@ public class SignUpServiceImpl implements SignUpService {
 	public String sendVerificationLinkinEmail(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = encDecUtil
-				.getEncodedValue(userBean.getUserName());
+		String encryptedUserName = encDecUtil.getEncodedValue(userBean
+				.getUserName());
 		String Uuid = userBean.getEmailUUID();
 		String linkTobeSend = request.getScheme() + "://"
 				+ request.getServerName() + ":" + request.getServerPort()
@@ -143,13 +147,13 @@ public class SignUpServiceImpl implements SignUpService {
 		return linkTobeSend;
 
 	}
-	
+
 	@Override
 	public String sendVerificationLinkinSms(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = encDecUtil
-				.getEncodedValue(userBean.getUserName());
+		String encryptedUserName = encDecUtil.getEncodedValue(userBean
+				.getUserName());
 		String Uuid = userBean.getSmsUUID();
 		String linkTobeSend = request.getScheme() + "://"
 				+ request.getServerName() + ":" + request.getServerPort()
@@ -159,10 +163,26 @@ public class SignUpServiceImpl implements SignUpService {
 
 	}
 
-
 	@Override
 	public void deleteUser(UserBean ub) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String checkUserName(UserBean userBean) throws OspServiceException {
+		try {
+			UserDTO userDTOForUserName = signUpDao.findByUserName(userBean
+					.getUserName());
+			if (userDTOForUserName != null) {
+				throw new OspServiceException(
+						"UserName already exists. Please use different one.");
+
+			}
+			return "success";
+		} catch (OspDaoException exp) {
+			throw new OspServiceException();
+		}
 
 	}
 }

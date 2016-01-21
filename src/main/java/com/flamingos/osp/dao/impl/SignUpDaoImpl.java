@@ -37,7 +37,9 @@ public class SignUpDaoImpl implements SignUpDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-	private String getUserSql = "SELECT  RECORD_ID,USER_NAME,PASSWORD,CONTACT_NUMBER,EMAIL,ACTIVATION_STATUS FROM osp_user_password WHERE ";
+	private String getUserSql = "SELECT "+OSPSignupConstant.RECORD_ID+","+OSPSignupConstant.USER_NAME+","+OSPSignupConstant.PASSWORD
+			+","+OSPSignupConstant.CONTACT_NUMBER+","+OSPSignupConstant.EMAIL+
+			","+OSPSignupConstant.ACTIVATION_STATUS+" FROM osp_user_password WHERE ";
 
 	@Override
 	public UserDTO findByUserName(String userName) throws OspDaoException {
@@ -52,13 +54,12 @@ public class SignUpDaoImpl implements SignUpDao {
 						public UserDTO mapRow(ResultSet rs, int rowNum)
 								throws SQLException {
 							UserDTO user = new UserDTO();
-							user.setUserId(rs.getLong(OSPLoginConstant.RECORD_ID));
-							user.setUserName(rs.getString(OSPLoginConstant.USER_NAME));
-							user.setUserPass(rs.getString(OSPLoginConstant.PASSWORD));
-							user.setUserContact(rs.getString(OSPLoginConstant.CONTACT_NUMBER));
-							user.setEmail(rs.getString(OSPLoginConstant.EMAIL));
-							user.setActivationStatus(rs
-									.getString(OSPLoginConstant.ACTIVATION_STATUS));
+							user.setUserId(rs.getLong(OSPSignupConstant.RECORD_ID));
+							user.setUserName(rs.getString(OSPSignupConstant.USER_NAME));
+							user.setUserPass(rs.getString(OSPSignupConstant.PASSWORD));
+							user.setUserContact(rs.getString(OSPSignupConstant.CONTACT_NUMBER));
+							user.setEmail(rs.getString(OSPSignupConstant.EMAIL));
+							user.setActivationStatus(rs.getString(OSPSignupConstant.ACTIVATION_STATUS));
 
 							return user;
 						}
@@ -83,17 +84,17 @@ public class SignUpDaoImpl implements SignUpDao {
 				public UserDTO mapRow(ResultSet rs, int rowNum)
 						throws SQLException {
 					UserDTO user = new UserDTO();
-					user.setUserId(rs.getLong(OSPLoginConstant.RECORD_ID));
-					user.setUserName(rs.getString(OSPLoginConstant.USER_NAME));
-					user.setUserPass(rs.getString(OSPLoginConstant.PASSWORD));
-					user.setUserContact(rs.getString(OSPLoginConstant.CONTACT_NUMBER));
-					user.setEmail(rs.getString(OSPLoginConstant.EMAIL));
+					user.setUserId(rs.getLong(OSPSignupConstant.RECORD_ID));
+					user.setUserName(rs.getString(OSPSignupConstant.USER_NAME));
+					user.setUserPass(rs.getString(OSPSignupConstant.PASSWORD));
+					user.setUserContact(rs.getString(OSPSignupConstant.CONTACT_NUMBER));
+					user.setEmail(rs.getString(OSPSignupConstant.EMAIL));
 					user.setActivationStatus(rs
-							.getString(OSPLoginConstant.ACTIVATION_STATUS));
+							.getString(OSPSignupConstant.ACTIVATION_STATUS));
 
 					return user;
 				}
-					});
+			});
 
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -114,17 +115,18 @@ public class SignUpDaoImpl implements SignUpDao {
 				public UserDTO mapRow(ResultSet rs, int rowNum)
 						throws SQLException {
 					UserDTO user = new UserDTO();
-					user.setUserId(rs.getLong(OSPLoginConstant.RECORD_ID));
-					user.setUserName(rs.getString(OSPLoginConstant.USER_NAME));
-					user.setUserPass(rs.getString(OSPLoginConstant.PASSWORD));
-					user.setUserContact(rs.getString(OSPLoginConstant.CONTACT_NUMBER));
-					user.setEmail(rs.getString(OSPLoginConstant.EMAIL));
+					user.setUserId(rs.getLong(OSPSignupConstant.RECORD_ID));
+					user.setUserName(rs.getString(OSPSignupConstant.USER_NAME));
+					user.setUserPass(rs.getString(OSPSignupConstant.PASSWORD));
+					user.setUserContact(rs.getString(OSPSignupConstant.CONTACT_NUMBER));
+					user.setEmail(rs.getString(OSPSignupConstant.EMAIL));
 					user.setActivationStatus(rs
-							.getString(OSPLoginConstant.ACTIVATION_STATUS));
+							.getString(OSPSignupConstant.ACTIVATION_STATUS));
 
 					return user;
 				}
-					});
+			});
+
 
 		} catch (EmptyResultDataAccessException e) {
 			return null;
@@ -159,7 +161,33 @@ public class SignUpDaoImpl implements SignUpDao {
 	        Number  generateKey =  simpleInsert.executeAndReturnKey(userDetailsMap);
 	        long getInsertedUser = (Long)generateKey;
 	        if (getInsertedUser != 0) {
-	            String insertAccessToken = "INSERT INTO osp_access_token VALUES (:USER_ID,:TYPE,:UUID,:EXPIRY_DT,:IS_USED,:CREATED_TS,:UPDATED_TS,:CREATED_BY,:UPDATED_BY);";
+			String insertAccessToken = "INSERT INTO osp_access_token VALUES "
+					+ "(:"
+					+ OSPSignupConstant.USER_ID
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.TYPE
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.UUID
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.EXPIRY_DATE
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.IS_USED
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.CREATED_TS
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.UPDATED_TS
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.CREATED_BY
+					+ ","
+					+ ":"
+					+ OSPSignupConstant.UPDATED_BY + ")";
 	            Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
 	            accessTokenMapforEmail.put(OSPSignupConstant.USER_ID,getInsertedUser);
 	            accessTokenMapforEmail.put(OSPSignupConstant.TYPE, 0);
@@ -183,7 +211,7 @@ public class SignUpDaoImpl implements SignUpDao {
 	            accessTokenMapforSms.put(OSPSignupConstant.UPDATE_BY, null);
 	            namedJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
 	        } else {
-	           throw new EmptyResultDataAccessException(1);
+	           throw new OspDaoException();
 	        }
 		return 0;
 	}

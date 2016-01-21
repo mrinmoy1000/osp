@@ -19,8 +19,10 @@ public interface LoginService {
 
 	public String checkForUserAndSendLink(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException;
-
+	
 	public String sendLinkForForgotPassword(UserBean userBean,
 			HttpServletRequest request) throws RuntimeException;
+	
+
 
 }

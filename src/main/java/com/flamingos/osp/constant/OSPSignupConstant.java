@@ -34,4 +34,7 @@ public interface OSPSignupConstant {
 	public static final String UPDATED_TS = "UPDATED_TS";
 	public static final String TOKEN_CREATED_BY = "CREATED_BY";
 	public static final String UPDATED_BY = "UPDATED_BY";
+	
+	public static final String PARAM_ID = "PARAM_ID";
+	public static final String PARAM_VALUE = "PARAM_VALUE";
 }

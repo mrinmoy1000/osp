@@ -22,27 +22,30 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-//@Configuration
-//@PropertySource("classpath:osp.properties")
+@Configuration
+@PropertySource("classpath:osp.properties")
 public class ProfessionalServiceImpl implements ProfessionalService {
 
 	@Autowired
 	ProfessionalDao profDao;
+
 	private static final Logger logger = Logger
 			.getLogger(ProfessionalServiceImpl.class);
-	//@Value("${osp.properties.emailExpireTimestamp}")
-	private int emailExpireTime;
 
-	//@Value("${osp.properties.smsExpireTimestamp}")
-	private int smsExpireTime;
+	@Value("${email.expire.time}")
+	private String emailExpireTime;
+
+	@Value("${sms.expire.time}")
+	private String smsExpireTime;
 
 	@Autowired
 	EncoderDecoderUtil encDecUtil;
-	
+
 	@Override
-	public String verifyEmailDataAndUpdateStatus(String username,
-			String  UUID, String type) throws OspServiceException {
+	public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID,
+			String type) throws OspServiceException {
 		logger.debug("verfiying email....");
+		UserDTO userDto = new UserDTO();
 		try {
 
 			String decryptedUserName = encDecUtil.getDecodedValue(username);
@@ -50,28 +53,30 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			user.setUserName(decryptedUserName);
 			AccessToken access = new AccessToken();
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-			UserDTO userDto = new UserDTO();
+
 			access.setActiveIndicator(String.valueOf(0).charAt(0));
-			if (type.equals("email")) {
-				user.setEmailVerified("Y");
+			if (type.equals(OSPConstants.EMAIL_TYPE)) {
+				user.setEmailVerified(OSPConstants.LINK_VERFIED);
 				user.setEmailUUID(UUID);
 				access.setType(0);
-				userDto = profDao.getUserLinkValidCheckForEmail(user, access);
+				userDto= profDao.getUserLinkValidCheckForEmail(user,
+						access);
 				access.setActiveIndicator(String.valueOf(1).charAt(0));
 				profDao.emailUpdateStatus(user, access);
-			
+
 			} else {
-				if (type.equals("sms")) {
-					user.setSmsVerfied("Y");
+				if (type.equals(OSPConstants.SMS_TYPE)) {
+					user.setSmsVerfied(OSPConstants.LINK_VERFIED);
 					user.setEmailUUID(UUID);
 					access.setType(1);
-					userDto = profDao.getUserLinkValidCheckForSms(user, access);
+					 userDto = profDao.getUserLinkValidCheckForSms(user,
+							access);
 					access.setActiveIndicator(String.valueOf(1).charAt(0));
-					profDao.smsUpdateStatus(user, access);			
+					profDao.smsUpdateStatus(user, access);
 				}
 			}
 			logger.info(OSPConstants.VALID);
-			return OSPConstants.VALID;
+			return userDto;
 		} catch (OspDaoException exp) {
 			throw new OspServiceException(OSPConstants.INVALID_LINK);
 		}
@@ -79,8 +84,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	}
 
 	@Override
-	public String verifyAndGenerateNewToken(String username,
-			String UUID) throws OspServiceException {
+	public String verifyAndGenerateNewToken(String username, String UUID)
+			throws OspServiceException {
 		logger.debug("verfiying token....");
 		try {
 			UserBean user = new UserBean();
@@ -90,29 +95,31 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
 			List<UserBean> userList = null;
 			userList = profDao.getTokenCheck(user, access);
-			if (null !=userList&&userList.size()!=0) {
-				
-				for(UserBean userBean : userList)
-				{
-					if(userBean.getTokenType().equals("email") && user.getEmailUUID().equals(userBean.getEmailUUID()))
-					{
-						if(userBean.getEmailVerified().equals("N"))
-						{
+			if (null != userList && userList.size() != 0) {
+
+				for (UserBean userBean : userList) {
+					if (userBean.getTokenType().equals(OSPConstants.EMAIL_TYPE)
+							&& user.getEmailUUID().equals(
+									userBean.getEmailUUID())) {
+						if (userBean.getEmailVerified().equals(
+								OSPConstants.LINK_NOT_VERFIED)) {
 							user.setEmailVerified(userBean.getEmailVerified());
-							profDao.generateNewEmailToken(user, emailExpireTime);	
+							profDao.generateNewEmailToken(user,
+									Integer.parseInt(emailExpireTime));
 						}
 					}
-					if(userBean.getTokenType().equals("sms") && user.getSmsUUID().equals(userBean.getSmsUUID()))
-					{
-						if(userBean.getSmsVerfied().equals("N"))
-						{
+					if (userBean.getTokenType().equals(OSPConstants.SMS_TYPE)
+							&& user.getSmsUUID().equals(userBean.getSmsUUID())) {
+						if (userBean.getSmsVerfied().equals(
+								OSPConstants.LINK_NOT_VERFIED)) {
 							user.setSmsVerfied(userBean.getEmailVerified());
-							profDao.generateNewSmsToken(user, smsExpireTime);	
+							profDao.generateNewSmsToken(user,
+									Integer.parseInt(smsExpireTime));
 						}
 					}
-						
+
 				}
-				
+
 				logger.debug("token verfified and generated");
 				return OSPConstants.SUCCESS;
 
@@ -125,5 +132,40 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			throw new OspServiceException();
 		}
 	}
+
+	@Override
+	public UserDTO verifyForgotPassword(String username, String UUID,
+			String type) throws OspServiceException {
+		logger.debug("verfiying forgot password method....");
+		UserDTO userDto = new UserDTO();
+		try {
+
+			String decryptedUserName = encDecUtil.getDecodedValue(username);
+			UserBean user = new UserBean();
+			user.setUserName(decryptedUserName);
+			AccessToken access = new AccessToken();
+			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
+				user.setFupUUID(UUID);
+				access.setType(0);
+				userDto= profDao.checkForForgotPassword(user, access);
+			logger.info(OSPConstants.VALID);
+			return userDto;
+		} catch (OspDaoException exp) {
+			throw new OspServiceException(OSPConstants.INVALID_LINK);
+		}
 	}
 
+	@Override
+	public UserDTO changePassword(UserBean userBean) throws OspServiceException {
+		try {
+			profDao.updatePassword(userBean);
+			UserDTO user = new UserDTO();
+			user.setActivationStatus("succcess");
+			user.setReturnMessage("password changed successfully");
+			return user;
+		} catch (OspDaoException ex) {
+			throw new OspServiceException(ex);
+
+		}
+	}
+}

@@ -33,6 +33,11 @@ public interface ProfessionalDao {
 	public int generateNewEmailToken(UserBean user,int expireTime) throws OspDaoException;
 	
 	public int generateNewSmsToken(UserBean user,int expireTime) throws OspDaoException;
+	
+	public UserDTO checkForForgotPassword(UserBean user, AccessToken access)
+			throws OspDaoException;
+	
+	 public void updatePassword(UserBean user) throws OspDaoException;
 
 
 }

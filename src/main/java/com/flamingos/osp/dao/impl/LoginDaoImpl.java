@@ -1,6 +1,8 @@
 package com.flamingos.osp.dao.impl;
 
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.constant.OSPLoginConstant;
+import com.flamingos.osp.constant.OSPSignupConstant;
 import com.flamingos.osp.exception.OspDaoException;
 
 import java.sql.ResultSet;
@@ -71,33 +73,67 @@ public class LoginDaoImpl implements LoginDao {
     }
 
     @Override
-    public int checkForUser(UserBean usrBean)throws OspDaoException {
-        String sql1 = "select count(*) from user_login  where username = ? ";
-        Object[] value1 = new Object[]{usrBean.getUserName()};
-        @SuppressWarnings("deprecation")
-		int countForUser = jdbcTemplate.queryForInt(sql1, value1);
-        return countForUser;
+    public UserDTO checkForUser(UserBean usrBean)throws OspDaoException {
+    	String userNameSql = "SELECT * FROM osp_user_password WHERE  "+OSPLoginConstant.USER_NAME+"=:USERNAME and"+ OSPLoginConstant.EMAIL+"=:EMAIl";
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("USERNAME", usrBean.getUserName());
+		paramMap.put("EMAIl", usrBean.getEmail());
+
+		try {
+
+			return namedJdbcTemplate.queryForObject(userNameSql, paramMap,
+					new RowMapper<UserDTO>() {
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(OSPSignupConstant.RECORD_ID));
+							user.setUserName(rs.getString(OSPSignupConstant.USER_NAME));
+							user.setUserPass(rs.getString(OSPSignupConstant.PASSWORD));
+							user.setUserContact(rs.getString(OSPSignupConstant.CONTACT_NUMBER));
+							user.setEmail(rs.getString(OSPSignupConstant.EMAIL));
+							user.setActivationStatus(rs.getString(OSPSignupConstant.ACTIVATION_STATUS));
+
+							return user;
+						}
+					});
+
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
     }
 
     @Override
-    public String addFUPAccessToken(UserBean user)throws OspDaoException {
+    public int addFUPAccessToken(UserBean user,int fupExpireTime)throws OspDaoException {
 
-        String getUserSql = "select id from user_login  where username = ?";
-        int getInsertedUser = jdbcTemplate.queryForObject(getUserSql, new Object[]{user.getUserName()}, Integer.class);
-        String insertAccessToken = "INSERT INTO access_token VALUES (:id,:userid,:type,:uuid,:expire_time,:active_indicator);";
-        Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
-        accessTokenMapforEmail.put("id", 0);
-        accessTokenMapforEmail.put("userid", getInsertedUser);
-        accessTokenMapforEmail.put("type", "fup");
-       // accessTokenMapforEmail.put("uuid", user.getUUID());
-        accessTokenMapforEmail.put("expire_time", new Timestamp(new Date().getTime() + (1 * 4 * 60 * 60 * 1000)));
-        accessTokenMapforEmail.put("active_indicator", "Y");
-        int count = namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
-        if (count > 0) {
-            return "success";
-        } else {
-            return "error";
-        }
+     try
+     {String insertAccessToken = "INSERT INTO access_token VALUES "
+     		+ "INSERT INTO osp_access_token VALUES "
+    		+ "(:"+OSPSignupConstant.USER_ID+","
+    		+ ":"+OSPSignupConstant.TYPE+","
+    		+ ":"+OSPSignupConstant.UUID+","
+    		+ ":"+OSPSignupConstant.EXPIRY_DATE+","
+    		+ ":"+OSPSignupConstant.IS_USED+","
+    		+ ":"+OSPSignupConstant.CREATED_TS+","
+    		+ ":"+OSPSignupConstant.UPDATED_TS+","
+    		+ ":"+OSPSignupConstant.CREATED_BY+","
+    		+ ":"+OSPSignupConstant.UPDATED_BY+")";
+        Map<String, Object> accessTokenMapforFUP = new HashMap<String, Object>();
+        accessTokenMapforFUP.put(OSPSignupConstant.USER_ID,user.getUser_id());
+        accessTokenMapforFUP.put(OSPSignupConstant.TYPE, 0);
+        accessTokenMapforFUP.put(OSPSignupConstant.UUID, user.getSmsUUID());
+        accessTokenMapforFUP.put(OSPSignupConstant.EXPIRY_DATE, new Timestamp(new Date().getTime()+(1 * fupExpireTime  * 60 * 60 * 1000)));
+        accessTokenMapforFUP.put(OSPSignupConstant.IS_USED, 0);
+        accessTokenMapforFUP.put(OSPSignupConstant.CREATED_TS,new Timestamp(new Date().getTime()));
+        accessTokenMapforFUP.put(OSPSignupConstant.UPDATE_TS, null);
+        accessTokenMapforFUP.put(OSPSignupConstant.CREATED_BY, user.getUserName());	           
+        accessTokenMapforFUP.put(OSPSignupConstant.UPDATE_BY, null);
+        int count = namedJdbcTemplate.update(insertAccessToken, accessTokenMapforFUP);
+        return count;
+     }
+        catch (RuntimeException e) {
+			throw new OspDaoException();
+		}
 
     }
+	
 }

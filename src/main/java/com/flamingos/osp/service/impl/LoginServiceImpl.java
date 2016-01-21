@@ -1,10 +1,17 @@
 package com.flamingos.osp.service.impl;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
+import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
@@ -12,26 +19,30 @@ import com.flamingos.osp.service.LoginService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
+@Configuration
+@PropertySource("classpath:osp.properties")
 public class LoginServiceImpl implements LoginService {
 
 	@Autowired
 	LoginDao loginDao;
-
-	// private static final Logger logger =
-	// Logger.getLogger(LoginServiceImpl.class);
+@Autowired
+	SignUpDao signUpDao;
+	@Autowired
+	EncoderDecoderUtil encDecUtil;
+	
+	@Value("${fup.expire.time}")
+	private String fupExpireTime;
+	 private static final Logger logger =
+	 Logger.getLogger(LoginServiceImpl.class);
 @Override
 	public UserDTO login(UserBean loginBean) throws OspServiceException {
-
-		// if(userDTO!=null &&
-		// !loginBean.getPassword().equals(encryptionUtil.decryptPIData(userDTO.getUserPass())))
-		String encryptedPassword = new EncoderDecoderUtil()
-				.getEncodedValue(loginBean.getPassword());
+		String encryptedPassword =encDecUtil.getEncodedValue(loginBean.getPassword());
 		loginBean.setPassword(encryptedPassword);
 		try {
 			UserDTO userDTO = loginDao.getUser(loginBean);
 			if (userDTO != null) {
 				if (!userDTO.getUserPass().equals(encryptedPassword)) {
-					// logger.debug("login authentication ended");
+					 logger.debug("login authentication ended");
 					userDTO = null;
 				}
 			}
@@ -45,14 +56,15 @@ public class LoginServiceImpl implements LoginService {
 
 	public String checkForUserAndSendLink(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
-		// logger.debug("user checking for link");
+		 logger.debug("user checking for link");
 		try {
-			int check = loginDao.checkForUser(userBean);
+			UserDTO user = loginDao.checkForUser(userBean);
 			String userMessage;
-			if (check > 0) {
-			//	String Uuid = userBean.getUUID();
-			//	userBean.setUUID(Uuid);
-				loginDao.addFUPAccessToken(userBean);
+			if (user != null) {
+				String Uuid = userBean.getUserName();
+			userBean.setFupUUID(Uuid);
+			userBean.setUser_id(user.getUserId());
+				loginDao.addFUPAccessToken(userBean,Integer.parseInt(fupExpireTime));
 
 				userMessage = sendLinkForForgotPassword(userBean, request);
 			} else {
@@ -79,5 +91,9 @@ public class LoginServiceImpl implements LoginService {
 				+ encryptedUserName + "&UUID=" + userBean.getFupUUID();
 		return linkTobeSend;
 	}
+
+	
+
+	
 
 }

@@ -15,34 +15,50 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.SignUpService;
 
-
 @RestController
-@RequestMapping("/register")
 public class SignUpController {
-    @Autowired
+	@Autowired
 	private SignUpService signUpService;
-
-
-
-	@RequestMapping(produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value ="/register",produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<UserDTO> signupUser(@RequestBody UserBean userBean,
 			HttpServletRequest request) throws Exception {
-		UserDTO userDto = signUpService.createUser(userBean, request);
+		UserDTO userDto = new UserDTO();
+		try {
+			userDto = signUpService.createUser(userBean, request);
+			if (null == userDto)
+				return new ResponseEntity<UserDTO>(userDto,HttpStatus.NOT_FOUND);
 
-		if (null == userDto)
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.CREATED);
+
+		} catch (OspServiceException exp) {
+
 			return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
+		}
 
-		return new ResponseEntity<UserDTO>(userDto, HttpStatus.CREATED);
 	}
-    
+	
+	@RequestMapping(value ="/checkUser",produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> checkUserName(@RequestBody UserBean userBean) throws Exception {
+		try {
+			String returnMessage = signUpService.checkUserName(userBean);
+				return new ResponseEntity<String>(returnMessage,HttpStatus.NOT_FOUND);
 
-public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) 
-{
-	 return new ResponseEntity<String>("success", HttpStatus.CREATED);
-	 }
-public ResponseEntity<String> deactivateUser(@PathVariable("userId") String userId)
-{
-	 return new ResponseEntity<String>("success", HttpStatus.CREATED);}
+		} catch (OspServiceException exp) {
+			return new ResponseEntity<String>(exp.getMessage(), HttpStatus.FOUND);
+		}
+
+	}
+
+	public ResponseEntity<String> deleteUser(
+			@PathVariable("userId") String userId) {
+		return new ResponseEntity<String>("success", HttpStatus.CREATED);
+	}
+
+	public ResponseEntity<String> deactivateUser(
+			@PathVariable("userId") String userId) {
+		return new ResponseEntity<String>("success", HttpStatus.CREATED);
+	}
 }

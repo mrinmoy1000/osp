@@ -35,6 +35,26 @@ public class UserDTO {
 	private String activationStatus;
 	
 	private Timestamp passwordExpiryTS;
+	
+	private String returnStatus;
+	
+	private String returnMessage;
+
+	public String getReturnStatus() {
+		return returnStatus;
+	}
+
+	public void setReturnStatus(String returnStatus) {
+		this.returnStatus = returnStatus;
+	}
+
+	public String getReturnMessage() {
+		return returnMessage;
+	}
+
+	public void setReturnMessage(String returnMessage) {
+		this.returnMessage = returnMessage;
+	}
 
 	public String getUserName() {
 		return userName;

@@ -17,18 +17,18 @@ import com.flamingos.osp.service.TicketService;
 @RestController
 @RequestMapping("/ticket")
 public class TicketController {
-	@Autowired
-	TicketService ticketService;
-	
-	@RequestMapping(value="/generate", method=RequestMethod.GET)
-	public ResponseEntity<String> generateTicket(){
-		return new ResponseEntity<String>("Generate", HttpStatus.OK);
-	}
-	
-	@RequestMapping(value="/showproflist/{proftype}", method=RequestMethod.GET)
-	public @ResponseBody List<Professional> showListProfessionals(@PathVariable String proftype){
-		List<Professional> pList=ticketService.getProfessinalList(proftype);
-		return pList;
-	}
+//	@Autowired
+//	TicketService ticketService;
+//	
+//	@RequestMapping(value="/generate", method=RequestMethod.GET)
+//	public ResponseEntity<String> generateTicket(){
+//		return new ResponseEntity<String>("Generate", HttpStatus.OK);
+//	}
+//	
+//	@RequestMapping(value="/showproflist/{proftype}", method=RequestMethod.GET)
+//	public @ResponseBody List<Professional> showListProfessionals(@PathVariable String proftype){
+//		List<Professional> pList=ticketService.getProfessinalList(proftype);
+//		return pList;
+//	}
 
 }
