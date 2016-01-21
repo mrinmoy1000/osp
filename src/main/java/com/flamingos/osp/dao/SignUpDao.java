@@ -18,7 +18,7 @@ public interface SignUpDao {
 
 	public String updateUser(UserBean user) throws OspDaoException;
 	
-	public int checkForProfessional(UserBean user) throws OspDaoException;
+	public UserDTO checkForProfessional(UserBean user) throws OspDaoException;
 	
-	public int mapUserAndProfessional(int userId,int professionalId) throws OspDaoException;
+	public void mapUserAndProfessional(long userId,long professionalId) throws OspDaoException;
 }

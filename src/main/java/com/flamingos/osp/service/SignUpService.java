@@ -2,6 +2,7 @@ package com.flamingos.osp.service;
 
 
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspServiceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface SignUpService {
 
-	public String createUser(UserBean userBean,HttpServletRequest request)
+	public UserDTO createUser(UserBean userBean,HttpServletRequest request)
 			throws OspServiceException;
 
 	public void deleteUser(UserBean ub);

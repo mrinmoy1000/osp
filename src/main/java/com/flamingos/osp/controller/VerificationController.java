@@ -1,6 +1,5 @@
 package com.flamingos.osp.controller;
 
-import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.exception.OspServiceException;
 
@@ -14,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.service.ProfessionalService;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@RestController
 public class VerificationController {
+	@Autowired
 	ProfessionalService profService;
 	private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 	@RequestMapping(value = "/verifyEmail", method = RequestMethod.POST)
@@ -26,9 +24,7 @@ public class VerificationController {
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
-			UserBean user = new UserBean();
-			user.setEmailUUID(UUID);
-			String successMessage = profService.verifyEmailDataAndUpdateStatus(	username, user, "email");
+			String successMessage = profService.verifyEmailDataAndUpdateStatus(	username, UUID, "email");
 			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
 		} catch (OspServiceException exp) {
 			logger.debug("Error in  verify login"+this.getClass(),exp);
@@ -40,11 +36,9 @@ public class VerificationController {
 
 	@RequestMapping(value = "/verifySms", method = RequestMethod.POST)
 	public ResponseEntity<String> verifySMS(@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "UUID", required = false) String UUID) {
+		@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
-			UserBean user = new UserBean();
-			user.setSmsUUID(UUID);
-			String successMessage = profService.verifyEmailDataAndUpdateStatus(username, user, "sms");
+			String successMessage = profService.verifyEmailDataAndUpdateStatus(username, UUID, "sms");
 			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
 		} catch (OspServiceException e) {
 			logger.debug("Error in  verify sms"+this.getClass(),e);
@@ -58,11 +52,9 @@ public class VerificationController {
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
-			UserBean user = new UserBean();
-			user.setFupUUID(UUID);
-			String successMessage = profService.verifyEmailDataAndUpdateStatus(username, user, "FUP");
-			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
-		} catch (Exception e) {
+			String successMessage = profService.verifyEmailDataAndUpdateStatus(username, UUID, "FUP");
+		return new ResponseEntity<String>(successMessage, HttpStatus.OK);
+	} catch (Exception e) {
 			logger.debug("Error in  verify password"+this.getClass(),e);
 			return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.OK);
 		}
@@ -70,7 +62,7 @@ public class VerificationController {
 	}
 	
 	@RequestMapping(value = "/generateNewToken", method = RequestMethod.POST)
-	public ResponseEntity<String> generateNewToken(
+		public ResponseEntity<String> generateNewToken(
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
@@ -78,7 +70,7 @@ public class VerificationController {
 			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.debug("Error in  verify token"+this.getClass(),e);
-			return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}

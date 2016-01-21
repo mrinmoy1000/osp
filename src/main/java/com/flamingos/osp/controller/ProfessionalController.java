@@ -23,17 +23,18 @@ public class ProfessionalController {
 
     private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 
-    ProfessionalService profService;
-
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<String> createUser(@RequestBody UserBean userBean, HttpServletRequest request) {
-        logger.debug("Entring professional controller");
-        String successMessage =null;
-      
-     
-        logger.info("Exiting professional controller");
-        return new ResponseEntity<String>(successMessage, HttpStatus.OK);
-
-    }
+   // @Autowired
+    //ProfessionalService profService;
+//
+//    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+//    public ResponseEntity<String> createUser(@RequestBody UserBean userBean, HttpServletRequest request) {
+//        logger.debug("Entring professional controller");
+//        String successMessage =null;
+//      
+//     
+//        logger.info("Exiting professional controller");
+//        return new ResponseEntity<String>(successMessage, HttpStatus.OK);
+//
+//    }
 
 }

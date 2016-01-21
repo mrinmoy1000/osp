@@ -1,7 +1,7 @@
 package com.flamingos.osp.service.impl;
 
 import java.util.UUID;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,12 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.controller.ProfessionalController;
-import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
@@ -23,40 +19,52 @@ import com.flamingos.osp.service.SignUpService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
-//@Configuration
-//@PropertySource("classpath:osp.properties")
+@Configuration
+@PropertySource("classpath:osp.properties")
 public class SignUpServiceImpl implements SignUpService {
 
-	//@Value("${osp.properties.emailExpireTimestamp}")
-	private int emailExpireTime;
+	@Value("${email.expire.time}")
+	private String emailExpireTime;
 	
-	//@Value("${osp.properties.smsExpireTimestamp}")
-	private int smsExpireTime;
+	@Value("${sms.expire.time}")
+	private String smsExpireTime;
 	
-	//@Value("${osp.properties.fupExpireTimestamp}")
-	private int fupExpireTime;
+	@Value("${fup.expire.time}")
+	private String fupExpireTime;
 	
 	@Autowired
 	SignUpDao signUpDao;
+	
+	@Autowired
+	EncoderDecoderUtil encDecUtil;
 
-	//private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
+	private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
 	@Override
-	public String createUser(UserBean userBean, HttpServletRequest request)throws OspServiceException {
+	public UserDTO createUser(UserBean userBean, HttpServletRequest request)
+			throws OspServiceException {
 		try {
 			checkUniqueness(userBean);
-			String returnMessage = createNewUser(userBean, "1", request,emailExpireTime,smsExpireTime);
-			if(userBean.getProf_id()!=null)
-			{
-				int profId = signUpDao.checkForProfessional(userBean);
+			String returnMessage = createNewUser(userBean, "1", request,
+					Integer.parseInt(emailExpireTime),
+					Integer.parseInt(smsExpireTime));
+			if (returnMessage.equals("success")) {
+				UserDTO userDto = signUpDao.findByUserName(userBean.getUserName());
+				if (userBean.getProf_id() != null) {
+					 UserDTO prof = signUpDao.checkForProfessional(userBean);
+					signUpDao.mapUserAndProfessional(userDto.getUserId(),prof.getUserId());
+				}
+				String userMessageForEmail = sendVerificationLinkinEmail(
+						userBean, request);
+				String userMessageForSMS = sendVerificationLinkinSms(userBean,
+						request);
+				logger.info("verfication email  link send"+userMessageForEmail );
+				logger.info("verfication sms link send"+userMessageForSMS );
+				return userDto;
+			} else {
 
-					int updatedProf = signUpDao.mapUserAndProfessional(profId, profId);				
+				throw new OspServiceException();
 			}
-			
-			
-			String userMessageForEmail = sendVerificationLinkinEmail(userBean, request);
-			String userMessageForSMS = sendVerificationLinkinSms(userBean, request);
-			return returnMessage;
-		} catch (Exception e) {
+		} catch (OspDaoException e) {
 			// TODO: handle exception
 			throw new OspServiceException();
 		}
@@ -102,8 +110,7 @@ public class SignUpServiceImpl implements SignUpService {
 			
 			userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
 			userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
-			String encryptedPassword = new EncoderDecoderUtil()
-					.getEncodedValue(userBean.getPassword());
+			String encryptedPassword = encDecUtil.getEncodedValue(userBean.getPassword());
 			userBean.setUserName(userBean.getUserName());
 			userBean.setPassword(encryptedPassword);
 			userBean.setActiveStatus("PEND");
@@ -126,7 +133,7 @@ public class SignUpServiceImpl implements SignUpService {
 	public String sendVerificationLinkinEmail(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = new EncoderDecoderUtil()
+		String encryptedUserName = encDecUtil
 				.getEncodedValue(userBean.getUserName());
 		String Uuid = userBean.getEmailUUID();
 		String linkTobeSend = request.getScheme() + "://"
@@ -141,7 +148,7 @@ public class SignUpServiceImpl implements SignUpService {
 	public String sendVerificationLinkinSms(UserBean userBean,
 			HttpServletRequest request) throws OspServiceException {
 		// logger.debug("sending mail... ");
-		String encryptedUserName = new EncoderDecoderUtil()
+		String encryptedUserName = encDecUtil
 				.getEncodedValue(userBean.getUserName());
 		String Uuid = userBean.getSmsUUID();
 		String linkTobeSend = request.getScheme() + "://"

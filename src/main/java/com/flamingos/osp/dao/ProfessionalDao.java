@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfessionalDao {
@@ -17,13 +18,13 @@ public interface ProfessionalDao {
 	public void FUPUpdateStatus(UserBean user, AccessToken access)
 			throws OspDaoException;
 
-	public int getUserLinkValidCheckForEmail(UserBean user, AccessToken access)
+	public UserDTO getUserLinkValidCheckForEmail(UserBean user, AccessToken access)
 			throws OspDaoException;
 	
-	public int getUserLinkValidCheckForSms(UserBean user, AccessToken access)
+	public UserDTO getUserLinkValidCheckForSms(UserBean user, AccessToken access)
 			throws OspDaoException;
 	
-	public int getUserLinkValidCheckForFUP(UserBean user, AccessToken access)
+	public UserDTO getUserLinkValidCheckForFUP(UserBean user, AccessToken access)
 			throws OspDaoException;
 	
 	public List<UserBean> getTokenCheck(UserBean user, AccessToken access)

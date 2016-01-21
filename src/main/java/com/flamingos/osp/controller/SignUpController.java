@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.service.SignUpService;
 
 
@@ -25,15 +26,16 @@ public class SignUpController {
 
 
 
-@RequestMapping(produces="application/json",method = RequestMethod.POST,consumes="application/json")
-   public ResponseEntity<String> signupUser(@RequestBody UserBean   userBean,HttpServletRequest request) throws Exception {
-      String successMessage =  signUpService.createUser(userBean, request);
-	
-     if(!"success".equalsIgnoreCase(successMessage))
-			return new ResponseEntity<String>(successMessage, HttpStatus.NOT_FOUND);
-     
-       return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
-   }
+	@RequestMapping(produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<UserDTO> signupUser(@RequestBody UserBean userBean,
+			HttpServletRequest request) throws Exception {
+		UserDTO userDto = signUpService.createUser(userBean, request);
+
+		if (null == userDto)
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<UserDTO>(userDto, HttpStatus.CREATED);
+	}
     
 
 public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) 

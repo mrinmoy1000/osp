@@ -19,6 +19,9 @@ public class UserBean {
 	private String record_type;
 	private String tokenType;
 	private Long prof_id;
+	private String firstName;
+	private String middleName;
+	private String lastName;
 	
 	public Long getProf_id() {
 		return prof_id;
@@ -100,10 +103,6 @@ public class UserBean {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
-	private String firstName;
-	private String middleName;
-	private String lastName;
 
 	/**
 	 * @return the id
