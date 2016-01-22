@@ -117,9 +117,9 @@ public class SignUpServiceImpl implements SignUpService {
 					.getPassword());
 			userBean.setUserName(userBean.getUserName());
 			userBean.setPassword(encryptedPassword);
-			userBean.setActiveStatus("PEND");
-			userBean.setEmailVerified("N");
-			userBean.setSmsVerfied("N");
+			userBean.setActiveStatus(0);
+			userBean.setEmailVerified(0);
+			userBean.setSmsVerfied(0);
 			userBean.setUserTypeCD(1);
 			userBean.setFirstName(userBean.getFirstName());
 			userBean.setMiddleName(userBean.getMiddleName());

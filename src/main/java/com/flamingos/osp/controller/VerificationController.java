@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,17 +32,19 @@ public class VerificationController {
 			@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
 			UserDTO userDto = profService.verifyEmailDataAndUpdateStatus(	username, UUID, "email");
-			ModelAndView mav = new ModelAndView("successPage");
-			mav.addObject(userDto);
+			userDto.setReturnMessage("You have been Verified");
+			ModelAndView mav = new ModelAndView("linkSuccessPage");
+			mav.addObject("user",userDto);
 			return mav;
 			
 		} catch (OspServiceException exp) {
 			logger.error("Error in  verify login"+this.getClass(),exp);
 			UserDTO userDto = new UserDTO();
 			userDto.setReturnStatus("fail");
+			userDto.setReturnStatus("fail to verfy link");
 			userDto.setReturnMessage(exp.getMessage());
 			ModelAndView mav = new ModelAndView("errorLinkPage");
-			mav.addObject(userDto);
+			mav.addObject("user",userDto);
 			return mav;
 
 		}
@@ -53,8 +56,9 @@ public class VerificationController {
 		@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
 			UserDTO userDto = profService.verifyEmailDataAndUpdateStatus(username, UUID, "sms");
-			ModelAndView mav = new ModelAndView("successPage");
-			mav.addObject(userDto);
+			userDto.setReturnMessage("You have been Verified");
+			ModelAndView mav = new ModelAndView("linkSuccessPage");
+			mav.addObject("user",userDto);
 			return mav;
 		} catch (OspServiceException exp) {
 			logger.error("Error in  verify sms"+this.getClass(),exp);
@@ -75,7 +79,7 @@ public class VerificationController {
 		try {
 			UserDTO userDto = profService.verifyForgotPassword(username, UUID, "FUP");
 			ModelAndView mav = new ModelAndView("ResetPassword");
-			mav.addObject(userDto);
+			mav.addObject("user",userDto);
 			return mav;
 	} catch (Exception exp) {
 			logger.error("Error in  verify password"+this.getClass(),exp);
@@ -105,12 +109,13 @@ public class VerificationController {
 
 	
     @RequestMapping(value = "/changePassword",method = RequestMethod.POST)
-    public ModelAndView changePassword(@RequestBody UserBean userBean) {
+    public ModelAndView changePassword(@ModelAttribute UserBean userBean) {
              logger.debug("Entrying Forgot Password");
          try {
         	 UserDTO userDto = profService.changePassword(userBean);
+        	 userDto.setReturnMessage("Password changed successfully");
         	 ModelAndView mav = new ModelAndView("passwordSuccess");
- 			mav.addObject(userDto);
+ 			 mav.addObject("user",userDto);
  			return mav;
 		} catch (OspServiceException e) {
 			 logger.error(e);

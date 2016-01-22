@@ -8,12 +8,12 @@ public class UserBean {
 	private String password;
 	private long contactNumber;
 	private String email;
-	private String activeStatus;
+	private int activeStatus;
 	private String emailUUID;
 	private String smsUUID;
 	private String fupUUID;
-	private String smsVerfied;
-	private String emailVerified;
+	private int smsVerfied;
+	private int emailVerified;
 	private int userTypeCD;
 	private int role_id;
 	private String record_type;
@@ -190,7 +190,7 @@ public class UserBean {
 	/**
 	 * @return the activeStatus
 	 */
-	public String getActiveStatus() {
+	public int getActiveStatus() {
 		return activeStatus;
 	}
 
@@ -198,14 +198,14 @@ public class UserBean {
 	 * @param activeStatus
 	 *            the activeStatus to set
 	 */
-	public void setActiveStatus(String activeStatus) {
+	public void setActiveStatus(int activeStatus) {
 		this.activeStatus = activeStatus;
 	}
 
 	/**
 	 * @return the smsVerfied
 	 */
-	public String getSmsVerfied() {
+	public int getSmsVerfied() {
 		return smsVerfied;
 	}
 
@@ -213,14 +213,14 @@ public class UserBean {
 	 * @param smsVerfied
 	 *            the smsVerfied to set
 	 */
-	public void setSmsVerfied(String smsVerfied) {
+	public void setSmsVerfied(int smsVerfied) {
 		this.smsVerfied = smsVerfied;
 	}
 
 	/**
 	 * @return the emailVerified
 	 */
-	public String getEmailVerified() {
+	public int getEmailVerified() {
 		return emailVerified;
 	}
 
@@ -228,7 +228,7 @@ public class UserBean {
 	 * @param emailVerified
 	 *            the emailVerified to set
 	 */
-	public void setEmailVerified(String emailVerified) {
+	public void setEmailVerified(int emailVerified) {
 		this.emailVerified = emailVerified;
 	}
 

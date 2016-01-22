@@ -74,7 +74,7 @@ public class LoginDaoImpl implements LoginDao {
 
     @Override
     public UserDTO checkForUser(UserBean usrBean)throws OspDaoException {
-    	String userNameSql = "SELECT * FROM osp_user_password WHERE  "+OSPLoginConstant.USER_NAME+"=:USERNAME and"+ OSPLoginConstant.EMAIL+"=:EMAIl";
+    	String userNameSql = "SELECT * FROM OSP_USER_CREDENTIAL WHERE  "+OSPSignupConstant.USER_NAME+"=:USERNAME and " + OSPSignupConstant.EMAIL+"=:EMAIl";
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("USERNAME", usrBean.getUserName());
 		paramMap.put("EMAIl", usrBean.getEmail());
@@ -97,7 +97,7 @@ public class LoginDaoImpl implements LoginDao {
 						}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
+		} catch (RuntimeException e) {
 			return null;
 		}
     }
@@ -106,12 +106,11 @@ public class LoginDaoImpl implements LoginDao {
     public int addFUPAccessToken(UserBean user,int fupExpireTime)throws OspDaoException {
 
      try
-     {String insertAccessToken = "INSERT INTO access_token VALUES "
-     		+ "INSERT INTO osp_access_token VALUES "
+     {String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
     		+ "(:"+OSPSignupConstant.USER_ID+","
     		+ ":"+OSPSignupConstant.TYPE+","
     		+ ":"+OSPSignupConstant.UUID+","
-    		+ ":"+OSPSignupConstant.EXPIRY_DATE+","
+    		+ ":"+OSPSignupConstant.TOKEN_EXPIRY_DT+","
     		+ ":"+OSPSignupConstant.IS_USED+","
     		+ ":"+OSPSignupConstant.CREATED_TS+","
     		+ ":"+OSPSignupConstant.UPDATED_TS+","
@@ -120,8 +119,8 @@ public class LoginDaoImpl implements LoginDao {
         Map<String, Object> accessTokenMapforFUP = new HashMap<String, Object>();
         accessTokenMapforFUP.put(OSPSignupConstant.USER_ID,user.getUser_id());
         accessTokenMapforFUP.put(OSPSignupConstant.TYPE, 0);
-        accessTokenMapforFUP.put(OSPSignupConstant.UUID, user.getSmsUUID());
-        accessTokenMapforFUP.put(OSPSignupConstant.EXPIRY_DATE, new Timestamp(new Date().getTime()+(1 * fupExpireTime  * 60 * 60 * 1000)));
+        accessTokenMapforFUP.put(OSPSignupConstant.UUID, user.getFupUUID());
+        accessTokenMapforFUP.put(OSPSignupConstant.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()+(1 * fupExpireTime  * 60 * 60 * 1000)));
         accessTokenMapforFUP.put(OSPSignupConstant.IS_USED, 0);
         accessTokenMapforFUP.put(OSPSignupConstant.CREATED_TS,new Timestamp(new Date().getTime()));
         accessTokenMapforFUP.put(OSPSignupConstant.UPDATE_TS, null);

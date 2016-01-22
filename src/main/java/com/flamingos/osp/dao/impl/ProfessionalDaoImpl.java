@@ -39,14 +39,14 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public void emailUpdateStatus(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String updateEmailStatusSql = " UPDATE osp_access_token acc , osp_user_password up "
+			String updateEmailStatusSql = " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up "
 			+ "  SET up."+OSPSignupConstant.ACTIVATION_STATUS +"= ? ,"
 				   +"up."+OSPSignupConstant.EMAIL_VERIFIED +" = ?  "
 				   		+ "where up."+OSPSignupConstant.USER_NAME+" = ?"+
 				   "and acc."+OSPSignupConstant.UUID+" = ?"+
-				   		"and  up."+OSPSignupConstant.RECORD_ID +" = acc."+OSPSignupConstant.USER_ID;
+				   		"and  up."+OSPSignupConstant.RECORD_ID +" = acc."+OSPSignupConstant.RECORD_ID;
 			int count = jdbcTemplate.update(updateEmailStatusSql, new Object[] {
-					access.getActiveIndicator(), user.getSmsVerfied(), user.getUserName(), user.getEmailUUID() });
+					user.getActiveStatus(), user.getEmailVerified(), user.getUserName(), user.getEmailUUID() });
 			if (count != 1) {
 				throw new OspDaoException();
 			}
@@ -59,16 +59,16 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public void smsUpdateStatus(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String updateSmsStatusSql = " UPDATE osp_access_token acc , osp_user_password up "
+			String updateSmsStatusSql = " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up "
 					+ "  SET up."+OSPSignupConstant.ACTIVATION_STATUS +"= ? ,"
 					   +"up."+OSPSignupConstant.SMS_VERIFIED +" = ?  "
 					   		+ "where up."+OSPSignupConstant.USER_NAME+" = ?"+
 					   "and acc."+OSPSignupConstant.UUID+" = ?"+
-					   		"and  up."+OSPSignupConstant.RECORD_ID +" = acc."+OSPSignupConstant.USER_ID;
+					   		" and  up."+OSPSignupConstant.RECORD_ID +" = acc."+OSPSignupConstant.RECORD_ID;
 			int count = jdbcTemplate.update(
 					updateSmsStatusSql,
-					new Object[] { access.getActiveIndicator(),
-							user.getEmailVerified(), user.getUserName(),
+					new Object[] { user.getActiveStatus(),
+							user.getSmsVerfied(), user.getUserName(),
 							user.getSmsUUID() });
 			if (count != 1) {
 				throw new OspDaoException();
@@ -104,14 +104,14 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 			throws OspDaoException {
 
 		try {
-			String emailSql = "select * from osp_user_password up , osp_access_token "
+			String emailSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
 					+ " acc  where"
 					+ " up."+OSPSignupConstant.USER_NAME+"= :user_name and "
 					+ " acc."+OSPSignupConstant.UUID+"=:UUID and"
 					+ " up."+OSPSignupConstant.ACTIVATION_STATUS+"=:activation_status and"
 					+ " acc."+OSPSignupConstant.TYPE+"=:TYPE"
-					+ " and  acc."+OSPSignupConstant.EXPIRY_DT+ "> :EXPIRY_DT"
-					+ " and  acc."+OSPSignupConstant.USER_ID+"= up."+OSPSignupConstant.RECORD_ID; 
+					+ " and  acc."+OSPSignupConstant.TOKEN_EXPIRY_DT+ "> :EXPIRY_DT"
+					+ " and  acc."+OSPSignupConstant.RECORD_ID+"= up."+OSPSignupConstant.RECORD_ID; 
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("user_name", user.getUserName());
 			paramMap.put("UUID", user.getEmailUUID());
@@ -136,7 +136,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 				}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
+		} catch (RuntimeException e) {
 			return null;
 		}
 	}
@@ -145,13 +145,13 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public UserDTO getUserLinkValidCheckForFUP(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String emailSql = "select * from osp_user_password up , osp_access_token "
+			String emailSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
 					+ " acc  where"
 					+ " up."+OSPSignupConstant.USER_NAME+"= :user_name and "
 					+ " acc."+OSPSignupConstant.UUID+"=:UUID and"
 					+ " up."+OSPSignupConstant.ACTIVATION_STATUS+"=:activation_status and"
 					+ " acc."+OSPSignupConstant.TYPE+"=:TYPE"
-					+ " and  acc."+OSPSignupConstant.EXPIRY_DT+ "> :EXPIRY_DT"
+					+ " and  acc."+OSPSignupConstant.TOKEN_EXPIRY_DT+ "> :EXPIRY_DT"
 					+ " and  acc."+OSPSignupConstant.USER_ID+"= up."+OSPSignupConstant.RECORD_ID;
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("user_name", user.getUserName());
@@ -186,14 +186,14 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public UserDTO getUserLinkValidCheckForSms(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String emailSql = "select count(1) from osp_user_password up , osp_access_token "
+			String emailSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
 					+ " acc  where"
 					+ " up."+OSPSignupConstant.USER_NAME+"= :user_name and "
 					+ " acc."+OSPSignupConstant.UUID+"=:UUID and"
 					+ " up."+OSPSignupConstant.ACTIVATION_STATUS+"=:activation_status and"
 					+ " acc."+OSPSignupConstant.TYPE+"=:TYPE"
-					+ " and  acc."+OSPSignupConstant.EXPIRY_DT+ "> :EXPIRY_DT"
-					+ " and  acc."+OSPSignupConstant.USER_ID+"= up."+OSPSignupConstant.RECORD_ID;
+					+ " and  acc."+OSPSignupConstant.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
+					+ " and  acc."+OSPSignupConstant.RECORD_ID+"= up."+OSPSignupConstant.RECORD_ID;
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("user_name", user.getUserName());
 			paramMap.put("UUID", user.getEmailUUID());
@@ -218,7 +218,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 				}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
+		} catch (RuntimeException e) {
 			return null;
 		}
 	}
@@ -230,11 +230,11 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 		List<UserBean> userTokenList = null;
 		try {
 
-			String getUserSql = "select * from osp_user_password up , osp_access_token acc , osp_parameter param"
+			String getUserSql = "select * from OSP_USER_CREDENTIAL up , osp_access_token acc , osp_parameter param"
 					+ " where acc."+OSPSignupConstant.USER_ID+" = up."+OSPSignupConstant.RECORD_ID+
 					 " and param."+OSPSignupConstant.PARAM_ID+" = acc."+OSPSignupConstant.TYPE 
 					 + "and  up."+OSPSignupConstant.USER_NAME+"= ? and "+
-					" acc."+OSPSignupConstant.EXPIRY_DT+" > ?";
+					" acc."+OSPSignupConstant.CARD_EXPIRY_DATE+" > ?";
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("username", user.getUserName());
 			paramMap.put("EXPIRY_DT", new Date().getTime());
@@ -243,8 +243,8 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 						throws SQLException {
 					UserBean user = new UserBean();
 					user.setTokenType(rs.getString(OSPSignupConstant.PARAM_VALUE));
-					user.setEmailVerified(rs.getString(OSPSignupConstant.EMAIL_VERIFIED));
-					user.setSmsVerfied(rs.getString(OSPSignupConstant.SMS_VERIFIED));
+					user.setEmailVerified(rs.getInt(OSPSignupConstant.EMAIL_VERIFIED));
+					user.setSmsVerfied(rs.getInt(OSPSignupConstant.SMS_VERIFIED));
 					return user;
 				}
 			});
@@ -259,13 +259,13 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	@Override
 	public int generateNewEmailToken(UserBean user, int emailExpireTime)
 			throws OspDaoException {
-		 String getUserSql = "select record_id from osp_user_password  where user_name = ?";
+		 String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where user_name = ?";
          int getInsertedUser = jdbcTemplate.queryForObject(getUserSql, new Object[]{user.getUserName()}, Integer.class);
 		 String insertAccessToken = "INSERT INTO osp_access_token VALUES "
 		 		+ "(:"+OSPSignupConstant.USER_ID+","
 		 		+ ":"+OSPSignupConstant.TYPE+","
 		 		+ ":"+OSPSignupConstant.UUID+","
-		 		+ ":"+OSPSignupConstant.EXPIRY_DATE+","
+		 		+ ":"+OSPSignupConstant.TOKEN_EXPIRY_DT+","
 		 		+ ":"+OSPSignupConstant.IS_USED+","
 		 		+ ":"+OSPSignupConstant.CREATED_BY+","
 		 		+ ":"+OSPSignupConstant.CREATED_TS+","
@@ -275,7 +275,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
          accessTokenMapforEmail.put(OSPSignupConstant.USER_ID, getInsertedUser);
          accessTokenMapforEmail.put(OSPSignupConstant.TYPE,22);
          accessTokenMapforEmail.put(OSPSignupConstant.UUID, user.getEmailUUID());
-         accessTokenMapforEmail.put(OSPSignupConstant.EXPIRY_DATE, new Timestamp(new Date().getTime() + (1 * (emailExpireTime) * 60 * 60 * 1000)));
+         accessTokenMapforEmail.put(OSPSignupConstant.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime() + (1 * (emailExpireTime) * 60 * 60 * 1000)));
          accessTokenMapforEmail.put(OSPSignupConstant.IS_USED, 0);
          accessTokenMapforEmail.put(OSPSignupConstant.CREATED_BY, user.getUserName());
          namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
@@ -299,7 +299,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 				+ OSPSignupConstant.UUID
 				+ ","
 				+ ":"
-				+ OSPSignupConstant.EXPIRY_DATE
+				+ OSPSignupConstant.TOKEN_EXPIRY_DT
 				+ ","
 				+ ":"
 				+ OSPSignupConstant.IS_USED
@@ -319,7 +319,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 		accessTokenMapforSms.put(OSPSignupConstant.USER_ID, getInsertedUser);
 		accessTokenMapforSms.put(OSPSignupConstant.TYPE, 21);
 		accessTokenMapforSms.put(OSPSignupConstant.UUID, user.getSmsUUID());
-		accessTokenMapforSms.put(OSPSignupConstant.EXPIRY_DATE, new Timestamp(
+		accessTokenMapforSms.put(OSPSignupConstant.TOKEN_EXPIRY_DT	, new Timestamp(
 				new Date().getTime() + (1 * smsExpireTime * 60 * 60 * 1000)));
 		accessTokenMapforSms.put(OSPSignupConstant.IS_USED, 0);
 		accessTokenMapforSms.put(OSPSignupConstant.CREATED_BY,
@@ -332,16 +332,16 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public UserDTO checkForForgotPassword(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String emailSql = "select * from osp_user_password up , osp_access_token "
+			String emailSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
 					+ " acc  where"
 					+ " up."+OSPSignupConstant.USER_NAME+"= :user_name and "
 					+ " acc."+OSPSignupConstant.UUID+"=:UUID and"
 					+ " acc."+OSPSignupConstant.TYPE+"=:TYPE"
-					+ " and  acc."+OSPSignupConstant.EXPIRY_DT+ "> :EXPIRY_DT"
-					+ " and  acc."+OSPSignupConstant.USER_ID+"= up."+OSPSignupConstant.RECORD_ID; 
+					+ " and  acc."+OSPSignupConstant.TOKEN_EXPIRY_DT+ "> :EXPIRY_DT"
+					+ " and  acc."+OSPSignupConstant.RECORD_ID+"= up."+OSPSignupConstant.RECORD_ID; 
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("user_name", user.getUserName());
-			paramMap.put("UUID", user.getEmailUUID());
+			paramMap.put("UUID", user.getFupUUID());
 			paramMap.put("TYPE", access.getType());
 			paramMap.put("EXPIRY_DT", access.getExpireTime());
 			
@@ -355,8 +355,8 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 				}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
-			return null;
+		} catch (RuntimeException e) {
+			throw new OspDaoException();
 		}
 		
 	}
@@ -364,11 +364,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	@Override
 	public void updatePassword(UserBean user) throws OspDaoException {
 		try {
-			String updatePassword = " UPDATE osp_access_token acc , osp_user_password up "
-			+ "  SET up."+OSPSignupConstant.PASSWORD +"= ? ,"
-				   		+ "where up."+OSPSignupConstant.USER_NAME+" = ?"+
-				   		"and  up."+OSPSignupConstant.RECORD_ID +" = ?";
-			int count = jdbcTemplate.update(updatePassword, new Object[] {user.getPassword(),user.getUserName(),user.getUser_id() });
+			String updatePassword = " UPDATE  OSP_USER_CREDENTIAL up "
+			+ "  SET up."+OSPSignupConstant.PASSWORD +"= ?  "
+				   		+ "where  up."+OSPSignupConstant.RECORD_ID +" = ?";
+			int count = jdbcTemplate.update(updatePassword, new Object[] {user.getPassword(),user.getUser_id() });
 			if (count != 1) {
 				throw new OspDaoException();
 			}

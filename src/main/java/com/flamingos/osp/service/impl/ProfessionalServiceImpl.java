@@ -54,24 +54,26 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			AccessToken access = new AccessToken();
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
 
-			access.setActiveIndicator(String.valueOf(0).charAt(0));
+			//access.setActiveIndicator(String.valueOf(0).charAt(0));
 			if (type.equals(OSPConstants.EMAIL_TYPE)) {
-				user.setEmailVerified(OSPConstants.LINK_VERFIED);
+				user.setEmailVerified(1);
 				user.setEmailUUID(UUID);
 				access.setType(0);
 				userDto= profDao.getUserLinkValidCheckForEmail(user,
 						access);
-				access.setActiveIndicator(String.valueOf(1).charAt(0));
+				user.setActiveStatus(1);
+				if(userDto!=null)
 				profDao.emailUpdateStatus(user, access);
 
 			} else {
 				if (type.equals(OSPConstants.SMS_TYPE)) {
-					user.setSmsVerfied(OSPConstants.LINK_VERFIED);
-					user.setEmailUUID(UUID);
+					user.setSmsVerfied(1);
+					user.setSmsUUID(UUID);
 					access.setType(1);
 					 userDto = profDao.getUserLinkValidCheckForSms(user,
 							access);
-					access.setActiveIndicator(String.valueOf(1).charAt(0));
+					 user.setActiveStatus(1);
+					 if(userDto!=null)
 					profDao.smsUpdateStatus(user, access);
 				}
 			}
@@ -101,8 +103,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 					if (userBean.getTokenType().equals(OSPConstants.EMAIL_TYPE)
 							&& user.getEmailUUID().equals(
 									userBean.getEmailUUID())) {
-						if (userBean.getEmailVerified().equals(
-								OSPConstants.LINK_NOT_VERFIED)) {
+						if (userBean.getEmailVerified()==0) {
 							user.setEmailVerified(userBean.getEmailVerified());
 							profDao.generateNewEmailToken(user,
 									Integer.parseInt(emailExpireTime));
@@ -110,8 +111,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 					}
 					if (userBean.getTokenType().equals(OSPConstants.SMS_TYPE)
 							&& user.getSmsUUID().equals(userBean.getSmsUUID())) {
-						if (userBean.getSmsVerfied().equals(
-								OSPConstants.LINK_NOT_VERFIED)) {
+						if (userBean.getSmsVerfied()==0) {
 							user.setSmsVerfied(userBean.getEmailVerified());
 							profDao.generateNewSmsToken(user,
 									Integer.parseInt(smsExpireTime));
@@ -158,6 +158,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	@Override
 	public UserDTO changePassword(UserBean userBean) throws OspServiceException {
 		try {
+			userBean.setPassword(encDecUtil.getEncodedValue(userBean.getPassword()));
 			profDao.updatePassword(userBean);
 			UserDTO user = new UserDTO();
 			user.setActivationStatus("succcess");
