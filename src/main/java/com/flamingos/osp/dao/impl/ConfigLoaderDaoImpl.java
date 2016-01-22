@@ -14,12 +14,15 @@ import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.mapper.ConfigParamRowMapper;
+import com.flamingos.osp.mapper.TemplateRowMapper;
 import com.flamingos.osp.util.AppConstants;
 
 public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao {
 
 	@Value("${query_osp_parameter_select}")
 	private String QUERY_OSP_PARAMETER_SELECT;
+	@Value("${query_osp_template_select}")
+	private String QUERY_OSP_TEMPLATE_SELECT;
 
 	@Override
 	public List<ConfigParamDto> loadConfigParam() throws OSPBusinessException,
@@ -37,26 +40,19 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
 	}
 
 	@Override
-	public List<TemplateBean> getAllTemplate() throws OspDaoException {
+	public List<TemplateBean> getAllTemplate() throws OSPBusinessException {
 		// TODO Auto-generated method stub
-		try {
-			String sql = "select temp_name,temp_file_name from osp_comm_template";
-			return getJdbcTemplate().query(sql, new RowMapper<TemplateBean>() {
-
-				@Override
-				public TemplateBean mapRow(ResultSet rs, int rowNum)
-						throws SQLException {
-					// TODO Auto-generated method stub
-					TemplateBean tb = new TemplateBean();
-					tb.setTempName(rs.getString("temp_name"));
-					tb.setTempFilePath(rs.getString("temp_name"));
-					return tb;
-				}
-
-			});
-		} catch (RuntimeException re) {
-			throw new OspDaoException(re);
-		}
+		List<TemplateBean> templateList=new ArrayList<TemplateBean>();
+		
+			String sql = QUERY_OSP_TEMPLATE_SELECT;
+			Object[] values = new Object[] { 1 };
+			templateList= getJdbcTemplate().query(sql,values, new TemplateRowMapper());
+			if(!(templateList.size()>0)){
+				throw new OSPBusinessException("",
+						AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
+						AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
+			}
+		return templateList;
 	}
 
 }

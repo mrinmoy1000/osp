@@ -10,5 +10,5 @@ public interface ConfigParamLoaderService {
 
 	public List<ConfigParamDto> loadConfigParam() throws Exception;
 
-	public List<TemplateBean> getAllTemplate() throws OspServiceException;
+	public List<TemplateBean> getAllTemplate() throws Exception;
 }

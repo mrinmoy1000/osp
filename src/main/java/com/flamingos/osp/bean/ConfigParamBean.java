@@ -24,7 +24,8 @@ public class ConfigParamBean {
 	private List<ConfigParamDto> listParam = new ArrayList<ConfigParamDto>();
 	private Map<String, ConfigParamDto> mapByParamCodeAndName = new HashMap<String, ConfigParamDto>();
 	private Map<String, List<ConfigParamDto>> mapByParamCode = new HashMap<String, List<ConfigParamDto>>();
-	private Map<String, String> templateMap = new HashMap<String, String>();
+	private Map<String, TemplateBean> templateMapByName = new HashMap<String, TemplateBean>();
+	private Map<String, TemplateBean> templateMapById = new HashMap<String, TemplateBean>();
 
 	public void loadConfigParam() {
 		Map<String, String> logMap = new HashMap<String, String>();
@@ -42,7 +43,8 @@ public class ConfigParamBean {
 			List<TemplateBean> templateBeanList = configParamLoaderService
 					.getAllTemplate();
 			for (TemplateBean tb : templateBeanList) {
-				templateMap.put(tb.getTempName(), tb.getTempFilePath());
+				templateMapByName.put(tb.getTempName(), tb);
+				templateMapById.put(Integer.toString(tb.getTemplateId()), tb);
 			}
 		} catch (OSPBusinessException ospEx) {
 			if ("".equalsIgnoreCase(ospEx.getModuleName())) {
@@ -55,6 +57,14 @@ public class ConfigParamBean {
 					AppConstants.CONFIG_LOADING_MODULE, gne);
 		}
 
+	}
+
+	public TemplateBean getTemplateByName(String name) {
+		return templateMapByName.get(name);
+	}
+
+	public TemplateBean getTemplateById(String id) {
+		return templateMapByName.get(id);
 	}
 
 }

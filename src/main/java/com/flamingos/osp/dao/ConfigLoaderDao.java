@@ -9,5 +9,5 @@ import com.flamingos.osp.exception.OspDaoException;
 public interface ConfigLoaderDao {
 	public List<ConfigParamDto> loadConfigParam()throws Exception;
 
-	public List<TemplateBean> getAllTemplate() throws OspDaoException;
+	public List<TemplateBean> getAllTemplate() throws Exception;
 }
