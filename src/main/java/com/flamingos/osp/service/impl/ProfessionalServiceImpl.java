@@ -1,6 +1,19 @@
 package com.flamingos.osp.service.impl;
 
+import java.sql.Timestamp;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+
 import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.dao.ProfessionalDao;
@@ -9,17 +22,6 @@ import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ProfessionalService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
-
-import java.sql.Timestamp;
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @Service
 @Configuration
@@ -167,5 +169,19 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			throw new OspServiceException(ex);
 
 		}
+	}
+	
+	@Override
+	public String addProfile(OspProfessionalBean professional,
+			HttpServletRequest request) throws OspServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public String approveProfile(OspProfessionalBean professional,
+			HttpServletRequest request) throws OspServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

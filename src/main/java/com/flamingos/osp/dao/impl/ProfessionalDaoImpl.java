@@ -1,23 +1,5 @@
 package com.flamingos.osp.dao.impl;
 
-import com.flamingos.osp.bean.AccessToken;
-import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.constant.OSPSignupConstant;
-import com.flamingos.osp.dao.ProfessionalDao;
-import com.flamingos.osp.dto.UserDTO;
-import com.flamingos.osp.exception.OspDaoException;
-import com.flamingos.osp.exception.OspServiceException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.config.JdbcNamespaceHandler;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,6 +7,23 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.OspProfessionalBean;
+import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.constant.OSPSignupConstant;
+import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OspDaoException;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
@@ -376,6 +375,19 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 			throw new OspDaoException();
 		}
 	}
-
+	@Override
+	public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+		try {
+			
+			return 0;
+		} catch (RuntimeException exp) {
+			throw new OspDaoException();
+		}
+	}
+	
+	@Override
+	public void approveProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+		
+	}
 
 }
