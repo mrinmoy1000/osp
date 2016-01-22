@@ -17,5 +17,6 @@ public interface ProfessionalService {
 	public UserDTO changePassword(UserBean loginBean) throws OspServiceException;
 	
 	public String addProfile(OspProfessionalBean professional, HttpServletRequest request)throws OspServiceException;
+
 	public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)throws OspServiceException;
 }

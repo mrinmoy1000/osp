@@ -445,7 +445,20 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	}
 	
 	@Override
-	public void approveProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+	public void approveProfile(OspProfessionalBean professionalBean, int param_id) throws OspDaoException {
+		try {
+			String updateStatus = " UPDATE  osp_professional opp"
+			+ "  SET opp."+OSPSignupConstant.USER_STATUS +"= ? ,"
+				   		+ "where up."+OSPSignupConstant.PROF_ID+" = ?";
+				   		
+			int count = jdbcTemplate.update(updateStatus, new Object[] {param_id, professionalBean.getProf_id() });
+			if (count != 1) {
+				throw new OspDaoException();
+			}
+		} catch (RuntimeException exp) {
+			throw new OspDaoException();
+		}
+		
 		
 	}
 

@@ -11,7 +11,8 @@ public class AppConstants {
 	
 	public static String DB_NO_RECORD_FOUND_ERRCODE="DB001";
 	public static String DB_NO_RECORD_FOUND_ERRMSG="No record found from Database";
-	
+	public static String PARAM_CODE_USER_STATUS = "USER_STATUS";
+	public static String PARAM_NAME_INITIAL = "INITIAL";
 	
 
 }

@@ -38,5 +38,6 @@ public interface OSPSignupConstant {
 	public static final String PARAM_ID = "PARAM_ID";
 	public static final String PARAM_VALUE = "PARAM_VALUE";
 	
+	public static final String USER_STATUS = "STATUS";
 	public static final String PROF_ID = "PROF_ID";
 }

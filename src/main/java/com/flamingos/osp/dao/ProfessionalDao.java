@@ -19,28 +19,32 @@ public interface ProfessionalDao {
 	public void FUPUpdateStatus(UserBean user, AccessToken access)
 			throws OspDaoException;
 
-	public UserDTO getUserLinkValidCheckForEmail(UserBean user, AccessToken access)
-			throws OspDaoException;
-	
+	public UserDTO getUserLinkValidCheckForEmail(UserBean user,
+			AccessToken access) throws OspDaoException;
+
 	public UserDTO getUserLinkValidCheckForSms(UserBean user, AccessToken access)
 			throws OspDaoException;
-	
+
 	public UserDTO getUserLinkValidCheckForFUP(UserBean user, AccessToken access)
 			throws OspDaoException;
-	
+
 	public List<UserBean> getTokenCheck(UserBean user, AccessToken access)
 			throws OspDaoException;
-	
-	public int generateNewEmailToken(UserBean user,int expireTime) throws OspDaoException;
-	
-	public int generateNewSmsToken(UserBean user,int expireTime) throws OspDaoException;
-	
+
+	public int generateNewEmailToken(UserBean user, int expireTime)
+			throws OspDaoException;
+
+	public int generateNewSmsToken(UserBean user, int expireTime)
+			throws OspDaoException;
+
 	public UserDTO checkForForgotPassword(UserBean user, AccessToken access)
 			throws OspDaoException;
-	
-	 public void updatePassword(UserBean user) throws OspDaoException;
 
-	 public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException;
+	public void updatePassword(UserBean user) throws OspDaoException;
 
-		public void approveProfile(OspProfessionalBean professionalBean) throws OspDaoException;
+	public int addProfile(OspProfessionalBean professionalBean)
+			throws OspDaoException;
+
+	public void approveProfile(OspProfessionalBean professionalBean,
+			int param_id) throws OspDaoException;
 }

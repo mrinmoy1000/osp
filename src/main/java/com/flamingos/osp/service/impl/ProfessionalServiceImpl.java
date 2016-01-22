@@ -13,14 +13,17 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ProfessionalService;
+import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
@@ -42,6 +45,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
 	@Autowired
 	EncoderDecoderUtil encDecUtil;
+	
+	@Autowired
+	private ConfigParamBean configParamBean;
+
+	ConfigParamDto userStatusBean = null;
 
 	@Override
 	public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID,
@@ -183,6 +191,17 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	public String approveProfile(OspProfessionalBean professional,
 			HttpServletRequest request) throws OspServiceException {
 		// TODO Auto-generated method stub
+		userStatusBean = configParamBean.getParameterByCodeName(
+				AppConstants.PARAM_CODE_USER_STATUS,
+				AppConstants.PARAM_NAME_INITIAL);
+		try {
+			profDao.approveProfile(professional,
+					userStatusBean.getParameter_id());
+		} catch (OspDaoException ex) {
+			throw new OspServiceException(ex);
+
+		}
+
 		return null;
 	}
 }

@@ -67,5 +67,14 @@ public class ConfigParamBean {
 	public TemplateBean getTemplateById(String id) {
 		return templateMapByName.get(id);
 	}
+	
+	public ConfigParamDto getParameterByCodeName(String paramCode, String paramName) {
+	    String key = paramCode + "__" + paramName;
+	    return getMapByParamCodeAndName().get(key);
+	  }
+	
+	public Map<String, ConfigParamDto> getMapByParamCodeAndName() {
+	    return mapByParamCodeAndName;
+	  }
 
 }
