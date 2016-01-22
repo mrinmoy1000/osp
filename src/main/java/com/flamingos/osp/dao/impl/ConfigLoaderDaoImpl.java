@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
@@ -17,11 +18,12 @@ import com.flamingos.osp.mapper.ConfigParamRowMapper;
 import com.flamingos.osp.mapper.TemplateRowMapper;
 import com.flamingos.osp.util.AppConstants;
 
+@Repository
 public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao {
 
-	@Value("${query_osp_parameter_select}")
+//	@Value("${query_osp_parameter_select}")
 	private String QUERY_OSP_PARAMETER_SELECT;
-	@Value("${query_osp_template_select}")
+	//@Value("${query_osp_template_select}")
 	private String QUERY_OSP_TEMPLATE_SELECT;
 
 	@Override

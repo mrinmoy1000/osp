@@ -39,7 +39,7 @@ public class SignUpDaoImpl implements SignUpDao {
 
 	private String getUserSql = "SELECT "+OSPSignupConstant.RECORD_ID+","+OSPSignupConstant.USER_NAME+","+OSPSignupConstant.PASSWORD
 			+","+OSPSignupConstant.CONTACT_NUMBER+","+OSPSignupConstant.EMAIL+
-			","+OSPSignupConstant.ACTIVATION_STATUS+" FROM osp_user_password WHERE ";
+			","+OSPSignupConstant.ACTIVATION_STATUS+" FROM OSP_USER_CREDENTIAL WHERE ";
 
 	@Override
 	public UserDTO findByUserName(String userName) throws OspDaoException {

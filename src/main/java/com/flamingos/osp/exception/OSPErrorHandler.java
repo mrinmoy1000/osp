@@ -3,9 +3,12 @@ package com.flamingos.osp.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.AppUtil;
 
+@Component
 public class OSPErrorHandler {
 	
 	public void handleRestException(Exception e){

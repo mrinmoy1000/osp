@@ -14,7 +14,7 @@
 	<mvc:annotation-driven />
 	<import resource="applicationContext-services.xml" />
 	<import resource="applicationContext-datasource.xml" />
-	<import resource="aapplicationContext-email.xml" />
+	<import resource="applicationContext-email.xml" />
 
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 

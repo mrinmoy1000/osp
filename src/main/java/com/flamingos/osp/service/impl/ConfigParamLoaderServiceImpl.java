@@ -3,6 +3,7 @@ package com.flamingos.osp.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
@@ -12,6 +13,7 @@ import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ConfigParamLoaderService;
 
+@Service
 public class ConfigParamLoaderServiceImpl implements ConfigParamLoaderService {
 
 	@Autowired

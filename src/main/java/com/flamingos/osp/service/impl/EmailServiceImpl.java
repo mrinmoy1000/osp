@@ -14,7 +14,7 @@ import com.flamingos.osp.email.Mail;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.EmailService;
 
-@Service("emailService")
+@Service()
 @Configuration
 @PropertySource("classpath:osp.properties")
 public class EmailServiceImpl implements EmailService {
