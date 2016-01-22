@@ -196,7 +196,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				AppConstants.PARAM_NAME_INITIAL);
 		try {
 			profDao.approveProfile(professional,
-					userStatusBean.getParameter_id());
+					userStatusBean.getParameterid());
 		} catch (OspDaoException ex) {
 			throw new OspServiceException(ex);
 

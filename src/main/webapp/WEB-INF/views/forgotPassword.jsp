@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -8,24 +8,26 @@
 <title>Insert title here</title>
 </head>
 <body>
- <form action="http://localhost:8080/osp/changePassword" method="post" >
-            <table border="0">
-                <tr>
-                    <td colspan="2" align="center"><h2>Spring MVC Form Demo - Registration</h2></td>
-                </tr>
-                <tr>
-                    <td>User Name:</td>
-                    <td><input type="text" name="userName" /></td>
-                </tr>
-                <tr>
-                    <td>E-mail:</td>
-                    <td><input type="text" name="email" /></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input type="submit" value="Register" /></td>
-                </tr>
-            </table>
-          
-        </form>
+	<form action="http://localhost:8080/osp/changePassword" method="post">
+		<table border="0">
+			<tr>
+				<td colspan="2" align="center"><h2>Spring MVC Form Demo -
+						Registration</h2></td>
+			</tr>
+			<tr>
+				<td>User Name:</td>
+				<td><input type="text" name="userName" /></td>
+			</tr>
+			<tr>
+				<td>E-mail:</td>
+				<td><input type="text" name="email" /></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center"><input type="submit"
+					value="Register" /></td>
+			</tr>
+		</table>
+
+	</form>
 </body>
 </html>

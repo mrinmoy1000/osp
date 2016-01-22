@@ -20,8 +20,7 @@
 		class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
 		<constructor-arg name="dataSource" ref="dataSource" />
 	</bean>
-	<bean id="simpleJdbcCall"
-		class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
+	<bean id="simpleJdbcCall" class="org.springframework.jdbc.core.simple.SimpleJdbcCall">
 		<constructor-arg name="dataSource" ref="dataSource" />
 	</bean>
 </beans>

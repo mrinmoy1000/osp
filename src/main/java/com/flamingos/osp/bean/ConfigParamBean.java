@@ -36,7 +36,7 @@ public class ConfigParamBean {
 		try {
 			listParam = configParamLoaderService.loadConfigParam();
 			for (ConfigParamDto param : listParam) {
-				mapByParamId.put(Integer.toString(param.getParameter_id()),
+				mapByParamId.put(Integer.toString(param.getParameterid()),
 						param);
 				mapByParamCodeAndName.put(param.getCode() + param.getName(),
 						param);
