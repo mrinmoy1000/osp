@@ -3,6 +3,7 @@ package com.flamingos.osp.dao;
 import java.util.List;
 
 import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
@@ -39,5 +40,7 @@ public interface ProfessionalDao {
 	
 	 public void updatePassword(UserBean user) throws OspDaoException;
 
+	 public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException;
 
+		public void approveProfile(OspProfessionalBean professionalBean) throws OspDaoException;
 }

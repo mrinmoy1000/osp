@@ -113,8 +113,7 @@ public class SignUpServiceImpl implements SignUpService {
 
 			userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
 			userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
-			String encryptedPassword = encDecUtil.getEncodedValue(userBean
-					.getPassword());
+			String encryptedPassword = encDecUtil.getEncodedValue(userBean.getPassword());
 			userBean.setUserName(userBean.getUserName());
 			userBean.setPassword(encryptedPassword);
 			userBean.setActiveStatus(0);
