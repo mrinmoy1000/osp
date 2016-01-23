@@ -3,29 +3,56 @@ package com.flamingos.osp.sms;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.flamingos.osp.util.AppConstants;
+
+@PropertySource("classpath:osp.properties")
 public class SmsGateWay {
 
-	public static String sendSms(SmS sms) {
+	@Value("${sms.url}")
+	private String smsUrl;
+	  private VelocityEngine velocityEngine;
+
+
+	public void setVelocityEngine(VelocityEngine velocityEngine) {
+		this.velocityEngine = velocityEngine;
+	}
+
+
+	public  String sendSms(SmS sms) {
 		String responseMessage;
+		
+		Map model = new HashMap();
+        model.put(AppConstants.VTEMP_QUALIFIER, sms);
+        String htmlBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, sms.getTemplateName(),
+                "UTF-8", model);
+        
+        sms.setContent(htmlBody);
+        
 
 		try {
 
-			String requestUrl = "http://sms.ismilez.in/sendsms.jsp?user="
+			String requestUrl = smsUrl+"?user="
 					+ URLEncoder.encode(sms.getUsername(), "UTF-8") + "&"
 					+ "password="
 					+ URLEncoder.encode(sms.getPassword(), "UTF-8")
 					+ "&mobiles="
 					+ URLEncoder.encode(sms.getRecipient(), "UTF-8") + "&sms="
-					+ URLEncoder.encode(sms.getMessage(), "UTF-8")
+					+ URLEncoder.encode(sms.getContent(), "UTF-8")
 					+ "&senderid=CCGSPL";
 			URL url = new URL(requestUrl);
 			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
