@@ -17,13 +17,13 @@ public class TemplateRowMapper implements RowMapper<TemplateBean>{
 		TemplateBean template=null;
 		if(rs!=null){
 			template=new TemplateBean();
-			template.setTemplateId(rs.getInt("COMM_TEMPLATE_ID"));
-			template.setTempName(rs.getString("TEMP_NAME"));
-			template.setChannelId(rs.getInt("COMM_CHANNEL_ID"));
-			template.setTemplateCatId(rs.getInt("TEMP_CAT_ID"));
-			template.setTemplateSubCatId(rs.getInt("TEMP_SUB_CAT_ID"));
-			template.setIsEditable(rs.getInt("TEMP_IS_EDITABLE"));
-			template.setTempFilePath(rs.getString("TEMP_FILE_PATH"));
+			template.setTemplateId(rs.getInt("comm_template_id"));
+			template.setTempName(rs.getString("temp_name"));
+			template.setChannelId(rs.getInt("comm_channel_id"));
+			template.setTemplateCatId(rs.getInt("temp_cat_id"));
+			template.setTemplateSubCatId(rs.getInt("temp_sub_cat_id"));
+			template.setIsEditable(rs.getInt("temp_is_editable"));
+			template.setTempFilePath(rs.getString("temp_file_path"));
 		}
 		return template;
 	}

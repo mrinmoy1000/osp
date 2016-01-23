@@ -23,7 +23,7 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
 
 	@Value("${query_osp_parameter_select}")
 	private String QUERY_OSP_PARAMETER_SELECT;
-	//@Value("${query_osp_template_select}")
+	@Value("${query_osp_template_select}")
 	private String QUERY_OSP_TEMPLATE_SELECT;
 
 	@Override
@@ -46,9 +46,8 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
 		// TODO Auto-generated method stub
 		List<TemplateBean> templateList=new ArrayList<TemplateBean>();
 		
-			String sql = QUERY_OSP_TEMPLATE_SELECT;
 			Object[] values = new Object[] { 1 };
-			templateList= getJdbcTemplate().query(sql,values, new TemplateRowMapper());
+			templateList= getJdbcTemplate().query(QUERY_OSP_TEMPLATE_SELECT,values, new TemplateRowMapper());
 			if(!(templateList.size()>0)){
 				throw new OSPBusinessException("",
 						AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
