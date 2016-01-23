@@ -28,6 +28,7 @@
 		<velocity.version>1.7</velocity.version>
 		<java.mail.version>1.4.7</java.mail.version>
 		<spring.convext.support.version>4.2.4.RELEASE</spring.convext.support.version>
+		<velocity.tools.version>2.0</velocity.tools.version>
 	</properties>
 	<dependencies>
 		<!-- Oracle Driver -->
@@ -123,6 +124,11 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>${velocity.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity-tools</artifactId>
+			<version>${velocity.tools.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>

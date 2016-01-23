@@ -14,7 +14,7 @@ import com.flamingos.osp.email.Mail;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.EmailService;
 
-@Service()
+@Service("emailService")
 @Configuration
 @PropertySource("classpath:osp.properties")
 public class EmailServiceImpl implements EmailService {
@@ -25,15 +25,16 @@ public class EmailServiceImpl implements EmailService {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  public void sendMail(String templateName, String toemailId, String url, String subject)
+  public void sendMail(String templateName, String toemailId, String content, String subject,String addresseeName)
       throws OspServiceException {
     try {
       Mail mail = new Mail();
       mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
       mail.setMailTo(toemailId);
-      mail.setMailContent(url);
+      mail.setMailContent(content);
       mail.setMailFrom(mailFrom);
-      mail.setMailSubject(subject);     
+      mail.setMailSubject(subject);
+      mail.setFirstName(addresseeName);
       emailGateway.sendMail(mail);
     } catch (AddressException ae) {
       throw new OspServiceException(ae);

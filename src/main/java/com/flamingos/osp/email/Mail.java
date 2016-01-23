@@ -25,7 +25,7 @@ public class Mail {
 
 	private String contentType;
 	
-	private String firstName;
+	private String firstName;saugata@flamingostech.com saugata@flamingostech.com 
 	
 	private String middleName;
 	

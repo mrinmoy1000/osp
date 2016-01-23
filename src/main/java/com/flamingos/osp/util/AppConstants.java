@@ -14,5 +14,7 @@ public class AppConstants {
 	public static String PARAM_CODE_USER_STATUS = "USER_STATUS";
 	public static String PARAM_NAME_INITIAL = "INITIAL";
 	
+	public static String VTEMP_QUALIFIER="newMessage";
+	
 
 }
