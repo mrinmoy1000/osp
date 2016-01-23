@@ -21,7 +21,7 @@ import com.flamingos.osp.util.AppConstants;
 @Repository
 public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao {
 
-//	@Value("${query_osp_parameter_select}")
+	@Value("${query_osp_parameter_select}")
 	private String QUERY_OSP_PARAMETER_SELECT;
 	//@Value("${query_osp_template_select}")
 	private String QUERY_OSP_TEMPLATE_SELECT;
