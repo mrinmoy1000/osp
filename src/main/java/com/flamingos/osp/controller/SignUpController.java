@@ -34,20 +34,26 @@ public class SignUpController {
 			return new ResponseEntity<UserDTO>(userDto, HttpStatus.CREATED);
 
 		} catch (OspServiceException exp) {
-
+                    userDto.setReturnStatus("fail");
+                    userDto.setReturnMessage(exp.getMessage());
 			return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
 		}
 
 	}
 	
 	@RequestMapping(value ="/checkUser",produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<String> checkUserName(@RequestBody UserBean userBean) throws Exception {
-		try {
+	public ResponseEntity<UserDTO> checkUserName(@RequestBody UserBean userBean) throws Exception {
+	 UserDTO userDto = new UserDTO();	
+            try {
+                   
 			String returnMessage = signUpService.checkUserName(userBean);
-				return new ResponseEntity<String>(returnMessage,HttpStatus.NOT_FOUND);
+                        userDto.setReturnStatus(returnMessage);
+				return new ResponseEntity<UserDTO>(userDto,HttpStatus.FOUND);
 
 		} catch (OspServiceException exp) {
-			return new ResponseEntity<String>(exp.getMessage(), HttpStatus.FOUND);
+                    userDto.setReturnStatus("fail");
+                    userDto.setReturnMessage(exp.getMessage());
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
 		}
 
 	}

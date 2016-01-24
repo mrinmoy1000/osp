@@ -13,6 +13,6 @@
 
 	<!-- Properties File -->
 	<context:property-placeholder
-		location="file:/home/computer2/installation/apache-tomcat-8.0.30/conf/osp.properties" />
+		location="file:${CATALINA_HOME}/conf/osp.properties" />
 
 </beans>

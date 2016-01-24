@@ -99,7 +99,7 @@ public class VerificationController {
 			@RequestParam(value = "UUID", required = false) String UUID) {
 		try {
 			String successMessage = profService.verifyAndGenerateNewToken(username,UUID);
-			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
+			return new ResponseEntity<String>("Please check your mail", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Error in  verify token"+this.getClass(),e);
 		return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -12,21 +12,18 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 @Transactional(propagation = Propagation.REQUIRED)
 @Repository
@@ -65,8 +62,11 @@ public class SignUpDaoImpl implements SignUpDao {
 						}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
+		}catch (EmptyResultDataAccessException e) {
 			return null;
+		}
+                catch (RuntimeException e) {
+			throw new OspDaoException(e);
 		}
 	}
 
@@ -96,8 +96,11 @@ public class SignUpDaoImpl implements SignUpDao {
 				}
 			});
 
-		} catch (RuntimeException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return null;
+		}
+                catch (RuntimeException e) {
+			throw new OspDaoException(e);
 		}
 	}
 
@@ -128,8 +131,11 @@ public class SignUpDaoImpl implements SignUpDao {
 			});
 
 
-		} catch (RuntimeException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return null;
+		}
+                catch (RuntimeException e) {
+			throw new OspDaoException(e);
 		}
 	}
 
@@ -213,7 +219,7 @@ public class SignUpDaoImpl implements SignUpDao {
 	        } else {
 	           throw new OspDaoException();
 	        }
-		return 0;
+		return 1;
 	}
 
 	@Override
@@ -223,9 +229,7 @@ public class SignUpDaoImpl implements SignUpDao {
 	}
 
 	@Override
-	public UserDTO checkForProfessional(UserBean user) throws OspDaoException {
-
-		
+	public UserDTO checkForProfessional(UserBean user) throws OspDaoException {		
 		String profSql = "select * from OSP_PROFESSIONAL  where "+OSPSignupConstant.PROF_ID+"=:PROF_ID";
 		Map<String, Long> paramMap = new HashMap<String, Long>();
 		paramMap.put("PROF_ID", user.getProf_id());
@@ -242,8 +246,8 @@ public class SignUpDaoImpl implements SignUpDao {
 						}
 					});
 
-		} catch (EmptyResultDataAccessException e) {
-			return null;
+		} catch (RuntimeException e) {
+			throw new OspDaoException(e);
 		}
 	}
 
@@ -258,7 +262,7 @@ public class SignUpDaoImpl implements SignUpDao {
 				throw new OspDaoException();
 			}
 		} catch (RuntimeException exp) {
-			throw new OspDaoException();
+			throw new OspDaoException(exp);
 		}
 	}
 }

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.constant.OSPConstants;
+import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,21 @@ public class LoginController {
     LoginService loginService;
 private static final Logger logger = Logger.getLogger(ProfessionalController.class);
     @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public ResponseEntity<UserBean> Login(@RequestBody UserBean userBean) {
+    public ResponseEntity<UserDTO> Login(@RequestBody UserBean userBean) {
         logger.debug("Entrying login");
-       UserBean user = null;//loginService.login(userBean);
-        logger.debug("Exiting login");
-        return new ResponseEntity<UserBean>(user, HttpStatus.OK);
+         UserDTO user = new UserDTO();
+        try {
+              user =loginService.login(userBean);
+              logger.debug("Exiting login");
+        return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+        } catch (Exception e) {
+            user.setReturnStatus("fail");
+            user.setReturnMessage(e.getMessage());
+            return new ResponseEntity<UserDTO>(user, HttpStatus.NOT_FOUND);
+            
+        }
+
+       
     }
 
     
@@ -43,7 +54,7 @@ private static final Logger logger = Logger.getLogger(ProfessionalController.cla
          try {
         	 String userMessage = loginService.checkForUserAndSendLink(userBean,request);
              logger.debug("Exiting Forgot Password");
-            return new ResponseEntity<String>(userMessage, HttpStatus.OK);
+            return new ResponseEntity<String>("check your email", HttpStatus.OK);
 		} catch (OspServiceException e) {
 			 logger.debug(e);
 			 return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.OK);

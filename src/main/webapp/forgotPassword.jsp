@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
- <form action="http://localhost:8080/osp/changePassword" method="post" >
+ <form action="http://localhost:8080/osp/forgotPassword" method="post" >
             <table border="0">
                 <tr>
                     <td colspan="2" align="center"><h2>Spring MVC Form Demo - Registration</h2></td>

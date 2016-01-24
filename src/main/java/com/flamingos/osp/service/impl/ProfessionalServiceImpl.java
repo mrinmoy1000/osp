@@ -63,21 +63,17 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			user.setUserName(decryptedUserName);
 			AccessToken access = new AccessToken();
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-
-			//access.setActiveIndicator(String.valueOf(0).charAt(0));
 			if (type.equals(OSPConstants.EMAIL_TYPE)) {
-				user.setEmailVerified(1);
 				user.setEmailUUID(UUID);
 				access.setType(0);
 				userDto= profDao.getUserLinkValidCheckForEmail(user,
 						access);
 				user.setActiveStatus(1);
+                                user.setEmailVerified(1);
 				if(userDto!=null)
 				profDao.emailUpdateStatus(user, access);
-
 			} else {
 				if (type.equals(OSPConstants.SMS_TYPE)) {
-					user.setSmsVerfied(1);
 					user.setSmsUUID(UUID);
 					access.setType(1);
 					 userDto = profDao.getUserLinkValidCheckForSms(user,

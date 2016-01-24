@@ -37,16 +37,4 @@ public class EncoderDecoderUtil {
 
 		return decoded;
 	}
-
-	public static void main(String... args) throws Exception {
-		// encoderDecoder ec = new encoderDecoder();
-		// System.out.println("encoded = " + ec.getEncodedValue("jeet128o094"));
-		// System.out.println("decoded =  " +
-		// ec.getDecodedValue("cHJvZlVzZXIy"));
-		Date dNow = new Date(); // Instantiate a Date object
-		Calendar cal = Calendar.getInstance();
-		// System.out.print(cal.getTime());
-
-		System.out.println(new Timestamp(new Date().getTime()));
-	}
 }

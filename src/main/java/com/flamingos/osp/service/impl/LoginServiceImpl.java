@@ -17,6 +17,7 @@ import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.LoginService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
+import java.util.UUID;
 
 @Service
 @Configuration
@@ -61,11 +62,10 @@ public class LoginServiceImpl implements LoginService {
 			UserDTO user = loginDao.checkForUser(userBean);
 			String userMessage;
 			if (user != null) {
-				String Uuid = userBean.getUserName();
+				String Uuid =  String.valueOf(UUID.randomUUID());
 			userBean.setFupUUID(Uuid);
 			userBean.setUser_id(user.getUserId());
 				loginDao.addFUPAccessToken(userBean,Integer.parseInt(fupExpireTime));
-
 				userMessage = sendLinkForForgotPassword(userBean, request);
 			} else {
 				// logger.debug("user checking done , User not found");
@@ -82,8 +82,7 @@ public class LoginServiceImpl implements LoginService {
 
 	public String sendLinkForForgotPassword(UserBean userBean,
 			HttpServletRequest request) throws RuntimeException {
-		String encryptedUserName = new EncoderDecoderUtil()
-				.getEncodedValue(userBean.getUserName());
+		String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
 
 		String linkTobeSend = request.getScheme() + "://"
 				+ request.getServerName() + ":" + request.getServerPort()
