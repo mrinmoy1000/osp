@@ -20,74 +20,72 @@ import org.w3c.dom.NodeList;
 
 import com.flamingos.osp.util.AppConstants;
 
-@PropertySource("classpath:osp.properties")
 public class SmsGateWay {
 
-	@Value("${sms.url}")
-	private String smsUrl;
-	  private VelocityEngine velocityEngine;
+  @Value("${sms.url}")
+  private String smsUrl;
+  private VelocityEngine velocityEngine;
 
 
-	public void setVelocityEngine(VelocityEngine velocityEngine) {
-		this.velocityEngine = velocityEngine;
-	}
+  public void setVelocityEngine(VelocityEngine velocityEngine) {
+    this.velocityEngine = velocityEngine;
+  }
 
 
-	public  String sendSms(SmS sms) {
-		String responseMessage;
-		
-		Map model = new HashMap();
-        model.put(AppConstants.VTEMP_QUALIFIER, sms);
-        String htmlBody = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, sms.getTemplateName(),
-                "UTF-8", model);
-        
-        sms.setContent(htmlBody);
-        
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public String sendSms(SmS sms) {
+    String responseMessage;
 
-		try {
+    Map model = new HashMap();
+    model.put(AppConstants.VTEMP_QUALIFIER, sms);
+    String htmlBody =
+        VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, sms.getTemplateName(), "UTF-8",
+            model);
 
-			String requestUrl = smsUrl+"?user="
-					+ URLEncoder.encode(sms.getUsername(), "UTF-8") + "&"
-					+ "password="
-					+ URLEncoder.encode(sms.getPassword(), "UTF-8")
-					+ "&mobiles="
-					+ URLEncoder.encode(sms.getRecipient(), "UTF-8") + "&sms="
-					+ URLEncoder.encode(sms.getContent(), "UTF-8")
-					+ "&senderid=CCGSPL";
-			URL url = new URL(requestUrl);
-			HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-			responseMessage = uc.getResponseMessage();
+    sms.setContent(htmlBody);
 
-			// Using DocumentBuilderFactory to read the xml from response
 
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = (Document) db.parse(uc.getInputStream());
-			uc.disconnect();
+    try {
 
-			Element docEle = doc.getDocumentElement(); // Root element of the
-														// xml
-			NodeList nodes = docEle.getChildNodes(); // list of child nodes
+      String requestUrl =
+          smsUrl + "?user=" + URLEncoder.encode(sms.getUsername(), "UTF-8") + "&" + "password="
+              + URLEncoder.encode(sms.getPassword(), "UTF-8") + "&mobiles="
+              + URLEncoder.encode(sms.getRecipient(), "UTF-8") + "&sms="
+              + URLEncoder.encode(sms.getContent(), "UTF-8") + "&senderid=CCGSPL";
+      URL url = new URL(requestUrl);
+      HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+      responseMessage = uc.getResponseMessage();
 
-			for (int i = 0; i < nodes.getLength(); i++) {
-				Node node = nodes.item(i);
+      // Using DocumentBuilderFactory to read the xml from response
 
-				if (node.getNodeType() == Node.ELEMENT_NODE) {
+      DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+      DocumentBuilder db = dbf.newDocumentBuilder();
+      Document doc = (Document) db.parse(uc.getInputStream());
+      uc.disconnect();
 
-					// Response updated here if error occurres
-					if (node.getNodeName().equals("error")) {
-						responseMessage = "Error";
-					}
+      Element docEle = doc.getDocumentElement(); // Root element of the
+      // xml
+      NodeList nodes = docEle.getChildNodes(); // list of child nodes
 
-				}
-			}
+      for (int i = 0; i < nodes.getLength(); i++) {
+        Node node = nodes.item(i);
 
-		} catch (Exception ex) {
-			responseMessage = ex.getMessage();
+        if (node.getNodeType() == Node.ELEMENT_NODE) {
 
-		}
+          // Response updated here if error occurres
+          if (node.getNodeName().equals("error")) {
+            responseMessage = "Error";
+          }
 
-		return responseMessage;
-	}
+        }
+      }
+
+    } catch (Exception ex) {
+      responseMessage = ex.getMessage();
+
+    }
+
+    return responseMessage;
+  }
 
 }

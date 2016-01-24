@@ -21,6 +21,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.util.AppConstants;
 
 public class EmailGateway {
@@ -35,7 +36,8 @@ public class EmailGateway {
     this.velocityEngine = velocityEngine;
   }
 
-  public void sendMail(final Mail mail) throws AddressException {
+  public void sendMail(final Mail mail) throws Exception {
+
 
     MimeMessagePreparator preparator = new MimeMessagePreparator() {
 
@@ -56,7 +58,7 @@ public class EmailGateway {
         messageBodyPart.setContent(htmlBody, "text/html");
 
         Multipart multipart = new MimeMultipart();
-        multipart.addBodyPart(messageBodyPart);saugata@flamingostech.com
+        multipart.addBodyPart(messageBodyPart);
 
         // adds inline image attachments
         if (mapInlineImages != null && mapInlineImages.size() > 0) {
@@ -77,9 +79,10 @@ public class EmailGateway {
           }
         }
         message.setContent(multipart);
-             }
+      }
     };
     mailSender.send(preparator);
+
   }
 
 }
