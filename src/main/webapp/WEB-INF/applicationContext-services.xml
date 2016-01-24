@@ -16,8 +16,7 @@
 	<bean id="configParamBean" class="com.flamingos.osp.bean.ConfigParamBean"
 		init-method="loadConfigParam"></bean>
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
-	<bean id="emailGateway" class="com.flamingos.osp.email.EmailGateway"
-		scope="prototype"></bean>
+	
 
 	<!-- Properties File -->
 	<bean

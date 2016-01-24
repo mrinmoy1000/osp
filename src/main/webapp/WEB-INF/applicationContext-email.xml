@@ -29,7 +29,9 @@
 		<property name="mailSender" ref="mailSender" />
 		<property name="velocityEngine" ref="velocityEngine" />
 	</bean>
-
+	<bean id="smsGateway" class="com.flamingos.osp.sms.SmsGateWay">
+		<property name="velocityEngine" ref="velocityEngine" />
+	</bean>
 	<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
