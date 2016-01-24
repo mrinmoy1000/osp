@@ -16,7 +16,7 @@ public class UserBean {
 	private int emailVerified;
 	private int userTypeCD;
 	private int role_id;
-	private String record_type;
+	private int recordType;
 	private String tokenType;
 	private Long prof_id;
 	private String firstName;
@@ -72,12 +72,12 @@ public class UserBean {
 
 	
 
-	public String getRecord_type() {
-		return record_type;
+	public int getRecordType() {
+		return recordType;
 	}
 
-	public void setRecord_type(String record_type) {
-		this.record_type = record_type;
+	public void setRecordType(int recordType) {
+		this.recordType = recordType;
 	}
 
 	public int getRole_id() {

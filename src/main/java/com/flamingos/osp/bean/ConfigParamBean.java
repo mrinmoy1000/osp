@@ -22,13 +22,24 @@ public class ConfigParamBean {
   private ConfigParamLoaderService configParamLoaderService;
   @Autowired
   private OSPErrorHandler ospErrorHandler;
-  private Map<String, ConfigParamDto> mapByParamId = new HashMap<String, ConfigParamDto>();
+
+  /* OSP Parameters */
   private List<ConfigParamDto> listParam = new ArrayList<ConfigParamDto>();
-  private List<TemplateBean> templateBeanList = new ArrayList<TemplateBean>();
+  private Map<String, ConfigParamDto> mapByParamId = new HashMap<String, ConfigParamDto>();
   private Map<String, ConfigParamDto> mapByParamCodeAndName = new HashMap<String, ConfigParamDto>();
-  private Map<String, List<ConfigParamDto>> mapByParamCode = new HashMap<String, List<ConfigParamDto>>();
+  private Map<String, List<ConfigParamDto>> mapByParamCode =
+      new HashMap<String, List<ConfigParamDto>>();
+
+  /* Communication Templates */
+  private List<TemplateBean> templateBeanList = new ArrayList<TemplateBean>();
   private Map<String, TemplateBean> templateMapByName = new HashMap<String, TemplateBean>();
   private Map<String, TemplateBean> templateMapById = new HashMap<String, TemplateBean>();
+
+  /* OSP Role */
+  private List<RoleBean> lstRoles = null;
+  private Map<String, RoleBean> roleMapByName = new HashMap<String, RoleBean>();
+  private Map<Integer, RoleBean> roleMapById = new HashMap<Integer, RoleBean>();
+
 
   public void loadConfigParam() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -38,12 +49,12 @@ public class ConfigParamBean {
       listParam = configParamLoaderService.loadConfigParam();
       for (ConfigParamDto param : listParam) {
         mapByParamId.put(Integer.toString(param.getParameterid()), param);
-        mapByParamCodeAndName.put(param.getCode() +"__"+param.getName(), param);
-        if(mapByParamCode.containsKey(param.getCode())){
-          List<ConfigParamDto> existlistparamDto=mapByParamCode.get(param.getCode());
+        mapByParamCodeAndName.put(param.getCode() + "__" + param.getName(), param);
+        if (mapByParamCode.containsKey(param.getCode())) {
+          List<ConfigParamDto> existlistparamDto = mapByParamCode.get(param.getCode());
           existlistparamDto.add(param);
-        }else{
-          List<ConfigParamDto> newlistparamDto=new ArrayList<ConfigParamDto>();
+        } else {
+          List<ConfigParamDto> newlistparamDto = new ArrayList<ConfigParamDto>();
           newlistparamDto.add(param);
           mapByParamCode.put(param.getCode(), newlistparamDto);
         }
@@ -52,6 +63,15 @@ public class ConfigParamBean {
       for (TemplateBean tb : templateBeanList) {
         templateMapByName.put(tb.getTempName(), tb);
         templateMapById.put(Integer.toString(tb.getTemplateId()), tb);
+      }
+
+
+      lstRoles = configParamLoaderService.getAllRoles();
+      if (null != lstRoles) {
+        for (RoleBean oRoleBean : lstRoles) {
+          roleMapById.put(oRoleBean.getRoleId(), oRoleBean);
+          roleMapByName.put(oRoleBean.getRoleName(), oRoleBean);
+        }
       }
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
@@ -82,4 +102,15 @@ public class ConfigParamBean {
     return mapByParamCodeAndName;
   }
 
+  public List<RoleBean> getAllRoles() {
+    return lstRoles;
+  }
+
+  public RoleBean getRoleByName(String roleName) {
+    return roleMapByName.get(roleName);
+  }
+
+  public RoleBean getRoleById(int roleId) {
+    return roleMapById.get(roleId);
+  }
 }
