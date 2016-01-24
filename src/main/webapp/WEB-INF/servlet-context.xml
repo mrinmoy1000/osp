@@ -10,7 +10,7 @@
 		infrastructure -->
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	
+
 	<mvc:annotation-driven />
 	<import resource="applicationContext-services.xml" />
 	<import resource="applicationContext-datasource.xml" />

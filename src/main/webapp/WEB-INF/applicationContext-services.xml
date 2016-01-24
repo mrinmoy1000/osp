@@ -6,13 +6,28 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+
+
+	<!-- config param configuration -->
+	<bean id="configLoaderDao" class="com.flamingos.osp.dao.impl.ConfigLoaderDaoImpl"></bean>
+	<bean id="configParamLoaderService"
+		class="com.flamingos.osp.service.impl.ConfigParamLoaderServiceImpl"></bean>
+	<bean id="ospErrorHandler" class="com.flamingos.osp.exception.OSPErrorHandler"></bean>
+	<bean id="configParamBean" class="com.flamingos.osp.bean.ConfigParamBean"
+		init-method="loadConfigParam"></bean>
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
-	<bean id="emailGateway" class="com.flamingos.osp.email.EmailGateway" scope="prototype"></bean>
-
-
+	<bean id="emailGateway" class="com.flamingos.osp.email.EmailGateway"
+		scope="prototype"></bean>
 
 	<!-- Properties File -->
-	<context:property-placeholder
-		location="file:${CATALINA_HOME}/conf/osp.properties" />
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/classes/queryList.properties</value>
+				<value>file:${CATALINA_HOME}/conf/osp.properties</value>
+			</list>
+		</property>
+	</bean>
 
 </beans>

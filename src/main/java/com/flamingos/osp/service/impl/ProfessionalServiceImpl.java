@@ -1,3 +1,4 @@
+
 package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
@@ -191,8 +192,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				AppConstants.PARAM_CODE_USER_STATUS,
 				AppConstants.PARAM_NAME_INITIAL);
 		try {
-			profDao.approveProfile(professional,
-					userStatusBean.getParameter_id());
+			profDao.approveProfile(professional,1);
 		} catch (OspDaoException ex) {
 			throw new OspServiceException(ex);
 

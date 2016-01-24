@@ -1,22 +1,17 @@
 package com.flamingos.osp.service.impl;
 
-import javax.mail.internet.AddressException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.email.EmailGateway;
 import com.flamingos.osp.email.Mail;
-import com.flamingos.osp.exception.OspServiceException;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.EmailService;
+import com.flamingos.osp.util.AppConstants;
 
-@Service()
-@Configuration
-@PropertySource("classpath:osp.properties")
+@Service("emailService")
 public class EmailServiceImpl implements EmailService {
   @Value("${mail.smtp.sender.from}")
   private String mailFrom;
@@ -25,18 +20,20 @@ public class EmailServiceImpl implements EmailService {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  public void sendMail(String templateName, String toemailId, String url, String subject)
-      throws OspServiceException {
+  public void sendMail(String templateName, String toemailId, String content, String subject,
+      String addresseeName) throws OSPBusinessException {
     try {
       Mail mail = new Mail();
       mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
       mail.setMailTo(toemailId);
-      mail.setMailContent(url);
+      mail.setMailContent(content);
       mail.setMailFrom(mailFrom);
-      mail.setMailSubject(subject);     
+      mail.setMailSubject(subject);
+      mail.setFirstName(addresseeName);
       emailGateway.sendMail(mail);
-    } catch (AddressException ae) {
-      throw new OspServiceException(ae);
+    } catch (Exception e) {
+      throw new OSPBusinessException(AppConstants.EMAIL_SENDING_MODULE,
+          AppConstants.EMAIL_EXCEPTION_ERRCODE, AppConstants.EMAIL_EXCEPTION_ERRDESC, e);
     }
   }
 }
