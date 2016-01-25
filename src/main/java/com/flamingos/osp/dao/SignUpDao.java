@@ -2,19 +2,18 @@ package com.flamingos.osp.dao;
 
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.exception.OspDaoException;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 
 public interface SignUpDao {
 
-	public UserDTO findByUserName(String userName) throws OspDaoException;
+	public UserDTO findByUserName(String userName) throws OSPBusinessException;
 
-	public UserDTO findByEmailAddress(String emailAddress)throws OspDaoException;
+	public UserDTO findByEmailAddress(String emailAddress)throws OSPBusinessException;
 
-	public UserDTO findByContact(Long contact) throws OspDaoException;
+	public UserDTO findByContact(Long contact) throws OSPBusinessException;
 
-	public int createNewUser(UserBean user,int emailExpireTime,int smsExpireTime) throws OspDaoException;
+	public void createNewUser(UserBean user,int emailExpireTime,int smsExpireTime) throws OSPBusinessException;
 
 	public String updateUser(UserBean user) throws OspDaoException;
 	

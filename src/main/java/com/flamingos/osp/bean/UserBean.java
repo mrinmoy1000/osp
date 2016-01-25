@@ -15,7 +15,7 @@ public class UserBean {
 	private int smsVerfied;
 	private int emailVerified;
 	private int userTypeCD;
-	private int role_id;
+	private int roleId;
 	private int recordType;
 	private String tokenType;
 	private Long prof_id;
@@ -80,13 +80,6 @@ public class UserBean {
 		this.recordType = recordType;
 	}
 
-	public int getRole_id() {
-		return role_id;
-	}
-
-	public void setRole_id(int role_id) {
-		this.role_id = role_id;
-	}
 
 	public String getFirstName() {
 		return firstName;
@@ -246,6 +239,20 @@ public class UserBean {
 	public void setUserTypeCD(int userTypeCD) {
 		this.userTypeCD = userTypeCD;
 	}
+
+    /**
+     * @return the roleId
+     */
+    public int getRoleId() {
+        return roleId;
+    }
+
+    /**
+     * @param roleId the roleId to set
+     */
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
 
 }

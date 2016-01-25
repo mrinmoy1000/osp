@@ -15,6 +15,7 @@ import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.SignUpService;
 import com.flamingos.osp.util.AppConstants;
@@ -41,15 +42,17 @@ public class SignUpController {
 
       userBean.setRecordType(oParamProfessional.getParameterid());
 
-      userBean.setRole_id(oRoleProfessional.getRoleId());;
+      userBean.setRoleId(oRoleProfessional.getRoleId());;
 
       userDto = signUpService.createUser(userBean, request);
       if (null == userDto)
-        return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
+      {  return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
+      
+      }
 
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.CREATED);
 
-    } catch (OspServiceException exp) {
+    } catch (OSPBusinessException exp) {
       userDto.setReturnStatus("fail");
       userDto.setReturnMessage(exp.getMessage());
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);

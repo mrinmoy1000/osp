@@ -20,6 +20,7 @@ import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
 
@@ -41,12 +42,10 @@ public class SignUpDaoImpl implements SignUpDao {
       + AppConstants.ACTIVATION_STATUS + " FROM OSP_USER_CREDENTIAL WHERE ";
 
   @Override
-  public UserDTO findByUserName(String userName) throws OspDaoException {
+  public UserDTO findByUserName(String userName) throws OSPBusinessException {
     String userNameSql = getUserSql + AppConstants.USER_NAME + "=:username";
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("username", userName);
-
-    try {
 
       return namedJdbcTemplate.queryForObject(userNameSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -62,21 +61,15 @@ public class SignUpDaoImpl implements SignUpDao {
         }
       });
 
-    } catch (EmptyResultDataAccessException e) {
-      return null;
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
+    
   }
 
   @Override
-  public UserDTO findByContact(Long contact) throws OspDaoException {
+  public UserDTO findByContact(Long contact) throws OSPBusinessException {
 
     String contactSql = getUserSql + AppConstants.CONTACT_NUMBER + "=:contact";
     Map<String, Long> paramMap = new HashMap<String, Long>();
     paramMap.put("contact", contact);
-
-    try {
 
       return namedJdbcTemplate.queryForObject(contactSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -92,21 +85,15 @@ public class SignUpDaoImpl implements SignUpDao {
         }
       });
 
-    } catch (EmptyResultDataAccessException e) {
-      return null;
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
+  
   }
 
   @Override
-  public UserDTO findByEmailAddress(String email) throws OspDaoException {
+  public UserDTO findByEmailAddress(String email) throws OSPBusinessException {
 
     String emailSql = getUserSql + AppConstants.EMAIL + "=:email";
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("email", email);
-
-    try {
 
       return namedJdbcTemplate.queryForObject(emailSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -123,19 +110,14 @@ public class SignUpDaoImpl implements SignUpDao {
       });
 
 
-    } catch (EmptyResultDataAccessException e) {
-      return null;
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
   }
 
   @Override
-  public int createNewUser(UserBean user, int emailExpireTime, int smsExpireTime)
-      throws OspDaoException {
+  public void createNewUser(UserBean user, int emailExpireTime, int smsExpireTime)
+      throws OSPBusinessException {
     Map<String, Object> userDetailsMap = new HashMap<String, Object>();
     userDetailsMap.put(AppConstants.USER_NAME, user.getUserName());
-    userDetailsMap.put(AppConstants.ROLE_ID, user.getRole_id());
+    userDetailsMap.put(AppConstants.ROLE_ID, user.getRoleId());
     userDetailsMap.put(AppConstants.RECORD_ID, 0);
     userDetailsMap.put(AppConstants.RECORD_TYPE, user.getRecordType());// TODO Why 12 was hard
                                                                             // coded value?
@@ -161,7 +143,6 @@ public class SignUpDaoImpl implements SignUpDao {
             .usingGeneratedKeyColumns("RECORD_ID");
     Number generateKey = simpleInsert.executeAndReturnKey(userDetailsMap);
     long getInsertedUser = (Long) generateKey;
-    if (getInsertedUser != 0) {
       String insertAccessToken =
           "INSERT INTO OSP_ACCESS_TOKEN VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
               + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
@@ -199,10 +180,6 @@ public class SignUpDaoImpl implements SignUpDao {
       accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());
       accessTokenMapforSms.put(AppConstants.UPDATE_BY, null);
       namedJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
-    } else {
-      throw new OspDaoException();
-    }
-    return 1;
   }
 
   @Override

@@ -5,8 +5,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
@@ -29,7 +27,7 @@ public class LoginServiceImpl implements LoginService {
   EncoderDecoderUtil encDecUtil;
 
   @Value("${fup.expire.time}")
-  private String fupExpireTime;
+  private int fupExpireTime;
   private static final Logger logger = Logger.getLogger(LoginServiceImpl.class);
 
   @Override
@@ -51,7 +49,7 @@ public class LoginServiceImpl implements LoginService {
     }
 
   }
-
+@Override
   public String checkForUserAndSendLink(UserBean userBean, HttpServletRequest request)
       throws OspServiceException {
     logger.debug("user checking for link");
@@ -62,7 +60,7 @@ public class LoginServiceImpl implements LoginService {
         String Uuid = String.valueOf(UUID.randomUUID());
         userBean.setFupUUID(Uuid);
         userBean.setUser_id(user.getUserId());
-        loginDao.addFUPAccessToken(userBean, Integer.parseInt(fupExpireTime));
+        loginDao.addFUPAccessToken(userBean,fupExpireTime);
         userMessage = sendLinkForForgotPassword(userBean, request);
       } else {
         // logger.debug("user checking done , User not found");
@@ -77,6 +75,7 @@ public class LoginServiceImpl implements LoginService {
 
   }
 
+  @Override
   public String sendLinkForForgotPassword(UserBean userBean, HttpServletRequest request)
       throws RuntimeException {
     String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());

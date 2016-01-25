@@ -10,6 +10,7 @@ public class AppConstants {
   public static String CONFIG_LOADING_MODULE = "CONFIG_LOADING_MODULE";
   public static String EMAIL_SENDING_MODULE = "EMAIL_MODULE";
   public static String SMS_SENDING_MODULE = "SMS_MODULE";
+  public static String SIGN_UP_MODULE = "SIGN_UP_MODULE";
 
   public static String DB_NO_RECORD_FOUND_ERRCODE = "DB001";
   public static String DB_NO_RECORD_FOUND_ERRMSG = "No record found from Database";
@@ -17,6 +18,8 @@ public class AppConstants {
   public static String EMAIL_EXCEPTION_ERRDESC = "Email Sending Falied";
   public static String SMS_EXCEPTION_ERRCODE = "SMS001";
   public static String SMS_EXCEPTION_ERRDESC = "SMS Sending Falied";
+   public static String SIGN_UP_EXCEPTION_ERRCODE = "SIGNUP001";
+  public static String SIGN_UP_EXCEPTION_ERRDESC = "Sign up failed";
   
   public static String PARAM_CODE_USER_STATUS = "USER_STATUS";
   public static String PARAM_CODE_USER_TYPE = "USER_TYPE";

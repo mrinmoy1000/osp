@@ -3,14 +3,10 @@ package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
@@ -35,10 +31,10 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			.getLogger(ProfessionalServiceImpl.class);
 
 	@Value("${email.expire.time}")
-	private String emailExpireTime;
+	private int emailExpireTime;
 
 	@Value("${sms.expire.time}")
-	private String smsExpireTime;
+	private int smsExpireTime;
 
 	@Autowired
 	EncoderDecoderUtil encDecUtil;
@@ -109,7 +105,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 						if (userBean.getEmailVerified()==0) {
 							user.setEmailVerified(userBean.getEmailVerified());
 							profDao.generateNewEmailToken(user,
-									Integer.parseInt(emailExpireTime));
+									emailExpireTime);
 						}
 					}
 					if (userBean.getTokenType().equals(AppConstants.SMS_TYPE)
@@ -117,7 +113,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 						if (userBean.getSmsVerfied()==0) {
 							user.setSmsVerfied(userBean.getEmailVerified());
 							profDao.generateNewSmsToken(user,
-									Integer.parseInt(smsExpireTime));
+									smsExpireTime);
 						}
 					}
 
