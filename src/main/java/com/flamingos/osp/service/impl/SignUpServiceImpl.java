@@ -2,9 +2,7 @@ package com.flamingos.osp.service.impl;
 
 import java.util.UUID;
 import org.apache.log4j.Logger;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +19,6 @@ import com.flamingos.osp.service.SmsService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
-@Configuration
-@PropertySource("classpath:osp.properties")
 public class SignUpServiceImpl implements SignUpService {
 
   @Value("${email.expire.time}")

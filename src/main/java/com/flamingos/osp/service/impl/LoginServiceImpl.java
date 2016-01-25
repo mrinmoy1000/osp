@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dao.SignUpDao;
@@ -20,8 +19,6 @@ import com.flamingos.osp.util.EncoderDecoderUtil;
 import java.util.UUID;
 
 @Service
-@Configuration
-@PropertySource("classpath:osp.properties")
 public class LoginServiceImpl implements LoginService {
 
   @Autowired

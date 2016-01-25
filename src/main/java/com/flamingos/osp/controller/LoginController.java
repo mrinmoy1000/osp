@@ -1,25 +1,18 @@
 package com.flamingos.osp.controller;
 
 import java.util.Map;
-
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspServiceException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.flamingos.osp.service.LoginService;
-
+import com.flamingos.osp.util.AppConstants;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +50,7 @@ private static final Logger logger = Logger.getLogger(ProfessionalController.cla
             return new ResponseEntity<String>("check your email", HttpStatus.OK);
 		} catch (OspServiceException e) {
 			 logger.debug(e);
-			 return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.OK);
+			 return new ResponseEntity<String>(AppConstants.ERROR, HttpStatus.OK);
 		}
         
     }

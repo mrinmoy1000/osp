@@ -1,23 +1,18 @@
 package com.flamingos.osp.controller;
 
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspServiceException;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.flamingos.osp.service.ProfessionalService;
-
+import com.flamingos.osp.util.AppConstants;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -102,7 +97,7 @@ public class VerificationController {
 			return new ResponseEntity<String>("Please check your mail", HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error("Error in  verify token"+this.getClass(),e);
-		return new ResponseEntity<String>(OSPConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<String>(AppConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
 	}

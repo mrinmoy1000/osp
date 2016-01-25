@@ -12,12 +12,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
-
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.constant.OSPConstants;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
@@ -28,8 +26,6 @@ import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Service
-@Configuration
-@PropertySource("classpath:osp.properties")
 public class ProfessionalServiceImpl implements ProfessionalService {
 
 	@Autowired
@@ -64,7 +60,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			user.setUserName(decryptedUserName);
 			AccessToken access = new AccessToken();
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-			if (type.equals(OSPConstants.EMAIL_TYPE)) {
+			if (type.equals(AppConstants.EMAIL_TYPE)) {
 				user.setEmailUUID(UUID);
 				access.setType(0);
 				userDto= profDao.getUserLinkValidCheckForEmail(user,
@@ -74,7 +70,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				if(userDto!=null)
 				profDao.emailUpdateStatus(user, access);
 			} else {
-				if (type.equals(OSPConstants.SMS_TYPE)) {
+				if (type.equals(AppConstants.SMS_TYPE)) {
 					user.setSmsUUID(UUID);
 					access.setType(1);
 					 userDto = profDao.getUserLinkValidCheckForSms(user,
@@ -84,10 +80,10 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 					profDao.smsUpdateStatus(user, access);
 				}
 			}
-			logger.info(OSPConstants.VALID);
+			logger.info(AppConstants.VALID);
 			return userDto;
 		} catch (OspDaoException exp) {
-			throw new OspServiceException(OSPConstants.INVALID_LINK);
+			throw new OspServiceException(AppConstants.INVALID_LINK);
 		}
 
 	}
@@ -107,7 +103,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			if (null != userList && userList.size() != 0) {
 
 				for (UserBean userBean : userList) {
-					if (userBean.getTokenType().equals(OSPConstants.EMAIL_TYPE)
+					if (userBean.getTokenType().equals(AppConstants.EMAIL_TYPE)
 							&& user.getEmailUUID().equals(
 									userBean.getEmailUUID())) {
 						if (userBean.getEmailVerified()==0) {
@@ -116,7 +112,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 									Integer.parseInt(emailExpireTime));
 						}
 					}
-					if (userBean.getTokenType().equals(OSPConstants.SMS_TYPE)
+					if (userBean.getTokenType().equals(AppConstants.SMS_TYPE)
 							&& user.getSmsUUID().equals(userBean.getSmsUUID())) {
 						if (userBean.getSmsVerfied()==0) {
 							user.setSmsVerfied(userBean.getEmailVerified());
@@ -128,11 +124,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				}
 
 				logger.debug("token verfified and generated");
-				return OSPConstants.SUCCESS;
+				return AppConstants.SUCCESS;
 
 			} else {
-				logger.debug(OSPConstants.INVALID_LINK);
-				return OSPConstants.INVALID_LINK;
+				logger.debug(AppConstants.INVALID_LINK);
+				return AppConstants.INVALID_LINK;
 
 			}
 		} catch (OspDaoException exp) {
@@ -155,10 +151,10 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				user.setFupUUID(UUID);
 				access.setType(0);
 				userDto= profDao.checkForForgotPassword(user, access);
-			logger.info(OSPConstants.VALID);
+			logger.info(AppConstants.VALID);
 			return userDto;
 		} catch (OspDaoException exp) {
-			throw new OspServiceException(OSPConstants.INVALID_LINK);
+			throw new OspServiceException(AppConstants.INVALID_LINK);
 		}
 	}
 
