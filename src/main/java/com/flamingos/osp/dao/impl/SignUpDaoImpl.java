@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -191,7 +190,7 @@ public class SignUpDaoImpl implements SignUpDao {
   @Override
   public UserDTO checkForProfessional(UserBean user) throws OspDaoException {
     String profSql =
-        "select * from OSP_PROFESSIONAL  where " + AppConstants.PROF_ID + "=:PROF_ID";
+        "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.PROF_ID + "=:PROF_ID";
     Map<String, Long> paramMap = new HashMap<String, Long>();
     paramMap.put("PROF_ID", user.getProf_id());
 

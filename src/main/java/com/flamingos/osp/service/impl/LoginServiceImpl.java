@@ -10,6 +10,7 @@ import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.LoginService;
@@ -44,7 +45,7 @@ public class LoginServiceImpl implements LoginService {
       }
 
       return userDTO;
-    } catch (OspDaoException exp) {
+    } catch (OSPBusinessException exp) {
       throw new OspServiceException();
     }
 
@@ -68,7 +69,7 @@ public class LoginServiceImpl implements LoginService {
       }
       // logger.debug("user checking done, sending mail");
       return userMessage;
-    } catch (OspDaoException ex) {
+    } catch (OSPBusinessException ex) {
       throw new OspServiceException(ex);
 
     }

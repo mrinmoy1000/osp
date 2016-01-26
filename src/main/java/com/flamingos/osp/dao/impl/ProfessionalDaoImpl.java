@@ -101,7 +101,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 			throws OspDaoException {
 		try {
 			String updateEmailStatusSql = 
-                                " UPDATE OSP_ACCESS_TOKEN acc , osp_user_password up "
+                                " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up "
 			      + "  SET up."+AppConstants.ACTIVATION_STATUS + " = ? ,"
 			      + "  where up."+AppConstants.USER_NAME + " = ? " 
 			      + "  and acc."+AppConstants.UUID + " = ? "
@@ -243,7 +243,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 		List<UserBean> userTokenList = null;
 		try {
 
-			String getUserSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN acc , osp_parameter param"
+			String getUserSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN acc , OSP_PARAMETER param"
 					+ " where acc."+AppConstants.USER_ID+" = up."+AppConstants.RECORD_ID+
 					 " and param."+AppConstants.PARAM_ID+" = acc."+AppConstants.TYPE 
 					 + "and  up."+AppConstants.USER_NAME+"= ? and "+
@@ -273,9 +273,9 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public int generateNewEmailToken(UserBean user, int emailExpireTime)
 			throws OspDaoException {
 	try
-        {String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where user_name = ?";
+        {String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where " + AppConstants.USER_NAME + " = ?";
          int getInsertedUser = jdbcTemplate.queryForObject(getUserSql, new Object[]{user.getUserName()}, Integer.class);
-		 String insertAccessToken = "INSERT INTO osp_access_token VALUES "
+		 String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
 		 		+ "(:"+AppConstants.USER_ID+","
 		 		+ ":"+AppConstants.TYPE+","
 		 		+ ":"+AppConstants.UUID+","
@@ -305,10 +305,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public int generateNewSmsToken(UserBean user, int smsExpireTime)
 			throws OspDaoException {
 		try
-                {String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where user_name = ?";
+                {String getUserSql = "SELECT " + AppConstants.RECORD_ID + " FROM OSP_USER_CREDENTIAL  where " + AppConstants.USER_NAME  + " = ?";
 		int getInsertedUser = jdbcTemplate.queryForObject(getUserSql,
 				new Object[] { user.getUserName() }, Integer.class);
-		String insertAccessToken = "INSERT INTO osp_access_token VALUES "
+		String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
 				+ "(:"
 				+ AppConstants.USER_ID
 				+ ","
@@ -357,8 +357,8 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	public UserDTO checkForForgotPassword(UserBean user, AccessToken access)
 			throws OspDaoException {
 		try {
-			String emailSql = "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
-					+ " acc  where"
+			String emailSql = "SELECT * FROM OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
+					+ " acc  WHERE "
 					+ " up."+AppConstants.USER_NAME+"= :user_name and "
 					+ " acc."+AppConstants.UUID+"=:UUID and"
 					+ " and  acc."+AppConstants.TOKEN_EXPIRY_DT+ "> :EXPIRY_DT"
@@ -469,9 +469,9 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 	@Override
 	public void approveProfile(OspProfessionalBean professionalBean, int param_id) throws OspDaoException {
 		try {
-			String updateStatus = " UPDATE  osp_professional opp"
+			String updateStatus = " UPDATE  OSP_PROFESSIONAL opp"
 			+ "  SET opp."+AppConstants.USER_STATUS +"= ? ,"
-				   		+ "where up."+AppConstants.PROF_ID+" = ?";
+				   		+ "WHERE up."+AppConstants.PROF_ID+" = ?";
 				   		
 			int count = jdbcTemplate.update(updateStatus, new Object[] {param_id, professionalBean.getProf_id() });
 			if (count != 1) {
