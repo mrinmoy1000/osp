@@ -16,6 +16,7 @@
 	<bean id="configParamBean" class="com.flamingos.osp.bean.ConfigParamBean"
 		init-method="loadConfigParam"></bean>
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
+	<bean id="professionalBean" class="com.flamingos.osp.bean.OspProfessionalBean"></bean>
 	
 
 	<!-- Properties File -->
@@ -24,7 +25,7 @@
 		<property name="locations">
 			<list>
 				<value>/WEB-INF/classes/queryList.properties</value>
-				<value>file:${CATALINA_HOME}/conf/osp.properties</value>
+				<value>file:${CATLINA_HOME}/conf/osp.properties</value>
 			</list>
 		</property>
 	</bean>
