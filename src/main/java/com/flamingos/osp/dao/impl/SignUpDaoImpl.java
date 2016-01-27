@@ -6,7 +6,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,6 +16,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.SignUpDao;
@@ -46,7 +49,8 @@ public class SignUpDaoImpl implements SignUpDao {
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("username", userName);
 
-      return namedJdbcTemplate.queryForObject(userNameSql, paramMap, new RowMapper<UserDTO>() {
+    try
+    {return namedJdbcTemplate.queryForObject(userNameSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
           user.setUserId(rs.getLong(AppConstants.RECORD_ID));
@@ -59,6 +63,11 @@ public class SignUpDaoImpl implements SignUpDao {
           return user;
         }
       });
+    }catch(EmptyResultDataAccessException e)
+    {
+    	return null;
+    	
+    }
 
     
   }
@@ -70,7 +79,7 @@ public class SignUpDaoImpl implements SignUpDao {
     Map<String, Long> paramMap = new HashMap<String, Long>();
     paramMap.put("contact", contact);
 
-      return namedJdbcTemplate.queryForObject(contactSql, paramMap, new RowMapper<UserDTO>() {
+     try{ return namedJdbcTemplate.queryForObject(contactSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
           user.setUserId(rs.getLong(AppConstants.RECORD_ID));
@@ -82,34 +91,47 @@ public class SignUpDaoImpl implements SignUpDao {
 
           return user;
         }
-      });
+      });  }catch(EmptyResultDataAccessException e)
+      {
+      	return null;
+      	
+      }
 
   
   }
 
-  @Override
-  public UserDTO findByEmailAddress(String email) throws OSPBusinessException {
+	@Override
+	public UserDTO findByEmailAddress(String email) throws OSPBusinessException {
 
-    String emailSql = getUserSql + AppConstants.EMAIL + "=:email";
-    Map<String, String> paramMap = new HashMap<String, String>();
-    paramMap.put("email", email);
+		String emailSql = getUserSql + AppConstants.EMAIL + "=:email";
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("email", email);
+		try {
+			return namedJdbcTemplate.queryForObject(emailSql, paramMap,
+					new RowMapper<UserDTO>() {
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+							user.setUserName(rs
+									.getString(AppConstants.USER_NAME));
+							user.setUserPass(rs
+									.getString(AppConstants.PASSWORD));
+							user.setUserContact(rs
+									.getString(AppConstants.CONTACT_NUMBER));
+							user.setEmail(rs.getString(AppConstants.EMAIL));
+							user.setActivationStatus(rs
+									.getString(AppConstants.ACTIVATION_STATUS));
 
-      return namedJdbcTemplate.queryForObject(emailSql, paramMap, new RowMapper<UserDTO>() {
-        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-          UserDTO user = new UserDTO();
-          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-          user.setUserName(rs.getString(AppConstants.USER_NAME));
-          user.setUserPass(rs.getString(AppConstants.PASSWORD));
-          user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-          user.setEmail(rs.getString(AppConstants.EMAIL));
-          user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
+							return user;
+						}
+					});
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 
-          return user;
-        }
-      });
+		}
 
-
-  }
+	}
 
   @Override
   public void createNewUser(UserBean user, int emailExpireTime, int smsExpireTime)

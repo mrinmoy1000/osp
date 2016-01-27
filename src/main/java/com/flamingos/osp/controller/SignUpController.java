@@ -39,9 +39,7 @@ public class SignUpController {
               AppConstants.PARAM_NAME_PROFESSIONAL);
 
       RoleBean oRoleProfessional = configParamBean.getRoleByName(AppConstants.ROLE_ADMINISTRATOR);
-
       userBean.setRecordType(oParamProfessional.getParameterid());
-
       userBean.setRoleId(oRoleProfessional.getRoleId());;
 
       userDto = signUpService.createUser(userBean, request);

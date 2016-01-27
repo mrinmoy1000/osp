@@ -116,7 +116,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       String emailSql =
           "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN " + " acc  where" + " up."
               + AppConstants.USER_NAME + "= :user_name and " + " acc." + AppConstants.UUID
-              + "=:UUID and" + " and  acc." + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
+              + "=:UUID and" + "  acc." + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
               + " and  acc." + AppConstants.RECORD_ID + "= up." + AppConstants.RECORD_ID;
       Map<String, Object> paramMap = new HashMap<String, Object>();
       paramMap.put("user_name", user.getUserName());

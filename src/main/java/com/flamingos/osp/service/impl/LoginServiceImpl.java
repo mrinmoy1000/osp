@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dao.SignUpDao;
@@ -13,8 +14,10 @@ import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
+import com.flamingos.osp.service.EmailService;
 import com.flamingos.osp.service.LoginService;
 import com.flamingos.osp.util.EncoderDecoderUtil;
+
 import java.util.UUID;
 
 @Service
@@ -26,6 +29,8 @@ public class LoginServiceImpl implements LoginService {
   SignUpDao signUpDao;
   @Autowired
   EncoderDecoderUtil encDecUtil;
+  @Autowired
+  EmailService emailService;
 
   @Value("${fup.expire.time}")
   private int fupExpireTime;
@@ -85,6 +90,7 @@ public class LoginServiceImpl implements LoginService {
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath() + "/verifyForgotPassword?username=" + encryptedUserName
             + "&UUID=" + userBean.getFupUUID();
+    emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(),linkTobeSend,"Forgot Password Link",userBean.getUserName());
     return linkTobeSend;
   }
 

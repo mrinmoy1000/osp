@@ -40,7 +40,8 @@ public class LoginDaoImpl implements LoginDao {
                 public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
                     UserDTO user = new UserDTO();
                     user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-                    user.setUserName(AppConstants.USER_NAME);
+                    user.setUserPass(rs.getString(AppConstants.PASSWORD));
+                    user.setUserName(rs.getString(AppConstants.USER_NAME));
                     user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
                     user.setEmail(rs.getString(AppConstants.EMAIL));
                     user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));

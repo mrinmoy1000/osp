@@ -117,8 +117,7 @@ public class SignUpServiceImpl implements SignUpService {
                 = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
                 + request.getContextPath() + "/verifyEmail?username=" + encryptedUserName + "&UUID="
                 + Uuid;
-    // emailService.sendMail("REGISTRATION_MAIL", userBean.getEmail(),
-        // linkTobeSend,"Registration Email");
+   emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(),linkTobeSend,"Registration Email",userBean.getUserName());
         logger.debug("Email sent... ");
         return linkTobeSend;
 
@@ -130,11 +129,8 @@ public class SignUpServiceImpl implements SignUpService {
         logger.debug("sending SMS... ");
         String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
         String Uuid = userBean.getSmsUUID();
-        String linkTobeSend
-                = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="
-                + Uuid;
-        // smsService.sendSms(String.valueOf(userBean.getContactNumber()), linkTobeSend);
+        String linkTobeSend = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="+ Uuid;
+        smsService.sendSms(String.valueOf(userBean.getContactNumber()),"EMAIL_VERIFY", linkTobeSend);
         logger.debug("SMS SENT  ... ");
         return linkTobeSend;
 
