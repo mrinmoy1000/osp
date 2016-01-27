@@ -372,7 +372,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       Number generateProfKey = simpleInsert.executeAndReturnKey(professionalDetailsMap);
 
 
-      Map<String, Object> addressMap = new HashMap<String, Object>();
+     /* Map<String, Object> addressMap = new HashMap<String, Object>();
       addressMap.put("LOCATION_ID", professionalBean.getAddress().getLocationId());
       addressMap.put("OTHER_AREA", professionalBean.getAddress().getOtherArea());
       addressMap.put("LINE_1", professionalBean.getAddress().getLine1());
@@ -422,10 +422,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       OspProfContactMap.put("CONTACT_ID", professionalBean.getAddress().getAddressId());
       OspProfContactMap.put("ACTIVE_STATUS", 1);
 
-      namedJdbcTemplate.update(insertOspProfContactMap, OspProfContactMap);
+      namedJdbcTemplate.update(insertOspProfContactMap, OspProfContactMap);*/
 
 
-      return 0;
+      return generateProfKey.intValue();
     } catch (RuntimeException exp) {
       throw new OspDaoException(exp);
     }
