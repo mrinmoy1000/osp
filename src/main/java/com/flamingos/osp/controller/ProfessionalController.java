@@ -13,14 +13,14 @@ import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.service.ProfessionalService;
 
 @RestController
-@RequestMapping("/professional")
 public class ProfessionalController {
 
     private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 
     @Autowired
     ProfessionalService profService;
-    @RequestMapping(produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
+    
+    @RequestMapping(value = "/addProfessional",produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> addProfile(@RequestBody OspProfessionalBean professionalBean,
 			HttpServletRequest request) throws Exception {
 		String successMessage = profService.addProfile(professionalBean, request);		
@@ -28,7 +28,7 @@ public class ProfessionalController {
 		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
 	}
     
-    @RequestMapping(produces = "application/json", method = RequestMethod.PUT, consumes = "application/json")
+    @RequestMapping(value = "/approveProfile",produces = "application/json", method = RequestMethod.PUT, consumes = "application/json")
    	public ResponseEntity<String> approveProfile(@RequestBody OspProfessionalBean professionalBean,
    			HttpServletRequest request) throws Exception {
    		String successMessage = profService.approveProfile(professionalBean, request);		
