@@ -5,6 +5,6 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ContactDao {
 
-  public int addContact(OspProfessionalBean professionalBean) throws OspDaoException;
+  public void addContact(OspProfessionalBean professionalBean) throws OspDaoException;
 
 }

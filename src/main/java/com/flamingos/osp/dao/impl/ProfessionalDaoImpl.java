@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -27,7 +28,6 @@ import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
 
 @Repository
-@Transactional(propagation = Propagation.REQUIRED)
 public class ProfessionalDaoImpl implements ProfessionalDao {
 
   @Autowired
@@ -339,40 +339,40 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       throw new OspDaoException(exp);
     }
   }
-
-  @Transactional
+  
   @Override
   public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException {
-    String sql="INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
+    String sql =
+        "INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
     try {
-          GeneratedKeyHolder generatedKeyHolder=new GeneratedKeyHolder();
-          MapSqlParameterSource namedParameters =new MapSqlParameterSource();          
-          namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
-          namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
-          namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
-          namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
-          namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
-          namedParameters.addValue("PROF_DOB", new Date());
-          namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
-          namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
-          namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
-          namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
-          namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY",new Date());
-          namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
-          namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
-          namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
-          namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
-          namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
-          namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
-          namedParameters.addValue("STATUS", professionalBean.getStatus());
-          namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
-          namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
-          
-          namedJdbcTemplate.update(sql,namedParameters,generatedKeyHolder);
-          
-          professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
-          return professionalBean.getProfId();    
-    } catch (RuntimeException exp) {
+      GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+      MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+      namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
+      namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
+      namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
+      namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
+      namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
+      namedParameters.addValue("PROF_DOB", new Date());
+      namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
+      namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
+      namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
+      namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
+      namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY", new Date());
+      namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
+      namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
+      namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
+      namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
+      namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
+      namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
+      namedParameters.addValue("STATUS", professionalBean.getStatus());
+      namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
+      namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
+
+      namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
+
+      professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+      return professionalBean.getProfId();
+    } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
     }
   }
@@ -390,8 +390,8 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       if (count != 1) {
         throw new OspDaoException();
       }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException();
+    } catch (EmptyResultDataAccessException exp) {
+      throw new OspDaoException(exp);
     }
 
 

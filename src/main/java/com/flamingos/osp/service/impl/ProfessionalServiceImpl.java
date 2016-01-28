@@ -2,29 +2,59 @@ package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.dao.AddressDao;
+import com.flamingos.osp.dao.ContactDao;
+import com.flamingos.osp.dao.ExperienceBeanDao;
+import com.flamingos.osp.dao.ProfAcademicsBeanDao;
+import com.flamingos.osp.dao.ProfAddressMapDao;
+import com.flamingos.osp.dao.ProfContactMapDao;
+import com.flamingos.osp.dao.ProfSpecializationDao;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ProfessionalService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
+@Transactional(propagation = Propagation.REQUIRED)
 @Service
 public class ProfessionalServiceImpl implements ProfessionalService {
 
   @Autowired
   ProfessionalDao profDao;
+  @Autowired
+  ContactDao contactDao;
+  @Autowired
+  AddressDao addressDao;
+  @Autowired
+  ProfAcademicsBeanDao academicsDao;
+  @Autowired
+  ProfSpecializationDao specializationDao;
+  @Autowired
+  ExperienceBeanDao experienceDao;
+  @Autowired
+  ProfAddressMapDao addressMapDao;
+  @Autowired
+  ProfContactMapDao contactMapDao;
+  
+  
 
   private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
@@ -163,26 +193,33 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
   @Override
   public String addProfile(OspProfessionalBean professional, HttpServletRequest request)
-      throws OspServiceException {
+      throws OSPBusinessException {
     try {
       profDao.addProfile(professional);
-    } catch (OspDaoException ex) {
-      throw new OspServiceException(ex);
+      contactDao.addContact(professional);
+      addressDao.addAddress(professional);
+      addressMapDao.addAddressMap(professional);
+      contactMapDao.addContactMap(professional);      
+      academicsDao.addAcademics(professional.getQualificationList());
+      specializationDao.addSpecializations(professional.getSpecializationList());
+      experienceDao.addExperience(professional.getExperienceList());      
+    } catch (Exception ex) {
+      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
     }
     return null;
   }
 
   @Override
   public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
-      throws OspServiceException {
+      throws OSPBusinessException {
     // TODO Auto-generated method stub
     userStatusBean =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
             AppConstants.PARAM_NAME_INITIAL);
     try {
       profDao.approveProfile(professional, 1);
-    } catch (OspDaoException ex) {
-      throw new OspServiceException(ex);
+    } catch (Exception ex) {
+      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
 
     }
 

@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfAcademicsBean;
 import com.flamingos.osp.dao.ProfAcademicsBeanDao;
 import com.flamingos.osp.exception.OspDaoException;
-
+@Repository
 public class ProfAcademicsBeanDaoImpl implements ProfAcademicsBeanDao {
 
   @Autowired
@@ -37,7 +39,7 @@ public class ProfAcademicsBeanDaoImpl implements ProfAcademicsBeanDao {
     }
     try {
       jdbcTemplate.batchUpdate(query, inputList);
-    } catch (RuntimeException exp) {
+    } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
     }
 

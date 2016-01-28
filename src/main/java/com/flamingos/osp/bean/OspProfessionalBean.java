@@ -42,6 +42,7 @@ public class OspProfessionalBean implements Serializable {
   public Date updatedTs;
   public String createdBy;
   public String updatedBy;
+  
   public int getProfId() {
     return profId;
   }

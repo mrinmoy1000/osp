@@ -6,7 +6,7 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface AddressDao {
 	
-	public int addAddress(OspProfessionalBean professionalBean)
+	public void addAddress(OspProfessionalBean professionalBean)
 			throws OspDaoException;
 
 }

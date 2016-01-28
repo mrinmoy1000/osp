@@ -6,12 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspExperienceBean;
 import com.flamingos.osp.dao.ExperienceBeanDao;
 import com.flamingos.osp.exception.OspDaoException;
-
+@Repository
 public class ExperienceBeanDaoImpl implements ExperienceBeanDao {
   @Autowired
   private JdbcTemplate jdbcTemplate;
@@ -36,7 +38,7 @@ public class ExperienceBeanDaoImpl implements ExperienceBeanDao {
     }
     try {
       jdbcTemplate.batchUpdate(query, inputList);
-    } catch (RuntimeException exp) {
+    } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
     }
   }

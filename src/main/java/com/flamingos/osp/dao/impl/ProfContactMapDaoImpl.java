@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfContactMapDao;
 import com.flamingos.osp.exception.OspDaoException;
-
+@Repository
 public class ProfContactMapDaoImpl implements ProfContactMapDao {
   @Autowired
   private NamedParameterJdbcTemplate namedJdbcTemplate;
@@ -27,7 +29,7 @@ public class ProfContactMapDaoImpl implements ProfContactMapDao {
     try {
 
       namedJdbcTemplate.update(insertOspProfContactMap, OspProfContactMap);
-    } catch (RuntimeException exp) {
+    } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
     }
   }

@@ -1,10 +1,11 @@
 package com.flamingos.osp.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class OspProfSpecializationBean {
+public class OspProfSpecializationBean implements Serializable{
 
   private static final Logger logger = Logger.getLogger(OspProfSpecializationBean.class);
   private static final long serialVersionUID = 1L;
