@@ -11,8 +11,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
+import com.flamingos.osp.util.AppConstants;
 
 @Repository
 @Transactional(propagation = Propagation.REQUIRED)
@@ -342,90 +343,35 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
   @Transactional
   @Override
   public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+    String sql="INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
     try {
-
-      Map<String, Object> professionalDetailsMap = new HashMap<String, Object>();
-      professionalDetailsMap.put("RECORD_ID", professionalBean.getRecordId());
-      professionalDetailsMap.put("PROF_FIRST_NAME", professionalBean.getProfFirstName());
-      professionalDetailsMap.put("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
-      professionalDetailsMap.put("PROF_LAST_NAME", professionalBean.getProfLastName());
-      professionalDetailsMap.put("PROF_EMP_ID", professionalBean.getProfEmpId());
-      professionalDetailsMap.put("PROF_DOB", professionalBean.getProfDob());
-      professionalDetailsMap.put("PROF_GENDER", professionalBean.getProfGender());
-      professionalDetailsMap.put("PROF_NATIONALITY", professionalBean.getProfNationality());
-      professionalDetailsMap.put("PROF_PAN", professionalBean.getProfPan());
-      professionalDetailsMap.put("PROF_MERITGAL_STATUS", professionalBean.getProfMeritalStatus());
-      professionalDetailsMap.put("PROF_MERRIAGE_ANNIVERSARY",
-          professionalBean.getProfMerriageAnniversary());
-      professionalDetailsMap.put("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
-      professionalDetailsMap.put("PROF_SIGNATURE", professionalBean.getProfSignature());
-      professionalDetailsMap.put("PROF_SUBSC_ID", professionalBean.getProfSubscId());
-      professionalDetailsMap.put("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
-      professionalDetailsMap.put("PROF_FEES", professionalBean.getProfFees());
-      professionalDetailsMap.put("PROF_REMARK", professionalBean.getProfRemark());
-      professionalDetailsMap.put("STATUS", professionalBean.getStatus());
-      professionalDetailsMap.put("CREATED_TS", new Timestamp(new Date().getTime()));
-      professionalDetailsMap.put("CREATED_BY", professionalBean.getCreatedBy());
-      SimpleJdbcInsert simpleInsert =
-          new SimpleJdbcInsert(jdbcTemplate).withTableName("OSP_PROFESSIONAL")
-              .usingGeneratedKeyColumns("PROF_ID");
-      Number generateProfKey = simpleInsert.executeAndReturnKey(professionalDetailsMap);
-
-
-     /* Map<String, Object> addressMap = new HashMap<String, Object>();
-      addressMap.put("LOCATION_ID", professionalBean.getAddress().getLocationId());
-      addressMap.put("OTHER_AREA", professionalBean.getAddress().getOtherArea());
-      addressMap.put("LINE_1", professionalBean.getAddress().getLine1());
-      addressMap.put("LINE_2", professionalBean.getAddress().getLine2());
-      addressMap.put("ACTIVE_STATUS", professionalBean.getAddress().getActiveStatus());
-      addressMap.put("CREATED_TS", new Timestamp(new Date().getTime()));
-      addressMap.put("CREATED_BY", professionalBean.getAddress().getCreatedBy());
-      simpleInsert =
-          new SimpleJdbcInsert(jdbcTemplate).withTableName("OSP_ADDRESS").usingGeneratedKeyColumns(
-              "ADDRESS_ID");
-      Number generateAddressId = simpleInsert.executeAndReturnKey(addressMap);
-
-
-      Map<String, Object> contactMap = new HashMap<String, Object>();
-      contactMap.put("CONTACT_TYPE", professionalBean.getContact().getContactType());
-      contactMap.put("CONTACT_PHONE", professionalBean.getContact().getContactPhone());
-      contactMap.put("CONTACT_EMAIL", professionalBean.getContact().getContactEmail());
-      contactMap.put("ACTIVE_STATUS", professionalBean.getContact().getActiveStatus());
-      contactMap.put("CREATED_TS", new Timestamp(new Date().getTime()));
-      contactMap.put("CREATED_BY", professionalBean.getContact().getCreatedBy());
-      simpleInsert =
-          new SimpleJdbcInsert(jdbcTemplate).withTableName("OSP_CONTACT").usingGeneratedKeyColumns(
-              "CONTACT_ID");
-      Number generateContactId = simpleInsert.executeAndReturnKey(contactMap);
-
-
-      professionalBean.setProfId((Integer) generateProfKey);
-      professionalBean.getAddress().setAddressId((Integer) generateAddressId);
-      professionalBean.getContact().setContactId((Integer) generateContactId);
-
-
-      String insertOspProfAddressMap =
-          "INSERT INTO OSP_PROF_ACCESS_MAP VALUES (:PROF_ID," + ":ADDRESS_ID," + ":ACTIVE_STATUS)";
-
-      Map<String, Object> OspProfAddrssMap = new HashMap<String, Object>();
-      OspProfAddrssMap.put("PROF_ID", professionalBean.getProfId());
-      OspProfAddrssMap.put("ADDRESS_ID", professionalBean.getAddress().getAddressId());
-      OspProfAddrssMap.put("ACTIVE_STATUS", 1);
-
-      namedJdbcTemplate.update(insertOspProfAddressMap, OspProfAddrssMap);
-
-      String insertOspProfContactMap =
-          "INSERT INTO OSP_PROF_ACCESS_MAP VALUES (:PROF_ID," + ":CONTACT_ID," + ":ACTIVE_STATUS)";
-
-      Map<String, Object> OspProfContactMap = new HashMap<String, Object>();
-      OspProfContactMap.put(AppConstants.PROF_ID, professionalBean.getProfId());
-      OspProfContactMap.put("CONTACT_ID", professionalBean.getAddress().getAddressId());
-      OspProfContactMap.put("ACTIVE_STATUS", 1);
-
-      namedJdbcTemplate.update(insertOspProfContactMap, OspProfContactMap);*/
-
-
-      return generateProfKey.intValue();
+          GeneratedKeyHolder generatedKeyHolder=new GeneratedKeyHolder();
+          MapSqlParameterSource namedParameters =new MapSqlParameterSource();          
+          namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
+          namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
+          namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
+          namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
+          namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
+          namedParameters.addValue("PROF_DOB", new Date());
+          namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
+          namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
+          namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
+          namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
+          namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY",new Date());
+          namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
+          namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
+          namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
+          namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
+          namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
+          namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
+          namedParameters.addValue("STATUS", professionalBean.getStatus());
+          namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
+          namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
+          
+          namedJdbcTemplate.update(sql,namedParameters,generatedKeyHolder);
+          
+          professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+          return professionalBean.getProfId();    
     } catch (RuntimeException exp) {
       throw new OspDaoException(exp);
     }
