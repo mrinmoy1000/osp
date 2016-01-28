@@ -39,6 +39,8 @@ public class UserDTO {
 	private String returnStatus;
 	
 	private String returnMessage;
+	
+	private int  typeId;
 
 	public String getReturnStatus() {
 		return returnStatus;
@@ -168,6 +170,14 @@ public class UserDTO {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(int typeId) {
+		this.typeId = typeId;
 	}
 	
 	

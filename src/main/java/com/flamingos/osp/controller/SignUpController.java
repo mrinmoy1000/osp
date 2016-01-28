@@ -53,28 +53,27 @@ public class SignUpController {
     } catch (OSPBusinessException exp) {
       userDto.setReturnStatus("fail");
       userDto.setReturnMessage(exp.getMessage());
+  //	logger.error("Error in  verify login"+this.getClass(),exp);
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
     }
 
   }
 
-  @RequestMapping(value = "/checkUser", produces = "application/json", method = RequestMethod.POST,
-      consumes = "application/json")
-  public ResponseEntity<UserDTO> checkUserName(@RequestBody UserBean userBean) throws Exception {
-    UserDTO userDto = new UserDTO();
-    try {
+	@RequestMapping(value = "/checkUser", produces = "application/json", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<UserDTO> checkUserName(@RequestBody UserBean userBean)
+			throws Exception {
+		UserDTO userDto = new UserDTO();
+		try {
+			userDto = signUpService.checkUserName(userBean);
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
 
-      String returnMessage = signUpService.checkUserName(userBean);
-      userDto.setReturnStatus(returnMessage);
-      return new ResponseEntity<UserDTO>(userDto, HttpStatus.FOUND);
+		} catch (OSPBusinessException exp) {
+			userDto.setReturnStatus(AppConstants.FAILURE);
+			userDto.setReturnMessage(exp.getMessage());
+			return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
+		}
 
-    } catch (OspServiceException exp) {
-      userDto.setReturnStatus("fail");
-      userDto.setReturnMessage(exp.getMessage());
-      return new ResponseEntity<UserDTO>(userDto, HttpStatus.NOT_FOUND);
-    }
-
-  }
+	}
 
   public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) {
     return new ResponseEntity<String>("success", HttpStatus.CREATED);

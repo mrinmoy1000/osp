@@ -5,14 +5,19 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +31,13 @@ import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
 
-@Transactional(propagation = Propagation.REQUIRED)
 @Repository
 public class SignUpDaoImpl implements SignUpDao {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;
   @Autowired
-  private NamedParameterJdbcTemplate namedJdbcTemplate;
+  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
   @Autowired
   private ConfigParamBean configParamBean;
@@ -44,13 +48,13 @@ public class SignUpDaoImpl implements SignUpDao {
       + AppConstants.ACTIVATION_STATUS + " FROM OSP_USER_CREDENTIAL WHERE ";
 
   @Override
-  public UserDTO findByUserName(String userName) throws OSPBusinessException {
+  public UserDTO findByUserName(String userName) throws OspDaoException {
     String userNameSql = getUserSql + AppConstants.USER_NAME + "=:username";
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("username", userName);
 
     try
-    {return namedJdbcTemplate.queryForObject(userNameSql, paramMap, new RowMapper<UserDTO>() {
+    {return namedParameterJdbcTemplate.queryForObject(userNameSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
           user.setUserId(rs.getLong(AppConstants.RECORD_ID));
@@ -79,7 +83,7 @@ public class SignUpDaoImpl implements SignUpDao {
     Map<String, Long> paramMap = new HashMap<String, Long>();
     paramMap.put("contact", contact);
 
-     try{ return namedJdbcTemplate.queryForObject(contactSql, paramMap, new RowMapper<UserDTO>() {
+     try{ return namedParameterJdbcTemplate.queryForObject(contactSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
           user.setUserId(rs.getLong(AppConstants.RECORD_ID));
@@ -107,7 +111,7 @@ public class SignUpDaoImpl implements SignUpDao {
 		Map<String, String> paramMap = new HashMap<String, String>();
 		paramMap.put("email", email);
 		try {
-			return namedJdbcTemplate.queryForObject(emailSql, paramMap,
+			return namedParameterJdbcTemplate.queryForObject(emailSql, paramMap,
 					new RowMapper<UserDTO>() {
 						public UserDTO mapRow(ResultSet rs, int rowNum)
 								throws SQLException {
@@ -135,35 +139,38 @@ public class SignUpDaoImpl implements SignUpDao {
 
   @Override
   public void createNewUser(UserBean user, int emailExpireTime, int smsExpireTime)
-      throws OSPBusinessException {
-    Map<String, Object> userDetailsMap = new HashMap<String, Object>();
-    userDetailsMap.put(AppConstants.USER_NAME, user.getUserName());
-    userDetailsMap.put(AppConstants.ROLE_ID, user.getRoleId());
-    userDetailsMap.put(AppConstants.RECORD_ID, 0);
-    userDetailsMap.put(AppConstants.RECORD_TYPE, user.getRecordType());// TODO Why 12 was hard
-                                                                            // coded value?
-    userDetailsMap.put(AppConstants.PASSWORD, user.getPassword());
-    // userDetailsMap.put(AppConstants.SALT, "salt");
-    userDetailsMap.put(AppConstants.CARD_EXPIRY_DATE, new Timestamp(new Date().getTime()));
-    userDetailsMap.put(AppConstants.NO_OF_ATTEMPTS, 0);
-    userDetailsMap.put(AppConstants.EMAIL_VERIFIED, 0);
-    userDetailsMap.put(AppConstants.SMS_VERIFIED, 0);
-    userDetailsMap.put(AppConstants.ACTIVATION_STATUS, 0);
-    userDetailsMap.put(AppConstants.CREATED_BY, user.getUserName());
-    userDetailsMap.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
-    userDetailsMap.put(AppConstants.UPDATE_BY, null);
-    userDetailsMap.put(AppConstants.UPDATE_TS, null);
-    userDetailsMap.put(AppConstants.CONTACT_NUMBER, user.getContactNumber());
-    userDetailsMap.put(AppConstants.EMAIL, user.getEmail());
-    userDetailsMap.put(AppConstants.FIRST_NAME, user.getFirstName());
-    userDetailsMap.put(AppConstants.MIDDLE_NAME, user.getMiddleName());
-    userDetailsMap.put(AppConstants.LAST_NAME, user.getLastName());
-    userDetailsMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
-    SimpleJdbcInsert simpleInsert =
-        new SimpleJdbcInsert(jdbcTemplate).withTableName("OSP_USER_CREDENTIAL")
-            .usingGeneratedKeyColumns("RECORD_ID");
-    Number generateKey = simpleInsert.executeAndReturnKey(userDetailsMap);
-    long getInsertedUser = (Long) generateKey;
+      throws OspDaoException {
+	  
+	  String sql="INSERT INTO OSP_USER_CREDENTIAL"
+	  		+ "      (USER_NAME,RECORD_ID,ROLE_ID,RECORD_TYPE,USER_CRED,USER_FIRST_NAME,USER_MIDDLE_NAME,USER_LAST_NAME,USER_REG_EMAIL,USER_REG_PHONE,CRED_EXPIRY_DATE,NO_OF_ATTEMPTS,EMAIL_VERYFIED,SMS_VERIFIED,ACTIVATION_STATUS,LAST_LOGIN_TS,CREATED_BY,CREATED_TS,UPDATED_BY,UPDATED_TS) "
+	  		+ "VALUES(:USER_NAME,:RECORD_ID,:ROLE_ID, :RECORD_TYPE, :USER_CRED, :USER_FIRST_NAME, :USER_MIDDLE_NAME, :USER_LAST_NAME,:USER_REG_EMAIL,:USER_REG_PHONE, :CRED_EXPIRY_DATE, :NO_OF_ATTEMPTS, :EMAIL_VERYFIED, :SMS_VERIFIED, :ACTIVATION_STATUS,  :LAST_LOGIN_TS, :CREATED_BY, :CREATED_TS, :UPDATED_BY, :UPDATED_TS )";
+ 
+    MapSqlParameterSource userDetailsMap = new MapSqlParameterSource();
+    userDetailsMap.addValue(AppConstants.USER_NAME, user.getUserName());
+    userDetailsMap.addValue(AppConstants.RECORD_ID, user.getId());
+    userDetailsMap.addValue(AppConstants.ROLE_ID, user.getRoleId());
+    userDetailsMap.addValue(AppConstants.RECORD_TYPE, user.getRecordType());
+    userDetailsMap.addValue(AppConstants.PASSWORD, user.getPassword());
+    userDetailsMap.addValue(AppConstants.FIRST_NAME, user.getFirstName());
+    userDetailsMap.addValue(AppConstants.MIDDLE_NAME, user.getMiddleName());
+    userDetailsMap.addValue(AppConstants.LAST_NAME, user.getLastName());
+    userDetailsMap.addValue(AppConstants.EMAIL, user.getEmail());
+    userDetailsMap.addValue(AppConstants.CONTACT_NUMBER, user.getContactNumber());
+    userDetailsMap.addValue(AppConstants.CARD_EXPIRY_DATE, new Timestamp(new Date().getTime()));
+    userDetailsMap.addValue(AppConstants.NO_OF_ATTEMPTS, 0);
+    userDetailsMap.addValue(AppConstants.EMAIL_VERIFIED, 0);
+    userDetailsMap.addValue(AppConstants.SMS_VERIFIED, 0);
+    userDetailsMap.addValue(AppConstants.ACTIVATION_STATUS, 0);
+    userDetailsMap.addValue(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
+    userDetailsMap.addValue(AppConstants.CREATED_BY, user.getUserName());
+    userDetailsMap.addValue(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
+    userDetailsMap.addValue(AppConstants.UPDATE_BY, null);
+    userDetailsMap.addValue(AppConstants.UPDATE_TS, null);
+      
+    KeyHolder key = new GeneratedKeyHolder();
+    namedParameterJdbcTemplate.update(sql,userDetailsMap,key);
+    long getInsertedUser = (Long)key.getKey();
+    
       String insertAccessToken =
           "INSERT INTO OSP_ACCESS_TOKEN VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
               + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
@@ -185,7 +192,7 @@ public class SignUpDaoImpl implements SignUpDao {
       accessTokenMapforEmail.put(AppConstants.UPDATE_TS, null);
       accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
       accessTokenMapforEmail.put(AppConstants.UPDATE_BY, null);
-      namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
+      namedParameterJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
       ConfigParamDto oParamSMSChannel =
           configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
               AppConstants.PARAM_NAME_SMS);
@@ -200,7 +207,7 @@ public class SignUpDaoImpl implements SignUpDao {
       accessTokenMapforSms.put(AppConstants.UPDATE_TS, null);
       accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());
       accessTokenMapforSms.put(AppConstants.UPDATE_BY, null);
-      namedJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
+      namedParameterJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
   }
 
   @Override
@@ -218,7 +225,7 @@ public class SignUpDaoImpl implements SignUpDao {
 
     try {
 
-      return namedJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
+      return namedParameterJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
           user.setUserId(rs.getLong(AppConstants.PROF_ID));

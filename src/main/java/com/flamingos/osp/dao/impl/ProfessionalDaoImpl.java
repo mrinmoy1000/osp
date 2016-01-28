@@ -42,76 +42,61 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 
   @Override
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
-    try {
       String updateEmailStatusSql =
-          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET up."
-              + AppConstants.ACTIVATION_STATUS + "= ? ," + " up." + AppConstants.EMAIL_VERIFIED
-              + " = ? " + " , up." + AppConstants.LOGIN_TS + " = ? " + " , acc."
-              + AppConstants.TOKEN_EXPIRY_DT + " = ? " + " where up." + AppConstants.USER_NAME
-              + " = ? " + " and acc." + AppConstants.UUID + " = ? " + " and  up."
-              + AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
-      int count =
-          jdbcTemplate.update(
-              updateEmailStatusSql,
-              new Object[] {user.getActiveStatus(), user.getEmailVerified(),
-                  new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()),
-                  user.getUserName(), user.getEmailUUID()
-
-              });
-      if (count < 1) {
-        throw new OspDaoException();
-      }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-    }
+   	          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET "
+   	              + " up." + AppConstants.ACTIVATION_STATUS + "= :"+AppConstants.ACTIVATION_STATUS
+   	              +" up." + AppConstants.EMAIL_VERIFIED + " = :"+AppConstants.EMAIL_VERIFIED 
+   	              + " , up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS  
+   	        	  + " , acc." + AppConstants.TOKEN_EXPIRY_DT + " = :"+AppConstants.TOKEN_EXPIRY_DT  
+   	              + " where up." + AppConstants.USER_NAME + " = :"+AppConstants.USER_NAME 
+   	        	  + " and acc." + AppConstants.UUID + " = :"+AppConstants.UUID  
+   	              + " and  up."+ AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
+     Map<String, Object> paramMap = new HashMap<String, Object>();
+     paramMap.put(AppConstants.ACTIVATION_STATUS, access.getActiveIndicator());
+     paramMap.put(AppConstants.EMAIL_VERIFIED, user.getEmailVerified());
+     paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));     
+     paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
+     paramMap.put(AppConstants.USER_NAME, user.getUserName()); 
+     paramMap.put(AppConstants.UUID, user.getSmsUUID()); 
+     namedJdbcTemplate.update(updateEmailStatusSql,paramMap);
   }
 
   @Override
   public void smsUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
-    try {
       String updateSmsStatusSql =
-          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET up."
-              + AppConstants.ACTIVATION_STATUS + "= ? ," + "   up." + AppConstants.SMS_VERIFIED
-              + " = ? , " + " up." + AppConstants.LOGIN_TS + " = ?, " + " acc."
-              + AppConstants.TOKEN_EXPIRY_DT + " =  ?" + "  where up." + AppConstants.USER_NAME
-              + " = ?" + " and acc." + AppConstants.UUID + " = ? "
-
-              + " and  up." + AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
-      int count =
-          jdbcTemplate.update(
-              updateSmsStatusSql,
-              new Object[] {user.getActiveStatus(), user.getSmsVerfied(),
-                  new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime()),
-                  user.getUserName(), user.getSmsUUID()
-
-              });
-      if (count < 1) {
-        throw new OspDaoException();
-      }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-    }
+	          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET "
+	        		   + " up." + AppConstants.ACTIVATION_STATUS + "= :"+AppConstants.ACTIVATION_STATUS
+	    	              +" up." + AppConstants.SMS_VERIFIED + " = :"+AppConstants.SMS_VERIFIED 
+	    	              + " , up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS  
+	    	        	  + " , acc." + AppConstants.TOKEN_EXPIRY_DT + " = :"+AppConstants.TOKEN_EXPIRY_DT  
+	    	              + " where up." + AppConstants.USER_NAME + " = :"+AppConstants.USER_NAME 
+	    	        	  + " and acc." + AppConstants.UUID + " = :"+AppConstants.UUID  
+	    	              + " and  up."+ AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
+  Map<String, Object> paramMap = new HashMap<String, Object>();
+  paramMap.put(AppConstants.ACTIVATION_STATUS, access.getActiveIndicator());
+  paramMap.put(AppConstants.EMAIL_VERIFIED, user.getSmsVerfied());
+  paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));     
+  paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
+  paramMap.put(AppConstants.USER_NAME, user.getUserName()); 
+  paramMap.put(AppConstants.UUID, user.getSmsUUID()); 
+  namedJdbcTemplate.update(updateSmsStatusSql,paramMap);
   }
 
   @Override
   public void FUPUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
-    try {
-      String updateEmailStatusSql =
-          " UPDATE OSP_ACCESS_TOKEN acc , osp_user_password up " + "  SET up."
-              + AppConstants.ACTIVATION_STATUS + " = ? ," + "  where up." + AppConstants.USER_NAME
-              + " = ? " + "  and acc." + AppConstants.UUID + " = ? " + " up."
-              + AppConstants.LOGIN_TS + " = ? " + " acc." + AppConstants.TOKEN_EXPIRY_DT + "= ?"
-              + "and  up." + AppConstants.RECORD_ID + " = acc." + AppConstants.USER_ID;
-      int count =
-          jdbcTemplate.update(updateEmailStatusSql,
-              new Object[] {access.getActiveIndicator(), user.getUserName(), user.getFupUUID(),
-                  new Timestamp(new Date().getTime()), new Timestamp(new Date().getTime())});
-      if (count != 1) {
-        throw new OspDaoException();
-      }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-    }
+    	 String updateEmailStatusSql =
+    	          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET "
+    	    	              + "  up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS  
+    	    	        	  + " , acc." + AppConstants.TOKEN_EXPIRY_DT + " = :"+AppConstants.TOKEN_EXPIRY_DT  
+    	    	              + " where up." + AppConstants.USER_NAME + " = :"+AppConstants.USER_NAME 
+    	    	        	  + " and acc." + AppConstants.UUID + " = :"+AppConstants.UUID  
+    	    	              + " and  up."+ AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
+      Map<String, Object> paramMap = new HashMap<String, Object>();
+      paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));     
+      paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
+      paramMap.put(AppConstants.USER_NAME, user.getUserName()); 
+      paramMap.put(AppConstants.UUID, user.getFupUUID()); 
+      namedJdbcTemplate.update(updateEmailStatusSql,paramMap);
   }
 
   @Override
@@ -184,7 +169,6 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
   @Override
   public UserDTO getUserLinkValidCheckForSms(UserBean user, AccessToken access)
       throws OspDaoException {
-    try {
       String emailSql =
           "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN " + " acc  where" + " up."
               + AppConstants.USER_NAME + "= :user_name and " + " acc." + AppConstants.UUID
@@ -208,42 +192,36 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
           return user;
         }
       });
-
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
   }
 
 
   @Override
-  public List<UserBean> getTokenCheck(UserBean user, AccessToken access) throws OspDaoException {
-    List<UserBean> userTokenList = null;
-    try {
+  public UserDTO getTokenCheck(UserBean user, AccessToken access) throws OspDaoException {
+    	 String emailSql =
+    	          "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN " + " acc ,OSP_PARAMETER param where" + " up."
+    	              + AppConstants.USER_NAME + "= :user_name and " + 
+                      " acc." + AppConstants.UUID+ "=:UUID " +
+    	              " and  acc." + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
+    	              + " and  acc." + AppConstants.RECORD_ID + "= up." + AppConstants.RECORD_ID
+    	              + " and  param.PARAM_ID = acc." + AppConstants.TYPE;
+    	      Map<String, Object> paramMap = new HashMap<String, Object>();
+    	      paramMap.put("user_name", user.getUserName());
+    	      paramMap.put("UUID", user.getSmsUUID());
+    	      paramMap.put("EXPIRY_DT", access.getExpireTime());
 
-      String getUserSql =
-          "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN acc , osp_parameter param"
-              + " where acc." + AppConstants.USER_ID + " = up." + AppConstants.RECORD_ID
-              + " and param." + AppConstants.PARAM_ID + " = acc." + AppConstants.TYPE + "and  up."
-              + AppConstants.USER_NAME + "= ? and " + " acc." + AppConstants.TOKEN_EXPIRY_DT
-              + " > ?";
-      Map<String, Object> paramMap = new HashMap<String, Object>();
-      paramMap.put("username", user.getUserName());
-      paramMap.put("EXPIRY_DT", new Date().getTime());
-      userTokenList = namedJdbcTemplate.query(getUserSql, paramMap, new RowMapper<UserBean>() {
-        public UserBean mapRow(ResultSet rs, int rowNum) throws SQLException {
-          UserBean user = new UserBean();
-          user.setTokenType(rs.getString(AppConstants.PARAM_VALUE));
-          user.setEmailVerified(rs.getInt(AppConstants.EMAIL_VERIFIED));
-          user.setSmsVerfied(rs.getInt(AppConstants.SMS_VERIFIED));
-          return user;
-        }
-      });
-
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-
-    }
-    return userTokenList;
+    	      return namedJdbcTemplate.queryForObject(emailSql, paramMap, new RowMapper<UserDTO>() {
+    	        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+    	          UserDTO user = new UserDTO();
+    	          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+    	          user.setUserName(rs.getString(AppConstants.USER_NAME));
+    	          user.setUserPass(rs.getString(AppConstants.PASSWORD));
+    	          user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
+    	          user.setEmail(rs.getString(AppConstants.EMAIL));
+    	          user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
+    	          user.setTypeId(rs.getInt("PARAM_ID"));
+    	          return user;
+    	        }
+    	      });
   }
 
   @Override
@@ -303,11 +281,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 
   @Override
   public UserDTO checkForForgotPassword(UserBean user, AccessToken access) throws OspDaoException {
-    try {
       String emailSql =
           "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN " + " acc  where" + " up."
               + AppConstants.USER_NAME + "= :user_name and " + " acc." + AppConstants.UUID
-              + "=:UUID and" + " and  acc." + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
+              + "=:UUID and" + " acc." + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT"
               + " and  acc." + AppConstants.RECORD_ID + "= up." + AppConstants.RECORD_ID;
       Map<String, Object> paramMap = new HashMap<String, Object>();
       paramMap.put("user_name", user.getUserName());
@@ -322,62 +299,56 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
         }
       });
 
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
-
+    
   }
 
   @Override
   public void updatePassword(UserBean user) throws OspDaoException {
-    try {
       String updatePassword =
-          " UPDATE  OSP_USER_CREDENTIAL up " + "  SET up." + AppConstants.PASSWORD + " = ?  "
-              + " up." + AppConstants.LOGIN_TS + " = ? " + "where  up." + AppConstants.RECORD_ID
-              + " =  ? ";
-      int count =
-          jdbcTemplate.update(updatePassword, new Object[] {user.getPassword(), user.getUser_id()});
-      if (count != 1) {
-        throw new OspDaoException();
-      }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-    }
-  }
+          " UPDATE  OSP_USER_CREDENTIAL up " + "  SET up." + AppConstants.PASSWORD + " = :"+AppConstants.PASSWORD
+              + ", up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS+  " where  up." + AppConstants.RECORD_ID
+              + " =  :"+AppConstants.RECORD_ID;
+      Map<String, Object> paramMap = new HashMap<String, Object>();
+      paramMap.put(AppConstants.PASSWORD, user.getPassword());
+      paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
+      paramMap.put(AppConstants.RECORD_ID, user.getUser_id());
+      namedJdbcTemplate.update(updatePassword,paramMap);
   
+  }
+
+  @Transactional
   @Override
   public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException {
-    String sql =
-        "INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
+    String sql="INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
     try {
-      GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
-      MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-      namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
-      namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
-      namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
-      namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
-      namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
-      namedParameters.addValue("PROF_DOB", new Date());
-      namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
-      namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
-      namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
-      namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
-      namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY", new Date());
-      namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
-      namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
-      namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
-      namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
-      namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
-      namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
-      namedParameters.addValue("STATUS", professionalBean.getStatus());
-      namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
-      namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
-
-      namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
-
-      professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
-      return professionalBean.getProfId();
-    } catch (EmptyResultDataAccessException exp) {
+          GeneratedKeyHolder generatedKeyHolder=new GeneratedKeyHolder();
+          MapSqlParameterSource namedParameters =new MapSqlParameterSource();          
+          namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
+          namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
+          namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
+          namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
+          namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
+          namedParameters.addValue("PROF_DOB", new Date());
+          namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
+          namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
+          namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
+          namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
+          namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY",new Date());
+          namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
+          namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
+          namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
+          namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
+          namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
+          namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
+          namedParameters.addValue("STATUS", professionalBean.getStatus());
+          namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
+          namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
+          
+          namedJdbcTemplate.update(sql,namedParameters,generatedKeyHolder);
+          
+          professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+          return professionalBean.getProfId();    
+    } catch (RuntimeException exp) {
       throw new OspDaoException(exp);
     }
   }
@@ -395,8 +366,8 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
       if (count != 1) {
         throw new OspDaoException();
       }
-    } catch (EmptyResultDataAccessException exp) {
-      throw new OspDaoException(exp);
+    } catch (RuntimeException exp) {
+      throw new OspDaoException();
     }
 
 

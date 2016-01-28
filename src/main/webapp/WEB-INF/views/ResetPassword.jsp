@@ -11,8 +11,7 @@
 	<form action="http://localhost:8080/osp/changePassword" method="post">
 		<table border="0">
 			<tr>
-				<td colspan="2" align="center"><h2>Spring MVC Form Demo -
-						Registration</h2></td>
+				<td colspan="2" align="center"><h2>Enter your new Password</h2></td>
 			</tr>
 			<tr>
 				<td>Enter Password</td>

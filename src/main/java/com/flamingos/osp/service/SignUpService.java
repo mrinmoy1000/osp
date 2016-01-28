@@ -4,6 +4,7 @@ package com.flamingos.osp.service;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
+import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +16,9 @@ public interface SignUpService {
 
 	public void deleteUser(UserBean ub);
 
-	public void checkUniqueness(UserBean userBean) throws OspServiceException;
+	public void checkUniqueness(UserBean userBean) throws OspDaoException;
 	
-	public String checkUserName(UserBean userBean) throws OspServiceException;
+	public UserDTO checkUserName(UserBean userBean) throws OspDaoException;
 
 	public String sendVerificationLinkinEmail(UserBean userBean,HttpServletRequest request) throws OspServiceException;
 	

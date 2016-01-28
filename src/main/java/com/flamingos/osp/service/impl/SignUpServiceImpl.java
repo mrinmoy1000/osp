@@ -1,13 +1,19 @@
 package com.flamingos.osp.service.impl;
 
 import java.util.UUID;
+
 import org.apache.log4j.Logger;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
@@ -19,7 +25,7 @@ import com.flamingos.osp.service.SignUpService;
 import com.flamingos.osp.service.SmsService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.EncoderDecoderUtil;
-
+@Transactional
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
@@ -64,45 +70,39 @@ public class SignUpServiceImpl implements SignUpService {
             userDto.setReturnStatus("success");
             userDto.setReturnMessage("user created succcessfully");
             return userDto;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE, AppConstants.SIGN_UP_EXCEPTION_ERRCODE, AppConstants.SIGN_UP_EXCEPTION_ERRDESC, e);
         }
     }
 
     @Override
-    public void checkUniqueness(UserBean loginBean) throws OSPBusinessException {
+    public void checkUniqueness(UserBean loginBean) throws OspDaoException {
         UserDTO userDTOForUserName = signUpDao.findByUserName(loginBean.getUserName());
         if (userDTOForUserName != null) {
-            // throw new OspDaoException("UserName already exists. Please use different one.");
-
+        throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,AppConstants.DUPLICATE_USER_ERRCODE,AppConstants.DUPLICATE_USER_ERRDESC);
         }
         UserDTO userDTOForContact = signUpDao.findByContact(loginBean.getContactNumber());
         if (userDTOForContact != null) {
-            // throw new OspDaoException(    "Contact Number already exists. Please use forgot username/pass to retrieve account details if not able to login.");
+        	throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,AppConstants.DUPLICATE_CONTACT_ERRCODE,AppConstants.DUPLICATE_CONTACT_ERRDESC);
         }
         UserDTO userDTOForEmail = signUpDao.findByEmailAddress(loginBean.getEmail());
         if (userDTOForEmail != null) {
-            //    throw new OspDaoException(    "Email id already exists. Please use forgot username/pass to retrieve account details if not able to login.");
+        	throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,AppConstants.DUPLICATE_EMAIL_ERRCODE,AppConstants.DUPLICATE_EMAIL_ERRDESC);
         }
 
         // logger.debug("Creating user......");
     }
 
-    private void createNewUser(UserBean userBean) throws OSPBusinessException {
+    private void createNewUser(UserBean userBean) throws OspDaoException {
 
         userBean.setEmailUUID(String.valueOf(UUID.randomUUID()));
         userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
         String encryptedPassword = encDecUtil.getEncodedValue(userBean.getPassword());
-        userBean.setUserName(userBean.getUserName());
         userBean.setPassword(encryptedPassword);
         userBean.setActiveStatus(0);
         userBean.setEmailVerified(0);
         userBean.setSmsVerfied(0);
-        userBean.setUserTypeCD(1); // TODO .. What is this variable.
-        userBean.setFirstName(userBean.getFirstName());
-        userBean.setMiddleName(userBean.getMiddleName());
-        userBean.setLastName(userBean.getLastName());
-        userBean.setRoleId(userBean.getRoleId());
         signUpDao.createNewUser(userBean, emailExpireTime, smsExpireTime);
 
     }
@@ -142,18 +142,24 @@ public class SignUpServiceImpl implements SignUpService {
 
     }
 
-    @Override
-    public String checkUserName(UserBean userBean) throws OSPBusinessException {
-        try {
-            UserDTO userDTOForUserName = signUpDao.findByUserName(userBean.getUserName());
-            if (userDTOForUserName != null) {
-                //   throw new OspServiceException("UserName already exists. Please use different one.");
-            }
+	@Override
+	public UserDTO checkUserName(UserBean userBean) throws OspDaoException {
+		try {
+			UserDTO userDTOForUserName = signUpDao.findByUserName(userBean
+					.getUserName());
+			if (userDTOForUserName != null) {
+				throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+						AppConstants.DUPLICATE_USER_ERRCODE,
+						AppConstants.DUPLICATE_USER_ERRDESC);
+			}
+			userDTOForUserName = new UserDTO();
+			userDTOForUserName.setReturnStatus(AppConstants.SUCCESS);
+			return userDTOForUserName;
+		} catch (OspDaoException exp) {
+			throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+					AppConstants.SIGN_UP_EXCEPTION_ERRCODE,
+					AppConstants.SIGN_UP_EXCEPTION_ERRDESC);
+		}
 
-        } catch (OSPBusinessException exp) {
-            logger.error(exp);
-            //  throw new OspServiceException(exp);
-        }
-        return "success";
-    }
+	}
 }
