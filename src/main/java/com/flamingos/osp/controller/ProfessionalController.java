@@ -34,13 +34,13 @@ public class ProfessionalController {
 		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
 	}
     
-    @RequestMapping(value = "/approveProfile",produces = "application/json", method = RequestMethod.PUT, consumes = "application/json")
+    /*@RequestMapping(value = "/approveProfile",produces = "application/json", method = RequestMethod.PUT, consumes = "application/json")
    	public ResponseEntity<String> approveProfile(@RequestBody OspProfessionalBean professionalBean,
    			HttpServletRequest request) throws Exception {
    		String successMessage = profService.approveProfile(professionalBean, request);		
 
    		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
-   	}
+   	}*/
     
     @RequestMapping(value = "/profDetails",consumes= "application/json",method = RequestMethod.GET)
     public ResponseEntity<String> getProfessionalDetails (@RequestParam(value = "id", required = false) int name)
