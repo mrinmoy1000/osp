@@ -20,6 +20,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.OspAddressBean;
+import com.flamingos.osp.bean.OspContactBean;
+import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.ProfessionalDao;
@@ -396,5 +401,200 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 
 
   }
+  
+  @Override
+  public List<OspProfessionalBean> getAllProfessionalDetails() throws OspDaoException {
+
+    List<OspProfessionalBean> professionalDetailList = null;
+    try {
+
+      String getProSql =
+          "select * from OSP_PROFESSIONAL op, OSP_CONTACT oc, OSP_ADDRESS oad, "
+              + "OSP_PROF_SPECIALIZATIONS ops, OSP_PROF_ACADEMICS opa, OSP_PROF_EXPERIENCE ope, "
+              + "OSP_PROF_CONTACT_MAP ocm, OSP_PROF_ADDRESS_MAP oadmap"
+              + " where op.PROF_ID = ocm.PROF_ID" + " and ocm.CONTACT_ID = oc.CONTACT_ID"
+              + " and op.PROF_ID = oadmap.PROF_ID" + " and oadmap.ADDRESS_ID = oad.ADDRESS_ID"
+              + " and op.PROF_ID = ops.PROF_ID" + " and op.PROF_ID = opa.PROF_ID"
+              + " and op.PROF_ID = ope.PROF_ID";
+
+
+      professionalDetailList =
+          namedJdbcTemplate.query(getProSql, new RowMapper<OspProfessionalBean>() {
+            @Override
+            public OspProfessionalBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+              OspProfessionalBean prof = new OspProfessionalBean();
+              OspAddressBean address = new OspAddressBean();
+              OspContactBean con = new OspContactBean();
+
+              prof.setProfId(rs.getInt(1));
+              prof.setRecordId(rs.getInt(2));
+              prof.setProfFirstName(rs.getString(3));
+              prof.setProfMiddleName(rs.getString(4));
+              prof.setProfLastName(rs.getString(5));
+              prof.setProfEmpId(rs.getString(6));
+              prof.setProfDob(rs.getDate(7));
+              prof.setProfGender(rs.getInt(8));
+              prof.setProfNationality(rs.getString(9));
+              prof.setProfPan(rs.getString(10));
+              prof.setProfMeritalStatus(rs.getInt(11));
+              prof.setProfMerriageAnniversary(rs.getDate(12));
+              prof.setDndActivatedFlag(rs.getInt(13));
+              prof.setProfSignature(rs.getString(14));
+              prof.setProfPhotograph(rs.getString(15));
+              prof.setProfSubscId(rs.getString(16));
+              prof.setProfPublicId(rs.getString(17));
+              prof.setProfFees(rs.getDouble(18));
+              prof.setProfRemark(rs.getString(19));
+              prof.setStatus(rs.getInt(20));
+              prof.setCreatedBy(rs.getString(21));
+              prof.setCreatedTs(rs.getTimestamp(22));
+
+              con.setContactId(rs.getInt(25));
+              con.setContactType(rs.getInt(26));
+              con.setContactPhone(rs.getString(27));
+              con.setContactEmail(rs.getString(28));
+              con.setActiveStatus(rs.getInt(29));
+              con.setCreatedTs(rs.getTimestamp(30));
+              con.setCreatedBy(rs.getString(32));
+              prof.setContact(con);
+
+              address.setAddressId(rs.getInt(34));
+              address.setLocationId(rs.getInt(35));
+              address.setOtherArea(rs.getString(36));
+              address.setLine1(rs.getString(37));
+              address.setLine2(rs.getString(38));
+              address.setPinCode(rs.getString(39));
+              address.setActiveStatus(rs.getInt(40));
+              address.setCreatedTs(rs.getTimestamp(41));
+              address.setCreatedBy(rs.getString(43));
+              prof.setAddress(address);
+
+
+              return prof;
+            }
+          });
+
+    } catch (RuntimeException exp) {
+      throw new OspDaoException(exp);
+
+    }
+    return professionalDetailList;
+  }
+
+  @Override
+  public OspProfessionalBean getProfessionalDetails(int profId) throws OspDaoException {
+
+    OspProfessionalBean professionalDetail = null;
+
+    List<OspProfSpecializationBean> specializationList = null;
+    List<OspProfAcademicsBean> qualificationList = null;
+    List<OspExperienceBean> experienceList = null;
+
+    try {
+
+      String getSepecialzationSql =
+          "select * from OSP_PROFESSIONAL op, OSP_PROF_SPECIALIZATIONS ops"
+              + " where op.PROF_ID = ops.PROF_ID" + " and op.PROF_ID = :prof_id ";
+
+      String getAcademicsSql =
+          "select * from OSP_PROFESSIONAL op, OSP_PROF_ACADEMICS opa"
+              + " where op.PROF_ID = opa.PROF_ID" + " and op.PROF_ID = :prof_id ";
+
+      String getExperienceSql =
+          "select * from OSP_PROFESSIONAL op, OSP_PROF_EXPERIENCE ope"
+              + " where op.PROF_ID = ope.PROF_ID" + " and op.PROF_ID = :prof_id ";
+
+      Map<String, Object> paramMap = new HashMap<String, Object>();
+      paramMap.put("prof_id", profId);
+
+
+
+      specializationList =
+          namedJdbcTemplate.queryForList(getSepecialzationSql, paramMap,
+              OspProfSpecializationBean.class);
+      qualificationList =
+          namedJdbcTemplate.queryForList(getAcademicsSql, paramMap, OspProfAcademicsBean.class);
+      experienceList =
+          namedJdbcTemplate.queryForList(getExperienceSql, paramMap, OspExperienceBean.class);
+
+
+
+      String getProSql =
+          "select * from OSP_PROFESSIONAL op, OSP_CONTACT oc, OSP_ADDRESS oad,"
+              + " OSP_PROF_CONTACT_MAP ocm, OSP_PROF_ADDRESS_MAP oadmap"
+              + " where op.PROF_ID = ocm.PROF_ID" + " and ocm.CONTACT_ID = oc.CONTACT_ID"
+              + " and op.PROF_ID = oadmap.PROF_ID" + " and oadmap.ADDRESS_ID = oad.ADDRESS_ID"
+              + " and op.PROF_ID = :prof_id ";
+
+
+
+      professionalDetail =
+          namedJdbcTemplate.queryForObject(getProSql, paramMap,
+              new RowMapper<OspProfessionalBean>() {
+                @Override
+                public OspProfessionalBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+                  OspProfessionalBean prof = new OspProfessionalBean();
+                  OspAddressBean address = new OspAddressBean();
+                  OspContactBean con = new OspContactBean();
+
+                  prof.setProfId(rs.getInt(1));
+                  prof.setRecordId(rs.getInt(2));
+                  prof.setProfFirstName(rs.getString(3));
+                  prof.setProfMiddleName(rs.getString(4));
+                  prof.setProfLastName(rs.getString(5));
+                  prof.setProfEmpId(rs.getString(6));
+                  prof.setProfDob(rs.getDate(7));
+                  prof.setProfGender(rs.getInt(8));
+                  prof.setProfNationality(rs.getString(9));
+                  prof.setProfPan(rs.getString(10));
+                  prof.setProfMeritalStatus(rs.getInt(11));
+                  prof.setProfMerriageAnniversary(rs.getDate(12));
+                  prof.setDndActivatedFlag(rs.getInt(13));
+                  prof.setProfSignature(rs.getString(14));
+                  prof.setProfPhotograph(rs.getString(15));
+                  prof.setProfSubscId(rs.getString(16));
+                  prof.setProfPublicId(rs.getString(17));
+                  prof.setProfFees(rs.getDouble(18));
+                  prof.setProfRemark(rs.getString(19));
+                  prof.setStatus(rs.getInt(20));
+                  prof.setCreatedBy(rs.getString(21));
+                  prof.setCreatedTs(rs.getTimestamp(22));
+
+                  con.setContactId(rs.getInt(25));
+                  con.setContactType(rs.getInt(26));
+                  con.setContactPhone(rs.getString(27));
+                  con.setContactEmail(rs.getString(28));
+                  con.setActiveStatus(rs.getInt(29));
+                  con.setCreatedTs(rs.getTimestamp(30));
+                  con.setCreatedBy(rs.getString(32));
+                  prof.setContact(con);
+
+                  address.setAddressId(rs.getInt(34));
+                  address.setLocationId(rs.getInt(35));
+                  address.setOtherArea(rs.getString(36));
+                  address.setLine1(rs.getString(37));
+                  address.setLine2(rs.getString(38));
+                  address.setPinCode(rs.getString(39));
+                  address.setActiveStatus(rs.getInt(40));
+                  address.setCreatedTs(rs.getTimestamp(41));
+                  address.setCreatedBy(rs.getString(43));
+                  prof.setAddress(address);
+
+
+                  return prof;
+                }
+              });
+
+      professionalDetail.setQualificationList(qualificationList);
+      professionalDetail.setExperienceList(experienceList);
+      professionalDetail.setSpecializationList(specializationList);
+
+    } catch (RuntimeException exp) {
+      throw new OspDaoException(exp);
+
+    }
+    return professionalDetail;
+  }
+
 
 }

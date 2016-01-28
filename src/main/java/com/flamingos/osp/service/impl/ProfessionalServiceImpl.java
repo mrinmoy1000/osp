@@ -53,8 +53,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   ProfAddressMapDao addressMapDao;
   @Autowired
   ProfContactMapDao contactMapDao;
-  
-  
+
+
 
   private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
@@ -199,12 +199,14 @@ public class ProfessionalServiceImpl implements ProfessionalService {
       contactDao.addContact(professional);
       addressDao.addAddress(professional);
       addressMapDao.addAddressMap(professional);
-      contactMapDao.addContactMap(professional);      
+      contactMapDao.addContactMap(professional);
       academicsDao.addAcademics(professional.getQualificationList());
       specializationDao.addSpecializations(professional.getSpecializationList());
-      experienceDao.addExperience(professional.getExperienceList());      
+      experienceDao.addExperience(professional.getExperienceList());
     } catch (Exception ex) {
-      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
+      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
     }
     return null;
   }
@@ -219,10 +221,24 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     try {
       profDao.approveProfile(professional, 1);
     } catch (Exception ex) {
-      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE, AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
+      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
 
     }
 
     return null;
+  }
+
+  @Override
+  public OspProfessionalBean professionalDetails(int profId) throws OspServiceException {
+    // TODO Auto-generated method stub
+    OspProfessionalBean profDetails = null;
+    try {
+      profDetails = profDao.getProfessionalDetails(profId);
+    } catch (OspDaoException exp) {
+      throw new OspServiceException(AppConstants.INVALID_LINK);
+    }
+    return profDetails;
   }
 }

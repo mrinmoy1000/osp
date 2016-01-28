@@ -20,4 +20,6 @@ public interface ProfessionalService {
 	public String addProfile(OspProfessionalBean professional, HttpServletRequest request)throws OSPBusinessException;
 
 	public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)throws OSPBusinessException;
+	
+	public OspProfessionalBean professionalDetails (int profId) throws OspServiceException;
 }
