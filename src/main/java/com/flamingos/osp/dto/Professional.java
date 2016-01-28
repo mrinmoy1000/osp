@@ -4,6 +4,13 @@ public class Professional {
 	private String professionType;
 	private String professioanlId;
 	private String professionalName;
+	private String publicId;
+	public String getPublicId() {
+		return publicId;
+	}
+	public void setPublicId(String publicId) {
+		this.publicId = publicId;
+	}
 	public String getProfessionType() {
 		return professionType;
 	}
