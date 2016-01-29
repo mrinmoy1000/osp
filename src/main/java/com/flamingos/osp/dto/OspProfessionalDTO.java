@@ -1,15 +1,16 @@
-package com.flamingos.osp.bean;
+package com.flamingos.osp.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import com.flamingos.osp.bean.OspAddressBean;
+import com.flamingos.osp.bean.OspContactBean;
+import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfSpecializationBean;
 
-public class OspProfessionalBean implements Serializable {
+public class OspProfessionalDTO {
 
-  private static final Logger logger = Logger.getLogger(OspProfessionalBean.class);
-  private static final long serialVersionUID = 1L;
 
   private int profId;
   private int recordId;
@@ -42,7 +43,6 @@ public class OspProfessionalBean implements Serializable {
   private Date updatedTs;
   private String createdBy;
   private String updatedBy;
-
 
   public int getProfId() {
     return profId;
@@ -147,6 +147,7 @@ public class OspProfessionalBean implements Serializable {
   public void setDndActivatedFlag(int dndActivatedFlag) {
     this.dndActivatedFlag = dndActivatedFlag;
   }
+
 
 
   public byte[] getProfSignature() {

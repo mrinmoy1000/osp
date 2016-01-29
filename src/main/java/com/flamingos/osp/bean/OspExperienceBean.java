@@ -9,16 +9,16 @@ public class OspExperienceBean implements Serializable{
 
   private static final Logger logger = Logger.getLogger(OspExperienceBean.class);
   private static final long serialVersionUID = 1L;
-  public int profExpId;
-  public Date profExpBeginDt;
-  public Date profExpEndDt;
-  public String profExpDesc;
-  public int profId;
-  public int activeStatus;
-  public Date createdTs;
-  public Date updatedTs;
-  public String createdBy;
-  public String updatedBy;
+  private int profExpId;
+  private Date profExpBeginDt;
+  private Date profExpEndDt;
+  private String profExpDesc;
+  private int profId;
+  private int activeStatus;
+  private Date createdTs;
+  private Date updatedTs;
+  private String createdBy;
+  private String updatedBy;
 
   public int getProfExpId() {
     return profExpId;

@@ -9,15 +9,15 @@ public class OspProfSpecializationBean implements Serializable{
 
   private static final Logger logger = Logger.getLogger(OspProfSpecializationBean.class);
   private static final long serialVersionUID = 1L;
-  public int profSpecId;
-  public String profSpecName;
-  public String profSpecDesc;
-  public int profId;
-  public int activeStatus;
-  public Date createdTs;
-  public Date updatedTs;
-  public String createdBy;
-  public String updatedBy;
+  private int profSpecId;
+  private String profSpecName;
+  private String profSpecDesc;
+  private int profId;
+  private int activeStatus;
+  private Date createdTs;
+  private Date updatedTs;
+  private String createdBy;
+  private String updatedBy;
 
   public int getProfSpecId() {
     return profSpecId;

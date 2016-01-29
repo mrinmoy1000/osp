@@ -9,17 +9,17 @@ public class OspProfAcademicsBean implements Serializable{
 
   private static final Logger logger = Logger.getLogger(OspProfAcademicsBean.class);
   private static final long serialVersionUID = 1L;
-  public int profAcdmcId;
-  public String profAcdmcName;
-  public String profAcdmcDesc;
-  public String profAcdmcUniversity;
-  public String profAcdmcPassYear;
-  public int profId;
-  public String activeStatus;
-  public Date createdTs;
-  public Date updatedTs;
-  public String createdBy;
-  public String updatedBy;
+  private int profAcdmcId;
+  private String profAcdmcName;
+  private String profAcdmcDesc;
+  private String profAcdmcUniversity;
+  private String profAcdmcPassYear;
+  private int profId;
+  private int activeStatus;
+  private Date createdTs;
+  private Date updatedTs;
+  private String createdBy;
+  private String updatedBy;
 
   public int getProfAcdmcId() {
     return profAcdmcId;
@@ -69,11 +69,13 @@ public class OspProfAcademicsBean implements Serializable{
     this.profId = profId;
   }
 
-  public String getActiveStatus() {
+ 
+
+  public int getActiveStatus() {
     return activeStatus;
   }
 
-  public void setActiveStatus(String activeStatus) {
+  public void setActiveStatus(int activeStatus) {
     this.activeStatus = activeStatus;
   }
 
