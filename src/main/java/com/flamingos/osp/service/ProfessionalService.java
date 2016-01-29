@@ -9,17 +9,21 @@ import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspServiceException;
 
 public interface ProfessionalService {
-    public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)throws OSPBusinessException;
-    
-    public String verifyAndGenerateNewToken(String username, String UUID);
-    
-    public UserDTO verifyForgotPassword(String username, String UUID, String type)throws OSPBusinessException;
-    
-	public UserDTO changePassword(UserBean loginBean) throws OSPBusinessException;
-	
-	public String addProfile(OspProfessionalBean professional, HttpServletRequest request)throws OspServiceException;
+  public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
+      throws OSPBusinessException;
 
-	public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)throws OspServiceException;
-	
-	public OspProfessionalBean professionalDetails (int profId) throws OspServiceException;
+  public String verifyAndGenerateNewToken(String username, String UUID);
+
+  public UserDTO verifyForgotPassword(String username, String UUID, String type)
+      throws OSPBusinessException;
+
+  public UserDTO changePassword(UserBean loginBean) throws OSPBusinessException;
+
+  public String addProfile(OspProfessionalBean professional, HttpServletRequest request)
+      throws OspServiceException;
+
+  public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
+      throws OspServiceException;
+
+
 }

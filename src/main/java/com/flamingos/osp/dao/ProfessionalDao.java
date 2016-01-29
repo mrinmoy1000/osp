@@ -5,6 +5,7 @@ import java.util.List;
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
+import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 
@@ -48,7 +49,7 @@ public interface ProfessionalDao {
 	public void approveProfile(OspProfessionalBean professionalBean,
 			int param_id) throws OspDaoException;
 
-  public List<OspProfessionalBean> getAllProfessionalDetails() throws OspDaoException;
+  public List<OspProfessionalDTO> getAllProfessionalDetails() throws OspDaoException;
 
-  public OspProfessionalBean getProfessionalDetails(int profId) throws OspDaoException;
+  public OspProfessionalDTO getProfessionalDetails(int profId) throws OspDaoException;
 }

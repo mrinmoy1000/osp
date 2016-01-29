@@ -38,21 +38,21 @@ import com.flamingos.osp.util.EncoderDecoderUtil;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
   @Autowired
-  ProfessionalDao profDao;
+  private ProfessionalDao profDao;
   @Autowired
-  ContactDao contactDao;
+  private ContactDao contactDao;
   @Autowired
-  AddressDao addressDao;
+  private AddressDao addressDao;
   @Autowired
-  ProfAcademicsBeanDao academicsDao;
+  private ProfAcademicsBeanDao academicsDao;
   @Autowired
-  ProfSpecializationDao specializationDao;
+  private ProfSpecializationDao specializationDao;
   @Autowired
-  ExperienceBeanDao experienceDao;
+  private ExperienceBeanDao experienceDao;
   @Autowired
-  ProfAddressMapDao addressMapDao;
+  private ProfAddressMapDao addressMapDao;
   @Autowired
-  ProfContactMapDao contactMapDao;
+  private ProfContactMapDao contactMapDao;
 
   private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
@@ -220,15 +220,5 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     return null;
   }
 
-  @Override
-  public OspProfessionalBean professionalDetails(int profId) throws OspServiceException {
-    // TODO Auto-generated method stub
-    OspProfessionalBean profDetails = null;
-    try {
-      profDetails = profDao.getProfessionalDetails(profId);
-    } catch (OspDaoException exp) {
-      throw new OspServiceException(AppConstants.INVALID_LINK);
-    }
-    return profDetails;
-  }
+  
 }

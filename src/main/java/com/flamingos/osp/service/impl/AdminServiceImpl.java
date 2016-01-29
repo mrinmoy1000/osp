@@ -1,5 +1,7 @@
 package com.flamingos.osp.service.impl;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -12,7 +14,10 @@ import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
+import com.flamingos.osp.exception.OspDaoException;
+import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.AdminService;
 import com.flamingos.osp.util.AppConstants;
 
@@ -48,5 +53,35 @@ public class AdminServiceImpl implements AdminService {
     return null;
 
   }
+
+
+  @Override
+  public OspProfessionalDTO professionalDetails(int profId) throws OspServiceException {
+    OspProfessionalDTO profDetails = null;
+    try {
+      profDetails = profDao.getProfessionalDetails(profId);
+    } catch (OspDaoException exp) {
+      throw new OspServiceException(AppConstants.INVALID_LINK);
+    }
+    return profDetails;
+  }
+
+
+  @Override
+  public List<OspProfessionalDTO> allProfessionalDetails() throws OspServiceException {
+    List<OspProfessionalDTO> profDetailsList = null;
+    try {
+      profDetailsList = profDao.getAllProfessionalDetails();
+    } catch (OspDaoException exp) {
+      throw new OspServiceException(AppConstants.INVALID_LINK);
+    }
+    return profDetailsList;
+   
+  }
+
+
+ 
+
+ 
 
 }
