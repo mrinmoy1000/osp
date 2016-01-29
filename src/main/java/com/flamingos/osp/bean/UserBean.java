@@ -17,12 +17,21 @@ public class UserBean {
 	private int userTypeCD;
 	private int roleId;
 	private int recordType;
-	private String tokenType;
+	private int tokenType;
 	private Long prof_id;
 	private String firstName;
 	private String middleName;
 	private String lastName;
 	private long user_id;
+	public String commonUUID;
+	public String getCommonUUID() {
+		return commonUUID;
+	}
+
+	public void setCommonUUID(String commonUUID) {
+		this.commonUUID = commonUUID;
+	}
+
 	public long getUser_id() {
 		return user_id;
 	}
@@ -39,11 +48,11 @@ public class UserBean {
 		this.prof_id = prof_id;
 	}
 
-	public String getTokenType() {
+	public int getTokenType() {
 		return tokenType;
 	}
 
-	public void setTokenType(String tokenType) {
+	public void setTokenType(int tokenType) {
 		this.tokenType = tokenType;
 	}
 

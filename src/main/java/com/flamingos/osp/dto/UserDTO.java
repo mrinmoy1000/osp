@@ -3,44 +3,52 @@ package com.flamingos.osp.dto;
 import java.sql.Timestamp;
 
 public class UserDTO {
-	
-	//User_Name
+
+	// User_Name
 	private String userName;
-	
+
 	private String userPass;
-	
+
 	private String userContact;
-	
+
 	private String email;
-	
-	
-	//Role_id
+
+	// Role_id
 	private long userId;
-	
+
 	private String userType;
-	
+
 	private String emailVerified;
-	
-	
+
 	private String smsVerified;
-	
+
 	private int numberOfAttempts;
-	
+
 	private String name;
-	
+
 	private String roleName;
-	
-	private int  roleId;
-	
+
+	private int roleId;
+
 	private String activationStatus;
-	
+
 	private Timestamp passwordExpiryTS;
-	
+
 	private String returnStatus;
-	
+
 	private String returnMessage;
-	
-	private int  typeId;
+
+	private int typeId;
+
+	private String paramName;
+
+	public String getParamName() {
+		return paramName;
+	}
+
+	public void setParamName(String paramName) {
+		this.paramName = paramName;
+	}
 
 	public String getReturnStatus() {
 		return returnStatus;
@@ -65,8 +73,6 @@ public class UserDTO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-	
 
 	public String getUserType() {
 		return userType;
@@ -179,7 +185,5 @@ public class UserDTO {
 	public void setTypeId(int typeId) {
 		this.typeId = typeId;
 	}
-	
-	
-	
+
 }

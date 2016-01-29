@@ -39,47 +39,48 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
   @Autowired
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-  @Override
+   @Override
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
-    String updateEmailStatusSql =
-        " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET " + " up."
-            + AppConstants.ACTIVATION_STATUS + "= :" + AppConstants.ACTIVATION_STATUS + " up."
-            + AppConstants.EMAIL_VERIFIED + " = :" + AppConstants.EMAIL_VERIFIED + " , up."
-            + AppConstants.LOGIN_TS + " = :" + AppConstants.LOGIN_TS + " , acc."
-            + AppConstants.TOKEN_EXPIRY_DT + " = :" + AppConstants.TOKEN_EXPIRY_DT + " where up."
-            + AppConstants.USER_NAME + " = :" + AppConstants.USER_NAME + " and acc."
-            + AppConstants.UUID + " = :" + AppConstants.UUID + " and  up." + AppConstants.RECORD_ID
-            + " = acc." + AppConstants.RECORD_ID;
-    Map<String, Object> paramMap = new HashMap<String, Object>();
-    paramMap.put(AppConstants.ACTIVATION_STATUS, access.getActiveIndicator());
-    paramMap.put(AppConstants.EMAIL_VERIFIED, user.getEmailVerified());
-    paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
-    paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
-    paramMap.put(AppConstants.USER_NAME, user.getUserName());
-    paramMap.put(AppConstants.UUID, user.getSmsUUID());
-    namedJdbcTemplate.update(updateEmailStatusSql, paramMap);
+      String updateEmailStatusSql =
+   	          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET "
+   	              + " up." + AppConstants.ACTIVATION_STATUS + "= :"+AppConstants.ACTIVATION_STATUS
+   	              +", up." + AppConstants.EMAIL_VERIFIED + " = :"+AppConstants.EMAIL_VERIFIED 
+   	              + " , up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS  
+   	        	  + " , acc." + AppConstants.TOKEN_EXPIRY_DT + " = :"+AppConstants.TOKEN_EXPIRY_DT  
+   	              + " where up." + AppConstants.USER_NAME + " = :"+AppConstants.USER_NAME 
+   	        	  + " and acc." + AppConstants.UUID + " = :"+AppConstants.UUID  
+   	              + " and  up."+ AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
+     Map<String, Object> paramMap = new HashMap<String, Object>();
+     paramMap.put(AppConstants.ACTIVATION_STATUS, 0);
+     paramMap.put(AppConstants.EMAIL_VERIFIED, user.getEmailVerified());
+     paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));     
+     paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
+     paramMap.put(AppConstants.USER_NAME, user.getUserName()); 
+     paramMap.put(AppConstants.UUID, user.getEmailUUID()); 
+     namedJdbcTemplate.update(updateEmailStatusSql,paramMap);
   }
 
   @Override
   public void smsUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
-    String updateSmsStatusSql =
-        " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET " + " up."
-            + AppConstants.ACTIVATION_STATUS + "= :" + AppConstants.ACTIVATION_STATUS + " up."
-            + AppConstants.SMS_VERIFIED + " = :" + AppConstants.SMS_VERIFIED + " , up."
-            + AppConstants.LOGIN_TS + " = :" + AppConstants.LOGIN_TS + " , acc."
-            + AppConstants.TOKEN_EXPIRY_DT + " = :" + AppConstants.TOKEN_EXPIRY_DT + " where up."
-            + AppConstants.USER_NAME + " = :" + AppConstants.USER_NAME + " and acc."
-            + AppConstants.UUID + " = :" + AppConstants.UUID + " and  up." + AppConstants.RECORD_ID
-            + " = acc." + AppConstants.RECORD_ID;
-    Map<String, Object> paramMap = new HashMap<String, Object>();
-    paramMap.put(AppConstants.ACTIVATION_STATUS, access.getActiveIndicator());
-    paramMap.put(AppConstants.EMAIL_VERIFIED, user.getSmsVerfied());
-    paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
-    paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
-    paramMap.put(AppConstants.USER_NAME, user.getUserName());
-    paramMap.put(AppConstants.UUID, user.getSmsUUID());
-    namedJdbcTemplate.update(updateSmsStatusSql, paramMap);
+      String updateSmsStatusSql =
+	          " UPDATE OSP_ACCESS_TOKEN acc , OSP_USER_CREDENTIAL up " + "  SET "
+	        		   + " up." + AppConstants.ACTIVATION_STATUS + "= :"+AppConstants.ACTIVATION_STATUS
+	    	              +" , up." + AppConstants.SMS_VERIFIED + " = :"+AppConstants.SMS_VERIFIED 
+	    	              + " , up." + AppConstants.LOGIN_TS + " = :"+AppConstants.LOGIN_TS  
+	    	        	  + " , acc." + AppConstants.TOKEN_EXPIRY_DT + " = :"+AppConstants.TOKEN_EXPIRY_DT  
+	    	              + " where up." + AppConstants.USER_NAME + " = :"+AppConstants.USER_NAME 
+	    	        	  + " and acc." + AppConstants.UUID + " = :"+AppConstants.UUID  
+	    	              + " and  up."+ AppConstants.RECORD_ID + " = acc." + AppConstants.RECORD_ID;
+  Map<String, Object> paramMap = new HashMap<String, Object>();
+  paramMap.put(AppConstants.ACTIVATION_STATUS, 0);
+  paramMap.put(AppConstants.SMS_VERIFIED, 0);
+  paramMap.put(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));     
+  paramMap.put(AppConstants.TOKEN_EXPIRY_DT, access.getExpireTime());
+  paramMap.put(AppConstants.USER_NAME, user.getUserName()); 
+  paramMap.put(AppConstants.UUID, user.getSmsUUID()); 
+  namedJdbcTemplate.update(updateSmsStatusSql,paramMap);
   }
+
 
   @Override
   public void FUPUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
@@ -195,86 +196,55 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 
 
   @Override
-  public UserDTO getTokenCheck(UserBean user, AccessToken access) throws OspDaoException {
-    String emailSql =
-        "select * from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN "
-            + " acc ,OSP_PARAMETER param where" + " up." + AppConstants.USER_NAME
-            + "= :user_name and " + " acc." + AppConstants.UUID + "=:UUID " + " and  acc."
-            + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT" + " and  acc." + AppConstants.RECORD_ID
-            + "= up." + AppConstants.RECORD_ID + " and  param.PARAM_ID = acc." + AppConstants.TYPE;
+  public int getTokenCheck(UserBean user, AccessToken access) throws OspDaoException {
+   try {
+
+      String emailSql =
+        "select count(up.RECORD_ID) from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN acc where" +
+            " up." + AppConstants.USER_NAME+ "= :user_name and "
+            + " acc."+ AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT" + " and"
+            + "  acc." + AppConstants.RECORD_ID+ "= up." + AppConstants.RECORD_ID + " and "
+            + "acc." + AppConstants.TYPE+"=:"+AppConstants.TYPE;
     Map<String, Object> paramMap = new HashMap<String, Object>();
     paramMap.put("user_name", user.getUserName());
-    paramMap.put("UUID", user.getSmsUUID());
     paramMap.put("EXPIRY_DT", access.getExpireTime());
+    paramMap.put(AppConstants.TYPE, user.getTokenType());
 
-    return namedJdbcTemplate.queryForObject(emailSql, paramMap, new RowMapper<UserDTO>() {
-      public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-        UserDTO user = new UserDTO();
-        user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-        user.setUserName(rs.getString(AppConstants.USER_NAME));
-        user.setUserPass(rs.getString(AppConstants.PASSWORD));
-        user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-        user.setEmail(rs.getString(AppConstants.EMAIL));
-        user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
-        user.setTypeId(rs.getInt("PARAM_ID"));
-        return user;
-      }
-    });
+    return namedJdbcTemplate.queryForInt(emailSql, paramMap);
+   }catch(EmptyResultDataAccessException e)
+   {
+   return 0;
+   }
+           
   }
 
-  @Override
-  public int generateNewEmailToken(UserBean user, int emailExpireTime) throws OspDaoException {
-    try {
-      String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where user_name = ?";
-      int getInsertedUser =
-          jdbcTemplate.queryForObject(getUserSql, new Object[] {user.getUserName()}, Integer.class);
+ @Override
+  public void generateNewToken(UserBean user, int ExpireTime) throws OspDaoException {
       String insertAccessToken =
-          "INSERT INTO osp_access_token VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
-              + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
-              + AppConstants.TOKEN_EXPIRY_DT + "," + ":" + AppConstants.IS_USED + "," + ":"
-              + AppConstants.CREATED_BY + "," + ":" + AppConstants.CREATED_TS + "," + ":"
-              + AppConstants.UPDATE_BY + "," + ":" + AppConstants.UPDATE_TS + ");";
+          "INSERT INTO OSP_ACCESS_TOKEN VALUES " + 
+         "(:" + AppConstants.USER_ID + ","
+        	+ ":" +AppConstants.TYPE + ","
+            + ":" + AppConstants.UUID + "," 
+        	+ ":" + AppConstants.TOKEN_EXPIRY_DT + ","
+            + ":" + AppConstants.IS_USED + "," 
+            + ":" + AppConstants.CREATED_TS + "," 
+            + ":" + AppConstants.UPDATE_TS + ","
+        	+ ":" + AppConstants.CREATED_BY + ","
+            + ":" +AppConstants.UPDATE_BY + ");" ;
+
       Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
-      accessTokenMapforEmail.put(AppConstants.USER_ID, getInsertedUser);
-      accessTokenMapforEmail.put(AppConstants.TYPE, 22);
-      accessTokenMapforEmail.put(AppConstants.UUID, user.getEmailUUID());
-      accessTokenMapforEmail.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
-          + (1 * (emailExpireTime) * 60 * 60 * 1000)));
+      accessTokenMapforEmail.put(AppConstants.USER_ID, user.getUser_id());
+      accessTokenMapforEmail.put(AppConstants.TYPE, user.getTokenType());
+      accessTokenMapforEmail.put(AppConstants.UUID, user.getCommonUUID());
+      accessTokenMapforEmail.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime() + (1 * (ExpireTime) * 60 * 60 * 1000)));
       accessTokenMapforEmail.put(AppConstants.IS_USED, 0);
+      accessTokenMapforEmail.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
+      accessTokenMapforEmail.put(AppConstants.UPDATE_TS, null);
       accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
+      accessTokenMapforEmail.put(AppConstants.UPDATE_BY, null);
+
       namedJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
-      return 0;
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
-  }
-
-  @Override
-  public int generateNewSmsToken(UserBean user, int smsExpireTime) throws OspDaoException {
-    try {
-      String getUserSql = "select record_id from OSP_USER_CREDENTIAL  where user_name = ?";
-      int getInsertedUser =
-          jdbcTemplate.queryForObject(getUserSql, new Object[] {user.getUserName()}, Integer.class);
-      String insertAccessToken =
-          "INSERT INTO osp_access_token VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
-              + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
-              + AppConstants.TOKEN_EXPIRY_DT + "," + ":" + AppConstants.IS_USED + "," + ":"
-              + AppConstants.CREATED_BY + "," + ":" + AppConstants.CREATED_TS + "," + ":"
-              + AppConstants.UPDATE_BY + "," + ":" + AppConstants.UPDATE_TS + ");";
-      Map<String, Object> accessTokenMapforSms = new HashMap<String, Object>();
-      accessTokenMapforSms.put(AppConstants.USER_ID, getInsertedUser);
-      accessTokenMapforSms.put(AppConstants.TYPE, 21);
-      accessTokenMapforSms.put(AppConstants.UUID, user.getSmsUUID());
-      accessTokenMapforSms.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
-          + (1 * smsExpireTime * 60 * 60 * 1000)));
-      accessTokenMapforSms.put(AppConstants.IS_USED, 0);
-      accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());
-      namedJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
-      return 1;
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
-
+   
   }
 
   @Override
@@ -633,6 +603,37 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
     }
 
     return experienceList;
+  }
+ @Override
+  public UserDTO getTokenCheckforSms(UserBean user, AccessToken access) throws OspDaoException {
+    try
+    { String emailSql =
+    	          "select * from  OSP_USER_CREDENTIAL up ,OSP_ACCESS_TOKEN acc  where  up."
+    	              + AppConstants.USER_NAME + "= :user_name  " + 
+    	              " and  acc." + AppConstants.TOKEN_EXPIRY_DT + "< :EXPIRY_DT"
+    	              + " and  acc." + AppConstants.RECORD_ID + "= up." + AppConstants.RECORD_ID
+    	             +" and acc." + AppConstants.TYPE +"= :"+ AppConstants.TYPE;
+    	      Map<String, Object> paramMap = new HashMap<String, Object>();
+    	      paramMap.put("user_name", user.getUserName());
+    	      paramMap.put("EXPIRY_DT", access.getExpireTime());
+    	      paramMap.put(AppConstants.TYPE, user.getTokenType());
+
+    	      return namedJdbcTemplate.queryForObject(emailSql, paramMap, new RowMapper<UserDTO>() {
+    	        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+    	          UserDTO user = new UserDTO();
+    	          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+    	          user.setUserName(rs.getString(AppConstants.USER_NAME));
+    	          user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
+    	          user.setEmail(rs.getString(AppConstants.EMAIL));
+    	          user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
+    	          user.setUserType(rs.getString(AppConstants.UUID));
+    	          return user;
+    	        }
+    	      });
+  }catch(EmptyResultDataAccessException e)
+  {
+  return null;	
+  }
   }
 
 }

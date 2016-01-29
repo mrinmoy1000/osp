@@ -106,7 +106,7 @@ public class VerificationController {
 		try {
 			String successMessage = profService.verifyAndGenerateNewToken(username,UUID);
 			return new ResponseEntity<String>(successMessage, HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (OSPBusinessException e) {
 			logger.error("Error in  verify token"+this.getClass(),e);
 		return new ResponseEntity<String>(AppConstants.ERROR, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

@@ -84,6 +84,8 @@ public static String PROFESSIONAL_ADD_PROFILE_MODULE = "PROFESSIONAL_ADD_PROFILE
 	public static final String VERIFICATION_LINK_NOTIFICATION = "A verification link send to your mail please, check your email";
 	public static final String LINK_VERFIED_MESSAGE = "You have been Verified";
 	public static final String CHANGE_PASSWORD_MESSAGE = "Password changed successfully";
+        public static final String TOKEN_GENERATED = "new token generated sucessfully";
+	public static final String TOKEN_GENERATED_FAIL = "new token generated sucessfully";
   
         
         public static final String USER_NAME = "USER_NAME";
