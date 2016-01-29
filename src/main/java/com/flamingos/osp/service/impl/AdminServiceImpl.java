@@ -11,6 +11,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dto.ConfigParamDto;
@@ -58,8 +61,19 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public OspProfessionalDTO professionalDetails(int profId) throws OspServiceException {
     OspProfessionalDTO profDetails = null;
+    List<OspProfSpecializationBean> specializationList = null;
+    List<OspProfAcademicsBean> qualificationList = null;
+    List<OspExperienceBean> experienceList = null;
     try {
+      specializationList = profDao.getProfSpecializationList(profId);
+      qualificationList = profDao.getProfQualificationList(profId);
+      experienceList = profDao.getProfExperienceList(profId);
       profDetails = profDao.getProfessionalDetails(profId);
+      if (profDetails != null) {
+        profDetails.setExperienceList(experienceList);
+        profDetails.setQualificationList(qualificationList);
+        profDetails.setSpecializationList(specializationList);
+      }
     } catch (OspDaoException exp) {
       throw new OspServiceException(AppConstants.INVALID_LINK);
     }
@@ -76,12 +90,9 @@ public class AdminServiceImpl implements AdminService {
       throw new OspServiceException(AppConstants.INVALID_LINK);
     }
     return profDetailsList;
-   
+
   }
 
 
- 
-
- 
 
 }

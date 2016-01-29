@@ -41,7 +41,9 @@ public class AdminController {
       OspProfessionalDTO prof = adminService.professionalDetails(id);
       return new ResponseEntity<String>("success", HttpStatus.OK);
     } catch (OspServiceException e) {
+      logger.error(e);
       return new ResponseEntity<String>("success", HttpStatus.OK);
+      
     }
 
   }
@@ -53,6 +55,7 @@ public class AdminController {
       profList = adminService.allProfessionalDetails();
       return new ResponseEntity<String>("success", HttpStatus.OK);
     } catch (OspServiceException e) {
+      logger.error(e);
       return new ResponseEntity<String>("success", HttpStatus.OK);
     }
 

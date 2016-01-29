@@ -456,79 +456,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
 
     OspProfessionalDTO professionalDetail = null;
 
-    List<OspProfSpecializationBean> specializationList = null;
-    List<OspProfAcademicsBean> qualificationList = null;
-    List<OspExperienceBean> experienceList = null;
-
     try {
-
-      String getSepecialzationSql =
-          "select ops.PROF_SPEC_ID, ops.PROF_SPEC_NAME, ops.PROF_SPEC_DESC, ops.PROF_ID, "
-          + "ops.ACTIVE_STATUS, ops.CREATED_BY, ops.CREATED_TS"
-          + " from OSP_PROFESSIONAL op, OSP_PROF_SPECIALIZATIONS ops"
-              + " where op.PROF_ID = ops.PROF_ID" + " and op.PROF_ID = :prof_id ";
-
-      String getAcademicsSql =
-          "select opa.ACTIVE_STATUS, opa.PROF_ACDMC_DESC, "
-          + "opa.PROF_ACDMC_ID, opa.PROF_ACDMC_NAME, opa.PROF_ACDMC_PASS_YEAR, opa.PROF_ACDMC_UNIVERSITY"
-          + " from OSP_PROFESSIONAL op, OSP_PROF_ACADEMICS opa"
-              + " where op.PROF_ID = opa.PROF_ID" + " and op.PROF_ID = :prof_id ";
-
-      String getExperienceSql =
-          "select ope.ACTIVE_STATUS, ope.PROF_EXP_BEGIN_DT, "
-              + "ope.PROF_EXP_DESC, ope.PROF_EXP_END_DT, ope.PROF_EXP_ID"
-              + " from OSP_PROFESSIONAL op, OSP_PROF_EXPERIENCE ope"
-                  + " where op.PROF_ID = ope.PROF_ID" + " and op.PROF_ID = :prof_id ";
-       
 
       Map<String, Object> paramMap = new HashMap<String, Object>();
       paramMap.put("prof_id", profId);
-
-      
-      specializationList = namedJdbcTemplate.query(getSepecialzationSql, paramMap,
-          new RowMapper<OspProfSpecializationBean>() {
-        @Override
-        public OspProfSpecializationBean mapRow(ResultSet rs, int i) throws SQLException {
-          OspProfSpecializationBean ospProfSpecializationBean = new OspProfSpecializationBean();
-          ospProfSpecializationBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
-          ospProfSpecializationBean.setProfId(rs.getInt("PROF_ID"));
-          ospProfSpecializationBean.setProfSpecDesc(rs.getString("PROF_SPEC_DESC"));
-          ospProfSpecializationBean.setProfSpecName(rs.getString("PROF_SPEC_NAME"));
-          ospProfSpecializationBean.setProfSpecId(rs.getInt("PROF_SPEC_ID"));
-          return ospProfSpecializationBean;
-        }
-      });
-      
-      qualificationList = namedJdbcTemplate.query(getAcademicsSql, paramMap,
-              new RowMapper<OspProfAcademicsBean>() {
-            @Override
-            public OspProfAcademicsBean mapRow(ResultSet rs, int i) throws SQLException {
-              OspProfAcademicsBean ospProfAcademicsBean = new OspProfAcademicsBean();
-              ospProfAcademicsBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
-              ospProfAcademicsBean.setProfAcdmcDesc(rs.getString("PROF_ACDMC_DESC"));
-              ospProfAcademicsBean.setProfAcdmcId(rs.getInt("PROF_ACDMC_ID"));
-              ospProfAcademicsBean.setProfAcdmcName(rs.getString("PROF_ACDMC_NAME"));
-              ospProfAcademicsBean.setProfAcdmcPassYear(rs.getString("PROF_ACDMC_PASS_YEAR"));
-              ospProfAcademicsBean.setProfAcdmcUniversity(rs.getString("PROF_ACDMC_UNIVERSITY"));
-              return ospProfAcademicsBean;
-            }
-          });
-      
-      
-      experienceList =  namedJdbcTemplate.query(getExperienceSql, paramMap,
-          new RowMapper<OspExperienceBean>() {
-        @Override
-        public OspExperienceBean mapRow(ResultSet rs, int i) throws SQLException {
-          OspExperienceBean ospExperienceBean = new OspExperienceBean();
-          ospExperienceBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
-          ospExperienceBean.setProfExpBeginDt(rs.getDate("PROF_EXP_BEGIN_DT"));
-          ospExperienceBean.setProfExpEndDt(rs.getDate("PROF_EXP_END_DT"));
-          ospExperienceBean.setProfExpDesc(rs.getString("PROF_EXP_DESC"));
-          ospExperienceBean.setProfExpId(rs.getInt("PROF_EXP_ID"));
-          return ospExperienceBean;
-        }
-      });
-          
 
       String getProSql =
           "select * from OSP_PROFESSIONAL op, OSP_CONTACT oc, OSP_ADDRESS oad,"
@@ -537,9 +468,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
               + " and op.PROF_ID = oadmap.PROF_ID" + " and oadmap.ADDRESS_ID = oad.ADDRESS_ID"
               + " and op.PROF_ID = :prof_id ";
 
-
-
-      professionalDetail = 
+      professionalDetail =
           namedJdbcTemplate.queryForObject(getProSql, paramMap,
               new RowMapper<OspProfessionalDTO>() {
                 @Override
@@ -596,15 +525,114 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
                 }
               });
 
-      professionalDetail.setQualificationList(qualificationList);
-      professionalDetail.setExperienceList(experienceList);
-      professionalDetail.setSpecializationList(specializationList);
+   
 
     } catch (RuntimeException exp) {
       throw new OspDaoException(exp);
 
     }
     return professionalDetail;
+  }
+
+  @Override
+  public List<OspProfSpecializationBean> getProfSpecializationList(int profId)
+      throws OspDaoException {
+    List<OspProfSpecializationBean> specializationList = null;
+
+    String getSepecialzationSql =
+        "select ops.PROF_SPEC_ID, ops.PROF_SPEC_NAME, ops.PROF_SPEC_DESC, ops.PROF_ID, "
+            + "ops.ACTIVE_STATUS, ops.CREATED_BY, ops.CREATED_TS"
+            + " from OSP_PROFESSIONAL op, OSP_PROF_SPECIALIZATIONS ops"
+            + " where op.PROF_ID = ops.PROF_ID" + " and op.PROF_ID = :prof_id ";
+
+    Map<String, Object> paramMap = new HashMap<String, Object>();
+    paramMap.put("prof_id", profId);
+    try {
+      specializationList =
+          namedJdbcTemplate.query(getSepecialzationSql, paramMap,
+              new RowMapper<OspProfSpecializationBean>() {
+                @Override
+                public OspProfSpecializationBean mapRow(ResultSet rs, int i) throws SQLException {
+                  OspProfSpecializationBean ospProfSpecializationBean =
+                      new OspProfSpecializationBean();
+                  ospProfSpecializationBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
+                  ospProfSpecializationBean.setProfId(rs.getInt("PROF_ID"));
+                  ospProfSpecializationBean.setProfSpecDesc(rs.getString("PROF_SPEC_DESC"));
+                  ospProfSpecializationBean.setProfSpecName(rs.getString("PROF_SPEC_NAME"));
+                  ospProfSpecializationBean.setProfSpecId(rs.getInt("PROF_SPEC_ID"));
+                  return ospProfSpecializationBean;
+                }
+              });
+    } catch (RuntimeException exp) {
+      throw new OspDaoException(exp);
+
+    }
+    return specializationList;
+  }
+
+  @Override
+  public List<OspProfAcademicsBean> getProfQualificationList(int profId) throws OspDaoException {
+    List<OspProfAcademicsBean> qualificationList = null;
+    String getAcademicsSql =
+        "select opa.ACTIVE_STATUS, opa.PROF_ACDMC_DESC, "
+            + "opa.PROF_ACDMC_ID, opa.PROF_ACDMC_NAME, opa.PROF_ACDMC_PASS_YEAR, opa.PROF_ACDMC_UNIVERSITY"
+            + " from OSP_PROFESSIONAL op, OSP_PROF_ACADEMICS opa"
+            + " where op.PROF_ID = opa.PROF_ID" + " and op.PROF_ID = :prof_id ";
+
+
+    Map<String, Object> paramMap = new HashMap<String, Object>();
+    paramMap.put("prof_id", profId);
+    try {
+      qualificationList =
+          namedJdbcTemplate.query(getAcademicsSql, paramMap, new RowMapper<OspProfAcademicsBean>() {
+            @Override
+            public OspProfAcademicsBean mapRow(ResultSet rs, int i) throws SQLException {
+              OspProfAcademicsBean ospProfAcademicsBean = new OspProfAcademicsBean();
+              ospProfAcademicsBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
+              ospProfAcademicsBean.setProfAcdmcDesc(rs.getString("PROF_ACDMC_DESC"));
+              ospProfAcademicsBean.setProfAcdmcId(rs.getInt("PROF_ACDMC_ID"));
+              ospProfAcademicsBean.setProfAcdmcName(rs.getString("PROF_ACDMC_NAME"));
+              ospProfAcademicsBean.setProfAcdmcPassYear(rs.getString("PROF_ACDMC_PASS_YEAR"));
+              ospProfAcademicsBean.setProfAcdmcUniversity(rs.getString("PROF_ACDMC_UNIVERSITY"));
+              return ospProfAcademicsBean;
+            }
+          });
+    } catch (RuntimeException exp) {
+      throw new OspDaoException(exp);
+    }
+
+    return qualificationList;
+  }
+
+  @Override
+  public List<OspExperienceBean> getProfExperienceList(int profId) throws OspDaoException {
+    List<OspExperienceBean> experienceList = null;
+    String getExperienceSql =
+        "select ope.ACTIVE_STATUS, ope.PROF_EXP_BEGIN_DT, "
+            + "ope.PROF_EXP_DESC, ope.PROF_EXP_END_DT, ope.PROF_EXP_ID"
+            + " from OSP_PROFESSIONAL op, OSP_PROF_EXPERIENCE ope"
+            + " where op.PROF_ID = ope.PROF_ID" + " and op.PROF_ID = :prof_id ";
+    Map<String, Object> paramMap = new HashMap<String, Object>();
+    paramMap.put("prof_id", profId);
+    try {
+      experienceList =
+          namedJdbcTemplate.query(getExperienceSql, paramMap, new RowMapper<OspExperienceBean>() {
+            @Override
+            public OspExperienceBean mapRow(ResultSet rs, int i) throws SQLException {
+              OspExperienceBean ospExperienceBean = new OspExperienceBean();
+              ospExperienceBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
+              ospExperienceBean.setProfExpBeginDt(rs.getDate("PROF_EXP_BEGIN_DT"));
+              ospExperienceBean.setProfExpEndDt(rs.getDate("PROF_EXP_END_DT"));
+              ospExperienceBean.setProfExpDesc(rs.getString("PROF_EXP_DESC"));
+              ospExperienceBean.setProfExpId(rs.getInt("PROF_EXP_ID"));
+              return ospExperienceBean;
+            }
+          });
+    } catch (RuntimeException exp) {
+      throw new OspDaoException(exp);
+    }
+
+    return experienceList;
   }
 
 }
