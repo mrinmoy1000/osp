@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.OspProfessionalDTO;
-import com.flamingos.osp.exception.OspServiceException;
+import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.AdminService;
+import com.flamingos.osp.util.AppConstants;
 
 @RestController
 public class AdminController {
@@ -36,17 +37,24 @@ public class AdminController {
 
 
   @RequestMapping(value = "/profDetails", method = RequestMethod.GET)
-  public ResponseEntity<String> getProfessionalDetails(@RequestParam(value = "id") int id) {
-    try {
-      OspProfessionalDTO prof = adminService.professionalDetails(id);
-      return new ResponseEntity<String>("success", HttpStatus.OK);
-    } catch (OspServiceException e) {
-      logger.error(e);
-      return new ResponseEntity<String>("success", HttpStatus.OK);
+public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(@RequestParam(value = "id") int id) {
+	logger.debug(" Entering AdminController.getProfessionalDetails");
+	OspProfessionalDTO prof = null;
+	try {
+		prof = adminService.professionalDetails(id);
+		return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
+	} catch (OSPBusinessException e) {
+		logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
+		prof = new OspProfessionalDTO();
+		prof.setReturnStatus(AppConstants.FAILURE);
+		prof.setReturnMessage(e.getMessage());
+		return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
 
-    }
+	} finally {
+		logger.debug(" Exiting AdminController.getProfessionalDetails");
+	}
 
-  }
+}
 
   @RequestMapping(value = "/allProfDetails", method = RequestMethod.GET)
   public ResponseEntity<String> getAllProfessionalDetails() {
@@ -54,7 +62,7 @@ public class AdminController {
     try {
       profList = adminService.allProfessionalDetails();
       return new ResponseEntity<String>("success", HttpStatus.OK);
-    } catch (OspServiceException e) {
+    } catch (OSPBusinessException e) {
       logger.error(e);
       return new ResponseEntity<String>("success", HttpStatus.OK);
     }
