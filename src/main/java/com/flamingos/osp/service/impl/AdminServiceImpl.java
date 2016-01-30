@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,71 +28,71 @@ import com.flamingos.osp.util.AppConstants;
 @Service
 public class AdminServiceImpl implements AdminService {
 
+	@Autowired
+	private ConfigParamBean configParamBean;
 
-  @Autowired
-  private ConfigParamBean configParamBean;
+	@Autowired
+	ProfessionalDao profDao;
 
-  @Autowired
-  ProfessionalDao profDao;
+	ConfigParamDto userStatusBean = null;
 
-  ConfigParamDto userStatusBean = null;
+	@Override
+	public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
+			throws OSPBusinessException {
+			
+		try {
+			
+			professional.getActionTaken();
+			
+			profDao.approveProfile(professional, 1);
+		} catch (OspDaoException ex) {
+			throw new OSPBusinessException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE,
+					AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRCODE,
+					AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC, ex);
 
+		}
 
-  @Override
-  public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
-      throws OSPBusinessException {
-    userStatusBean =
-        configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
-            AppConstants.PARAM_NAME_INITIAL);
-    try {
-      profDao.approveProfile(professional, 1);
-    } catch (Exception ex) {
-      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
-          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
-          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
+		return null;
 
-    }
+	}
 
-    return null;
+	@Override
+	public OspProfessionalDTO professionalDetails(int profId) throws OSPBusinessException {
+		OspProfessionalDTO profDetails = null;
+		List<OspProfSpecializationBean> specializationList = null;
+		List<OspProfAcademicsBean> qualificationList = null;
+		List<OspExperienceBean> experienceList = null;
+		try {
+			specializationList = profDao.getProfSpecializationList(profId);
+			qualificationList = profDao.getProfQualificationList(profId);
+			experienceList = profDao.getProfExperienceList(profId);
+			profDetails = profDao.getProfessionalDetails(profId);
+			if (profDetails != null) {
+				profDetails.setExperienceList(experienceList);
+				profDetails.setQualificationList(qualificationList);
+				profDetails.setSpecializationList(specializationList);
+			}
+		} catch (OspDaoException exp) {
+			throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
 
-  }
+		}
+		return profDetails;
+	}
 
+	@Override
+	public List<OspProfessionalDTO> allProfessionalDetails() throws OSPBusinessException {
+		List<OspProfessionalDTO> profDetailsList = null;
+		try {
+			profDetailsList = profDao.getAllProfessionalDetails();
+		} catch (OspDaoException exp) {
+			throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+		}
+		return profDetailsList;
 
-  @Override
-  public OspProfessionalDTO professionalDetails(int profId) throws OspServiceException {
-    OspProfessionalDTO profDetails = null;
-    List<OspProfSpecializationBean> specializationList = null;
-    List<OspProfAcademicsBean> qualificationList = null;
-    List<OspExperienceBean> experienceList = null;
-    try {
-      specializationList = profDao.getProfSpecializationList(profId);
-      qualificationList = profDao.getProfQualificationList(profId);
-      experienceList = profDao.getProfExperienceList(profId);
-      profDetails = profDao.getProfessionalDetails(profId);
-      if (profDetails != null) {
-        profDetails.setExperienceList(experienceList);
-        profDetails.setQualificationList(qualificationList);
-        profDetails.setSpecializationList(specializationList);
-      }
-    } catch (OspDaoException exp) {
-      throw new OspServiceException(AppConstants.INVALID_LINK);
-    }
-    return profDetails;
-  }
-
-
-  @Override
-  public List<OspProfessionalDTO> allProfessionalDetails() throws OspServiceException {
-    List<OspProfessionalDTO> profDetailsList = null;
-    try {
-      profDetailsList = profDao.getAllProfessionalDetails();
-    } catch (OspDaoException exp) {
-      throw new OspServiceException(AppConstants.INVALID_LINK);
-    }
-    return profDetailsList;
-
-  }
-
-
+	}
 
 }
