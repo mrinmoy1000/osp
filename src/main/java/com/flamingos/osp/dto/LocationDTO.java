@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class LocationDTO implements Serializable {
 
-  private static final Logger logger = Logger.getLogger(OspLocationDto.class);
   private static final long serialVersionUID = 1L;
 
   private int locationId;
