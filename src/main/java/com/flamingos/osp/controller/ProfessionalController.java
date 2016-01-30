@@ -23,13 +23,11 @@ public class ProfessionalController {
   @Autowired
   ProfessionalService profService;
 
-  @RequestMapping(value = "/addProfile", produces = "application/json",
-      method = RequestMethod.POST, consumes = "application/json")
-  public ResponseEntity<String> addProfile(@RequestBody OspProfessionalBean professionalBean,
-      HttpServletRequest request) throws Exception {
-    String successMessage = profService.saveProfile(professionalBean, request);
+  @RequestMapping(value = "/addProfile", produces = "application/json", method = RequestMethod.GET,
+      consumes = "application/json")
+  public ResponseEntity<String> addProfile(HttpServletRequest request) throws Exception {
 
-    return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
+    return new ResponseEntity<String>("", HttpStatus.CREATED);
   }
 
   @RequestMapping(value = "/saveProfile", produces = "application/json",
