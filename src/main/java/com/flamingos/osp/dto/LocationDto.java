@@ -6,29 +6,16 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 public class LocationDto implements Serializable{
+  
   private static final Logger logger = Logger.getLogger(OspLocationDto.class);
   private static final long serialVersionUID = 1L;
-  
-  private CommonParamDto gender;
-  private CommonParamDto maritalStatus;
+    
   private int locationId;
   private String locationName;  
   private int locationType;
   private int locationParentId;
   private List<OspLocationDto> childLocations;
   
-  public CommonParamDto getGender() {
-    return gender;
-  }
-  public void setGender(CommonParamDto gender) {
-    this.gender = gender;
-  }
-  public CommonParamDto getMaritalStatus() {
-    return maritalStatus;
-  }
-  public void setMaritalStatus(CommonParamDto maritalStatus) {
-    this.maritalStatus = maritalStatus;
-  }
   public int getLocationId() {
     return locationId;
   }
@@ -59,5 +46,8 @@ public class LocationDto implements Serializable{
   public void setChildLocations(List<OspLocationDto> childLocations) {
     this.childLocations = childLocations;
   }
+  
+  
+  
     
 }
