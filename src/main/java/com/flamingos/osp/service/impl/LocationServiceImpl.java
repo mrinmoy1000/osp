@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.flamingos.osp.dao.LocationDao;
+import com.flamingos.osp.dao.LocationDAO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.LocationService;
@@ -14,12 +14,12 @@ import com.flamingos.osp.service.LocationService;
 public class LocationServiceImpl implements LocationService {
 
   @Autowired
-  LocationDao countryDao;
+  LocationDAO locationDao;
 
   @Override
   public List<LocationDTO> getLocationList() throws OSPBusinessException {
     try {
-      countryDao.getLocationList();
+      locationDao.getLocationList();
     } catch (Exception ex) {
       throw new OSPBusinessException("", "", "", ex);
     }
