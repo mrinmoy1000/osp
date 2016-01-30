@@ -23,7 +23,7 @@ import com.flamingos.osp.dao.ProfAcademicsBeanDao;
 import com.flamingos.osp.dao.ProfAddressMapDao;
 import com.flamingos.osp.dao.ProfContactMapDao;
 import com.flamingos.osp.dao.ProfSpecializationDao;
-import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
@@ -39,7 +39,7 @@ import com.flamingos.osp.util.EncoderDecoderUtil;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
   @Autowired
-  private ProfessionalDao profDao;
+  private ProfessionalDAO profDao;
   @Autowired
   private ContactDao contactDao;
   @Autowired

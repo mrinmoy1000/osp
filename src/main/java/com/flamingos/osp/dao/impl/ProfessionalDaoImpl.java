@@ -24,7 +24,7 @@ import com.flamingos.osp.bean.OspProfAcademicsBean;
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
@@ -34,7 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 @Repository
-public class ProfessionalDaoImpl implements ProfessionalDao {
+public class ProfessionalDaoImpl implements ProfessionalDAO {
 
     private static final Logger logger = Logger.getLogger(ProfessionalDaoImpl.class);
     @Autowired

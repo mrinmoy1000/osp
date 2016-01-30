@@ -15,7 +15,7 @@ import com.flamingos.osp.bean.OspExperienceBean;
 import com.flamingos.osp.bean.OspProfAcademicsBean;
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
-import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
@@ -32,7 +32,7 @@ public class AdminServiceImpl implements AdminService {
 	private ConfigParamBean configParamBean;
 
 	@Autowired
-	ProfessionalDao profDao;
+	ProfessionalDAO profDao;
 
 	ConfigParamDTO userStatusBean = null;
 
