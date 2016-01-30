@@ -211,17 +211,17 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     }
 
     @Override
-    public String addProfile(OspProfessionalBean professional, HttpServletRequest request)
+    public String saveProfile(OspProfessionalBean professional, HttpServletRequest request)
             throws OSPBusinessException {
         try {
-            profDao.addProfile(professional);
-            contactDao.addContact(professional);
-            addressDao.addAddress(professional);
-            addressMapDao.addAddressMap(professional);
-            contactMapDao.addContactMap(professional);
-            academicsDao.addAcademics(professional.getQualificationList());
-            specializationDao.addSpecializations(professional.getSpecializationList());
-            experienceDao.addExperience(professional.getExperienceList());
+            profDao.saveProfile(professional);
+            contactDao.saveContact(professional);
+            addressDao.saveAddress(professional);
+            addressMapDao.saveAddressMap(professional);
+            contactMapDao.saveContactMap(professional);
+            academicsDao.saveAcademics(professional.getQualificationList());
+            specializationDao.saveSpecializations(professional.getSpecializationList());
+            experienceDao.saveExperience(professional.getExperienceList());
         } catch (Exception ex) {
             throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
                     AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,

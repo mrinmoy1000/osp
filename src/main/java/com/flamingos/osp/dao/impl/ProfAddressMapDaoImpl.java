@@ -17,7 +17,7 @@ public class ProfAddressMapDaoImpl implements ProfAddressMapDao {
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 
   @Override
-  public void addAddressMap(OspProfessionalBean professionalBean) throws OspDaoException {
+  public void saveAddressMap(OspProfessionalBean professionalBean) throws OspDaoException {
 
     String insertOspProfAddressMap =
         "INSERT INTO OSP_PROF_ADDRESS_MAP VALUES (:PROF_ID," + ":ADDRESS_ID," + ":ACTIVE_STATUS)";

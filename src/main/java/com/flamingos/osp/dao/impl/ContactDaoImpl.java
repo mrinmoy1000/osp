@@ -19,7 +19,7 @@ public class ContactDaoImpl implements ContactDao {
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 
   @Override
-  public void addContact(OspProfessionalBean professionalBean) throws OspDaoException {
+  public void saveContact(OspProfessionalBean professionalBean) throws OspDaoException {
     String sql =
         "INSERT INTO OSP_CONTACT(CONTACT_TYPE,CONTACT_PHONE,CONTACT_EMAIL,ACTIVE_STATUS,CREATED_TS,CREATED_BY) VALUES(:CONTACT_TYPE, :CONTACT_PHONE, :CONTACT_EMAIL, :ACTIVE_STATUS, :CREATED_TS, :CREATED_BY)";
     try {

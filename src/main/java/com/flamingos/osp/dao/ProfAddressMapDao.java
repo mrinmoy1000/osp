@@ -5,7 +5,7 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfAddressMapDao {
 	
-	public void addAddressMap(OspProfessionalBean professionalBean)
+	public void saveAddressMap(OspProfessionalBean professionalBean)
 			throws OspDaoException;
 
 }

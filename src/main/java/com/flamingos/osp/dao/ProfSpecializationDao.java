@@ -9,6 +9,6 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfSpecializationDao {
 
-  public void addSpecializations(List<OspProfSpecializationBean> specializationBeanList)
+  public void saveSpecializations(List<OspProfSpecializationBean> specializationBeanList)
       throws OspDaoException;
 }

@@ -19,7 +19,7 @@ public class AddressDaoImpl implements AddressDao {
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 
   @Override
-  public void addAddress(OspProfessionalBean professionalBean) throws OspDaoException {
+  public void saveAddress(OspProfessionalBean professionalBean) throws OspDaoException {
     String sql =
         "INSERT INTO OSP_CONTACT(LOCATION_ID,OTHER_AREA,LINE_1,LINE_2,ACTIVE_STATUS,CREATED_TS,CREATED_BY) VALUES(:LOCATION_ID, :OTHER_AREA, :LINE_1, :LINE_2, :ACTIVE_STATUS, :CREATED_TS, :CREATED_BY)";
     try {

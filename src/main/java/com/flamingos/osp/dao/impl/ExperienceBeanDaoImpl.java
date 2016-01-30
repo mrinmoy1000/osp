@@ -19,7 +19,7 @@ public class ExperienceBeanDaoImpl implements ExperienceBeanDao {
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public void addExperience(List<OspExperienceBean> experienceList) throws OspDaoException {
+  public void saveExperience(List<OspExperienceBean> experienceList) throws OspDaoException {
 
 
     String query =

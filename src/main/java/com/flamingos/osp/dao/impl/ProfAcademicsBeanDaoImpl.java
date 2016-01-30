@@ -20,7 +20,7 @@ public class ProfAcademicsBeanDaoImpl implements ProfAcademicsBeanDao {
   private JdbcTemplate jdbcTemplate;
 
   @Override
-  public void addAcademics(List<OspProfAcademicsBean> profAcademicsBeanList) throws OspDaoException {
+  public void saveAcademics(List<OspProfAcademicsBean> profAcademicsBeanList) throws OspDaoException {
     String query =
         "INSERT INTO OSP_PROF_ACADEMICS VALUES (:PROF_ACDMC_ID," + ":PROF_ACDMC_NAME,"
             + ":PROF_ACDMC_DESC," + ":PROF_ACDMC_UNIVERSITY, " + ":PROF_ACDMC_PASS_YEAR, "

@@ -42,7 +42,7 @@ public int getTokenCheck(UserBean user, AccessToken access)
 
   public void updatePassword(UserBean user) throws OspDaoException;
 
-  public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException;
+  public int saveProfile(OspProfessionalBean professionalBean) throws OspDaoException;
 
   public void approveProfile(OspProfessionalBean professionalBean, int param_id)
       throws OspDaoException;

@@ -20,7 +20,7 @@ public class ProfSpecializationDaoImpl implements ProfSpecializationDao {
 
 
   @Override
-  public void addSpecializations(List<OspProfSpecializationBean> specializationBeanList)
+  public void saveSpecializations(List<OspProfSpecializationBean> specializationBeanList)
       throws OspDaoException {
 
     String query =

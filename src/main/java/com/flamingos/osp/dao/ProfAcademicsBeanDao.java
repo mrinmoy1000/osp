@@ -7,7 +7,7 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfAcademicsBeanDao {
   
-  public void addAcademics(List<OspProfAcademicsBean> profAcademicsBeanList)
+  public void saveAcademics(List<OspProfAcademicsBean> profAcademicsBeanList)
       throws OspDaoException;
 
 }

@@ -7,6 +7,6 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ExperienceBeanDao {
 
-  public void addExperience(List<OspExperienceBean> experienceList) throws OspDaoException;
+  public void saveExperience(List<OspExperienceBean> experienceList) throws OspDaoException;
 
 }
