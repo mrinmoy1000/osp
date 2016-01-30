@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.AccessToken;
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspAddressBean;
 import com.flamingos.osp.bean.OspContactBean;
 import com.flamingos.osp.bean.OspExperienceBean;
@@ -24,10 +25,12 @@ import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.ProfessionalDao;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 @Repository
@@ -38,6 +41,10 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
+  
+
+	@Autowired
+	private ConfigParamBean configParamBean;
 
     @Override
     public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
@@ -62,8 +69,71 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
         paramMap.put(AppConstants.UUID, user.getEmailUUID());
         namedJdbcTemplate.update(updateEmailStatusSql, paramMap);
         logger.debug("Exiting ProfessionalDao << emailUpdateStatus() method");
-    }
+  }
 
+
+  @Override
+  public int saveProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+    String sql =
+        "INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
+    try {
+      GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+      MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+      namedParameters.addValue("RECORD_ID", professionalBean.getRecordId());
+      namedParameters.addValue("PROF_FIRST_NAME", professionalBean.getProfFirstName());
+      namedParameters.addValue("PROF_MIDDLE_NAME", professionalBean.getProfMiddleName());
+      namedParameters.addValue("PROF_LAST_NAME", professionalBean.getProfLastName());
+      namedParameters.addValue("PROF_EMP_ID", professionalBean.getProfEmpId());
+      namedParameters.addValue("PROF_DOB", new Date());
+      namedParameters.addValue("PROF_GENDER", professionalBean.getProfGender());
+      namedParameters.addValue("PROF_NATIONALITY", professionalBean.getProfNationality());
+      namedParameters.addValue("PROF_PAN", professionalBean.getProfPan());
+      namedParameters.addValue("PROF_MERITAL_STATUS", professionalBean.getProfMeritalStatus());
+      namedParameters.addValue("PROF_MERRIAGE_ANNIVERSARY", new Date());
+      namedParameters.addValue("DND_ACTIVATED_FLAG", professionalBean.getDndActivatedFlag());
+      namedParameters.addValue("PROF_SIGNATURE", professionalBean.getProfSignature());
+      namedParameters.addValue("PROF_SUBSC_ID", professionalBean.getProfSubscId());
+      namedParameters.addValue("PROF_PUBLIC_ID", professionalBean.getProfPublicId());
+      namedParameters.addValue("PROF_FEES", professionalBean.getProfFees());
+      namedParameters.addValue("PROF_REMARK", professionalBean.getProfRemark());
+      namedParameters.addValue("STATUS", professionalBean.getStatus());
+      namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
+      namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
+
+      namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
+
+      professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+      return professionalBean.getProfId();
+    } catch (EmptyResultDataAccessException exp) {
+      throw new OspDaoException(exp);
+    }
+  }
+
+  @Override
+  public void approveProfile(OspProfessionalBean professionalBean, int param_id)
+      throws OspDaoException {
+	  	  
+    try {
+    	
+    	int initalStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
+    	              AppConstants.PARAM_NAME_INITIAL).getParameterid();
+    	
+    	int actionStatusCode=0;
+    	 if(!StringUtils.isEmpty(professionalBean.getActionTaken()))
+    		 configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,professionalBean.getActionTaken()).getParameterid();
+    	
+        String updateStatus =" UPDATE  osp_professional opp" + "  SET opp." + AppConstants.USER_STATUS + "= ? ,"
+              + "where " + AppConstants.PROF_ID + " = ? "+" and "+AppConstants.USER_STATUS +"=?";
+
+      int count =
+          jdbcTemplate.update(updateStatus, new Object[] {actionStatusCode, professionalBean.getProfId(),initalStatusCode});
+      if (count != 1) {
+        throw new OspDaoException();
+      }
+    } catch (RuntimeException exp) {
+      throw new OspDaoException();
+    }
+  }
     @Override
     public void smsUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
         logger.debug("Entrying ProfessionalDao >> smsUpdateStatus() method");
@@ -360,24 +430,7 @@ public class ProfessionalDaoImpl implements ProfessionalDao {
         }
     }
 
-    @Override
-    public void approveProfile(OspProfessionalBean professionalBean, int param_id)
-            throws OspDaoException {
-        try {
-            String updateStatus
-                    = " UPDATE  osp_professional opp" + "  SET opp." + AppConstants.USER_STATUS + "= ? ,"
-                    + "where " + AppConstants.PROF_ID + " = ?";
-
-            int count
-                    = jdbcTemplate.update(updateStatus, new Object[]{param_id, professionalBean.getProfId()});
-            if (count != 1) {
-                throw new OspDaoException();
-            }
-        } catch (RuntimeException exp) {
-            throw new OspDaoException();
-        }
-
-    }
+  
 
     @Override
     public List<OspProfessionalDTO> getAllProfessionalDetails() throws OspDaoException {

@@ -1,22 +1,14 @@
 package com.flamingos.osp.sms;
 
 public class SmS {
-	
 
-	private String recipient;
 
-	private String message;
-	
-	private String username;
-	
-	private String templateName;
-	
-	
-	private String content;
+  private String recipient;
 
 	private String password;
 	
 	private String URL;
+  private String message;
 
 	
 	public String getURL() {
@@ -30,50 +22,63 @@ public class SmS {
 	public String getTemplateName() {
 		return templateName;
 	}
+  private String username;
 
-	public void setTemplateName(String templateName) {
-		this.templateName = templateName;
-	}
+  private String templateName;
 
-	
-	public String getContent() {
-		return content;
-	}
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+  private String content;
 
-	public String getUsername() {
-		return username;
-	}
+  private String password;
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
-	public String getPassword() {
-		return password;
-	}
+  public String getTemplateName() {
+    return templateName;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public void setTemplateName(String templateName) {
+    this.templateName = templateName;
+  }
 
-	public String getRecipient() {
-		return recipient;
-	}
 
-	public void setRecipient(String recipient) {
-		this.recipient = recipient;
-	}
+  public String getContent() {
+    return content;
+  }
 
-	public String getMessage() {
-		return message;
-	}
+  public void setContent(String content) {
+    this.content = content;
+  }
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public String getRecipient() {
+    return recipient;
+  }
+
+  public void setRecipient(String recipient) {
+    this.recipient = recipient;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
 }

@@ -7,6 +7,15 @@ public class AppConstants {
   public static String LOG_TYPE_ERROR = "ERROR";
   public static String PIPE_SEPARATOR = "||";
 
+  public static String ADMIN_APPROVE_PROFILE_MODULE = "ADMIN_APPROVAL_MODULE";
+  public static String ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRCODE = "ADMIN001";
+  public static String ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC = "Professional Approval Failed";
+
+
+  public static String ADMIN_FETCH_PROFILE_MODULE = "ADMIN_DATARETRIVAL_MODULE";
+  public static String ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE = "ADMIN002";
+  public static String ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC = "Professional Fetch Failed";
+  
   public static String CONFIG_LOADING_MODULE = "CONFIG_LOADING_MODULE";
   public static String EMAIL_SENDING_MODULE = "EMAIL_MODULE";
   public static String SMS_SENDING_MODULE = "SMS_MODULE";
@@ -44,7 +53,7 @@ public static String PROFESSIONAL_ADD_PROFILE_MODULE = "PROFESSIONAL_ADD_PROFILE
   
   public static String PARAM_CODE_USER_STATUS = "USER_STATUS";
   public static String PARAM_CODE_USER_TYPE = "USER_TYPE";
-  public static String PARAM_NAME_PROFESSIONAL = "PREFESSIONAL";
+  public static String PARAM_NAME_PROFESSIONAL = "PROFESSIONAL";
   public static String PARAM_NAME_CLIENT = "CLIENT";
   public static String PARAM_NAME_ALL = "ALL";
   public static String PARAM_CODE_COMM_CHANNEL = "COMM_CHANNEL";
@@ -53,6 +62,8 @@ public static String PROFESSIONAL_ADD_PROFILE_MODULE = "PROFESSIONAL_ADD_PROFILE
   public static String PARAM_NAME_MAIL = "MAIL";
   public static String PARAM_CODE_JOB_STATUS = "JOB_STATUS";
   public static String PARAM_NAME_INITIAL = "INITIAL";
+  public static String PARAM_NAME_ACTIVE = "ACTIVE";
+  public static String PARAM_NAME_REJECTED = "REJECTED";
   public static String PARAM_NAME_FAILES = "FAILED";
   public static String PARAM_NAME_PROCESSED = "PROCESSED";
   public static String PARAM_NAME_FUP = "FUP";

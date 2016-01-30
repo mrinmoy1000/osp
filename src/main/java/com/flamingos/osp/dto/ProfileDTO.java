@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-public class ProfileDTO implements Serializable{
-  
+public class ProfileDTO implements Serializable {
+
   private static final Logger logger = Logger.getLogger(ProfileDTO.class);
   private static final long serialVersionUID = 1L;
-  
+
   private List<CommonParamDto> genders;
   private List<CommonParamDto> maritalStatus;
-  
-  private List<LocationDto> locations;
+
+  private List<LocationDTO> locations;
 
   public List<CommonParamDto> getGenders() {
     return genders;
@@ -31,13 +31,13 @@ public class ProfileDTO implements Serializable{
     this.maritalStatus = maritalStatus;
   }
 
-  public List<LocationDto> getLocations() {
+  public List<LocationDTO> getLocations() {
     return locations;
   }
 
-  public void setLocations(List<LocationDto> locations) {
+  public void setLocations(List<LocationDTO> locations) {
     this.locations = locations;
   }
-  
-  
+
+
 }

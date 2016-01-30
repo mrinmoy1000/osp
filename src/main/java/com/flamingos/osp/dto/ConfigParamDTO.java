@@ -1,6 +1,6 @@
 package com.flamingos.osp.dto;
 
-public class ConfigParamDto {
+public class ConfigParamDTO {
 
   private int parameterid;
   private String code;

@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class OspContactBean implements Serializable{
+public class OspContactBean implements Serializable {
 
   private static final Logger logger = Logger.getLogger(OspContactBean.class);
   private static final long serialVersionUID = 1L;

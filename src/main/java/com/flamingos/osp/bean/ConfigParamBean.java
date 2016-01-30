@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OSPErrorHandler;
 import com.flamingos.osp.service.ConfigParamLoaderService;
@@ -24,11 +24,11 @@ public class ConfigParamBean {
   private OSPErrorHandler ospErrorHandler;
 
   /* OSP Parameters */
-  private List<ConfigParamDto> listParam = new ArrayList<ConfigParamDto>();
-  private Map<String, ConfigParamDto> mapByParamId = new HashMap<String, ConfigParamDto>();
-  private Map<String, ConfigParamDto> mapByParamCodeAndName = new HashMap<String, ConfigParamDto>();
-  private Map<String, List<ConfigParamDto>> mapByParamCode =
-      new HashMap<String, List<ConfigParamDto>>();
+  private List<ConfigParamDTO> listParam = new ArrayList<ConfigParamDTO>();
+  private Map<String, ConfigParamDTO> mapByParamId = new HashMap<String, ConfigParamDTO>();
+  private Map<String, ConfigParamDTO> mapByParamCodeAndName = new HashMap<String, ConfigParamDTO>();
+  private Map<String, List<ConfigParamDTO>> mapByParamCode =
+      new HashMap<String, List<ConfigParamDTO>>();
 
   /* Communication Templates */
   private List<TemplateBean> templateBeanList = new ArrayList<TemplateBean>();
@@ -47,14 +47,14 @@ public class ConfigParamBean {
     AppUtil.writeToLog(AppConstants.CONFIG_LOADING_MODULE, AppConstants.LOG_TYPE_INFO, logMap);
     try {
       listParam = configParamLoaderService.loadConfigParam();
-      for (ConfigParamDto param : listParam) {
+      for (ConfigParamDTO param : listParam) {
         mapByParamId.put(Integer.toString(param.getParameterid()), param);
         mapByParamCodeAndName.put(param.getCode() + "__" + param.getName(), param);
         if (mapByParamCode.containsKey(param.getCode())) {
-          List<ConfigParamDto> existlistparamDto = mapByParamCode.get(param.getCode());
+          List<ConfigParamDTO> existlistparamDto = mapByParamCode.get(param.getCode());
           existlistparamDto.add(param);
         } else {
-          List<ConfigParamDto> newlistparamDto = new ArrayList<ConfigParamDto>();
+          List<ConfigParamDTO> newlistparamDto = new ArrayList<ConfigParamDTO>();
           newlistparamDto.add(param);
           mapByParamCode.put(param.getCode(), newlistparamDto);
         }
@@ -93,12 +93,12 @@ public class ConfigParamBean {
     return templateMapByName.get(id);
   }
 
-  public ConfigParamDto getParameterByCodeName(String paramCode, String paramName) {
+  public ConfigParamDTO getParameterByCodeName(String paramCode, String paramName) {
     String key = paramCode + "__" + paramName;
     return getMapByParamCodeAndName().get(key);
   }
 
-  public Map<String, ConfigParamDto> getMapByParamCodeAndName() {
+  public Map<String, ConfigParamDTO> getMapByParamCodeAndName() {
     return mapByParamCodeAndName;
   }
 

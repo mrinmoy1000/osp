@@ -11,13 +11,14 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfAddressMapDao;
 import com.flamingos.osp.exception.OspDaoException;
+
 @Repository
 public class ProfAddressMapDaoImpl implements ProfAddressMapDao {
   @Autowired
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 
   @Override
-  public void addAddressMap(OspProfessionalBean professionalBean) throws OspDaoException {
+  public void saveAddressMap(OspProfessionalBean professionalBean) throws OspDaoException {
 
     String insertOspProfAddressMap =
         "INSERT INTO OSP_PROF_ADDRESS_MAP VALUES (:PROF_ID," + ":ADDRESS_ID," + ":ACTIVE_STATUS)";

@@ -14,7 +14,7 @@ public interface AdminService {
   public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException;
 
-  public OspProfessionalDTO professionalDetails(int profId) throws OspServiceException;
+  public OspProfessionalDTO professionalDetails(int profId) throws OSPBusinessException;
 
-  public List<OspProfessionalDTO> allProfessionalDetails() throws OspServiceException;
+  public List<OspProfessionalDTO> allProfessionalDetails() throws OSPBusinessException;
 }

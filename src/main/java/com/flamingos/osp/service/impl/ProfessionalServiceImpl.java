@@ -25,7 +25,7 @@ import com.flamingos.osp.dao.ProfContactMapDao;
 import com.flamingos.osp.dao.ProfSpecializationDao;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dao.SignUpDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -38,40 +38,40 @@ import com.flamingos.osp.util.EncoderDecoderUtil;
 @Service
 public class ProfessionalServiceImpl implements ProfessionalService {
 
-    @Autowired
-    private ProfessionalDao profDao;
-    @Autowired
-    private ContactDao contactDao;
-    @Autowired
-    private AddressDao addressDao;
-    @Autowired
-    private ProfAcademicsBeanDao academicsDao;
-    @Autowired
-    private ProfSpecializationDao specializationDao;
-    @Autowired
-    private ExperienceBeanDao experienceDao;
-    @Autowired
-    private ProfAddressMapDao addressMapDao;
-    @Autowired
-    private ProfContactMapDao contactMapDao;
-    @Autowired
-    SignUpDao signUpDao;
+  @Autowired
+  private ProfessionalDao profDao;
+  @Autowired
+  private ContactDao contactDao;
+  @Autowired
+  private AddressDao addressDao;
+  @Autowired
+  private ProfAcademicsBeanDao academicsDao;
+  @Autowired
+  private ProfSpecializationDao specializationDao;
+  @Autowired
+  private ExperienceBeanDao experienceDao;
+  @Autowired
+  private ProfAddressMapDao addressMapDao;
+  @Autowired
+  private ProfContactMapDao contactMapDao;
+  @Autowired
+  SignUpDao signUpDao;
 
-    private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
+  private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
-    @Value("${email.expire.time}")
-    private int emailExpireTime;
+  @Value("${email.expire.time}")
+  private int emailExpireTime;
 
-    @Value("${sms.expire.time}")
-    private int smsExpireTime;
+  @Value("${sms.expire.time}")
+  private int smsExpireTime;
 
-    @Autowired
-    EncoderDecoderUtil encDecUtil;
+  @Autowired
+  EncoderDecoderUtil encDecUtil;
 
-    @Autowired
-    private ConfigParamBean configParamBean;
+  @Autowired
+  private ConfigParamBean configParamBean;
 
-    ConfigParamDto userStatusBean = null;
+  ConfigParamDTO userStatusBean = null;
 
     @Override
     public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
@@ -130,7 +130,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			user.setUserName(decryptedUserName);
 			AccessToken access = new AccessToken();
 			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-                        ConfigParamDto oParamEmailChannelEmail =
+                        ConfigParamDTO oParamEmailChannelEmail =
 				          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
 				              AppConstants.PARAM_NAME_EMAIL);
 				  user.setTokenType(oParamEmailChannelEmail.getParameterid());
@@ -142,7 +142,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				user.setUser_id(userDt.getUserId());
 				user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));				 
 					profDao.generateNewToken(user, emailExpireTime);					
-					  ConfigParamDto oParamEmailChannelSms =
+					  ConfigParamDTO oParamEmailChannelSms =
 					          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
 					              AppConstants.PARAM_NAME_SMS);
 					  user.setTokenType(oParamEmailChannelSms.getParameterid());
@@ -198,8 +198,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         }finally
         {
         logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
+          }
         }
-    }
 
     @Override
     public UserDTO changePassword(UserBean userBean) throws OSPBusinessException {
@@ -219,43 +219,46 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         {
         logger.debug("Exiting ProfessionalService << changePassword() method....");
         }
+      }
+
+
+
+
+  @Override
+  public String saveProfile(OspProfessionalBean professional, HttpServletRequest request)
+      throws OSPBusinessException {
+    try {
+      profDao.saveProfile(professional);
+      contactDao.saveContact(professional);
+      addressDao.saveAddress(professional);
+      addressMapDao.saveAddressMap(professional);
+      contactMapDao.saveContactMap(professional);
+      academicsDao.saveAcademics(professional.getQualificationList());
+      specializationDao.saveSpecializations(professional.getSpecializationList());
+      experienceDao.saveExperience(professional.getExperienceList());
+    } catch (Exception ex) {
+      throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
+          AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
+    }
+    return null;
+  }
+
+  @Override
+  public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
+      throws OspServiceException {
+    // TODO Auto-generated method stub
+    userStatusBean =
+        configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
+            AppConstants.PARAM_NAME_INITIAL);
+    try {
+      profDao.approveProfile(professional, 1);
+    } catch (OspDaoException ex) {
+      throw new OspServiceException(ex);
+
     }
 
-    @Override
-    public String addProfile(OspProfessionalBean professional, HttpServletRequest request)
-            throws OSPBusinessException {
-        try {
-            profDao.addProfile(professional);
-            contactDao.addContact(professional);
-            addressDao.addAddress(professional);
-            addressMapDao.addAddressMap(professional);
-            contactMapDao.addContactMap(professional);
-            academicsDao.addAcademics(professional.getQualificationList());
-            specializationDao.addSpecializations(professional.getSpecializationList());
-            experienceDao.addExperience(professional.getExperienceList());
-        } catch (Exception ex) {
-            throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
-                    AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
-                    AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
-            throws OspServiceException {
-        // TODO Auto-generated method stub
-        userStatusBean
-                = configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
-                        AppConstants.PARAM_NAME_INITIAL);
-        try {
-            profDao.approveProfile(professional, 1);
-        } catch (OspDaoException ex) {
-            throw new OspServiceException(ex);
-
-        }
-
-        return null;
-    }
+    return null;
+  }
 
 }

@@ -8,13 +8,13 @@ import com.flamingos.osp.dao.TicketDao;
 import com.flamingos.osp.dto.Professional;
 
 public class TicketService {
-	
-	@Autowired
-	TicketDao ticketDao;
-	
-	public List<Professional> getProfessinalList(String professionType){
-		return ticketDao.fetchAllProfessional(professionType);
-		
-	}
+
+  @Autowired
+  TicketDao ticketDao;
+
+  public List<Professional> getProfessinalList(String professionType) {
+    return ticketDao.fetchAllProfessional(professionType);
+
+  }
 
 }

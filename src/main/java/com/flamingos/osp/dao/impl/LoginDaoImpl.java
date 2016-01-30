@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.flamingos.osp.dao.LoginDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import org.apache.log4j.Logger;
@@ -37,7 +37,7 @@ private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("username", loginBean.getUserName());
 
-        try {
+    try {
 
             return namedJdbcTemplate.queryForObject(loginCheckSql, paramMap, new RowMapper<UserDTO>() {
                 @Override
@@ -69,7 +69,7 @@ private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
         paramMap.put("USERNAME", usrBean.getUserName());
         paramMap.put("EMAIl", usrBean.getEmail());
 
-        try {
+    try {
 
             return namedJdbcTemplate.queryForObject(userNameSql, paramMap,
                     new RowMapper<UserDTO>() {
@@ -98,7 +98,7 @@ private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
     @Override
     public int addFUPAccessToken(UserBean user, int fupExpireTime) throws OSPBusinessException {
     	      logger.debug("Entrying LoginDao >> addFUPAccessToken() method");
-        ConfigParamDto oParamFUPChannel =
+        ConfigParamDTO oParamFUPChannel =
     	          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
     	              AppConstants.PARAM_NAME_FUP);
             String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
@@ -127,4 +127,4 @@ private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
       
     }
 
-}
+  }

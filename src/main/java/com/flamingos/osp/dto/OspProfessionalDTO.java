@@ -3,14 +3,16 @@ package com.flamingos.osp.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.flamingos.osp.bean.OspAddressBean;
 import com.flamingos.osp.bean.OspContactBean;
 import com.flamingos.osp.bean.OspExperienceBean;
 import com.flamingos.osp.bean.OspProfAcademicsBean;
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 
+@JsonInclude(Include.NON_NULL)
 public class OspProfessionalDTO {
-
 
   private int profId;
   private int recordId;
@@ -32,6 +34,26 @@ public class OspProfessionalDTO {
   private double profFees;
   private String profRemark;
   private int status;
+
+  private String returnStatus;
+
+  private String returnMessage;
+
+  public String getReturnStatus() {
+    return returnStatus;
+  }
+
+  public void setReturnStatus(String returnStatus) {
+    this.returnStatus = returnStatus;
+  }
+
+  public String getReturnMessage() {
+    return returnMessage;
+  }
+
+  public void setReturnMessage(String returnMessage) {
+    this.returnMessage = returnMessage;
+  }
 
   private OspContactBean contact;
   private OspAddressBean address;
@@ -147,8 +169,6 @@ public class OspProfessionalDTO {
   public void setDndActivatedFlag(int dndActivatedFlag) {
     this.dndActivatedFlag = dndActivatedFlag;
   }
-
-
 
   public byte[] getProfSignature() {
     return profSignature;

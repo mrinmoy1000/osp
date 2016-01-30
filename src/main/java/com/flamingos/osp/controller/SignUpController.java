@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.SignUpService;
@@ -36,7 +36,7 @@ public class SignUpController {
         logger.debug("Entrying SignupController >> signupUser() method");
         UserDTO userDto = new UserDTO();
         try {
-            ConfigParamDto oParamProfessional
+            ConfigParamDTO oParamProfessional
                     = configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
                             AppConstants.PARAM_NAME_PROFESSIONAL);
 

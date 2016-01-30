@@ -28,21 +28,19 @@ public interface ProfessionalDao {
 
   public UserDTO getUserLinkValidCheckForFUP(UserBean user, AccessToken access)
       throws OspDaoException;
-public int getTokenCheck(UserBean user, AccessToken access)
-			throws OspDaoException;
-	
-	public UserDTO getTokenCheckforSms(UserBean user, AccessToken access)
-			throws OspDaoException;
 
-	public void generateNewToken(UserBean user, int expireTime)
-			throws OspDaoException;
+  public int getTokenCheck(UserBean user, AccessToken access) throws OspDaoException;
+
+  public UserDTO getTokenCheckforSms(UserBean user, AccessToken access) throws OspDaoException;
+
+  public void generateNewToken(UserBean user, int expireTime) throws OspDaoException;
 
 
   public UserDTO checkForForgotPassword(UserBean user, AccessToken access) throws OspDaoException;
 
   public void updatePassword(UserBean user) throws OspDaoException;
 
-  public int addProfile(OspProfessionalBean professionalBean) throws OspDaoException;
+  public int saveProfile(OspProfessionalBean professionalBean) throws OspDaoException;
 
   public void approveProfile(OspProfessionalBean professionalBean, int param_id)
       throws OspDaoException;

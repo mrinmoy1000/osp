@@ -10,19 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 import com.flamingos.osp.dto.Professional;
 import com.flamingos.osp.mapper.ProfessionalMapper;
 
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional(propagation = Propagation.REQUIRED)
 public class TicketDao {
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
-	
-	@SuppressWarnings("unchecked")
-	public List<Professional> fetchAllProfessional(String professionType){
-		String sql="select * from professional where p_type=?";
-		Object[] values=new Object[]{professionType};
-		List<Professional> pList=jdbcTemplate.query(sql,values,new ProfessionalMapper());
-		return pList;
-		
-	}
+
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
+
+  @SuppressWarnings("unchecked")
+  public List<Professional> fetchAllProfessional(String professionType) {
+    String sql = "select * from professional where p_type=?";
+    Object[] values = new Object[] {professionType};
+    List<Professional> pList = jdbcTemplate.query(sql, values, new ProfessionalMapper());
+    return pList;
+
+  }
 
 }
