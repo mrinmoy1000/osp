@@ -23,10 +23,10 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
   private String QUERY_OSP_PARAMETER_SELECT;
   @Value("${query_osp_template_select}")
   private String QUERY_OSP_TEMPLATE_SELECT;
-  
+
   @Value("${query_osp_role_select}")
   private String QUERY_OSP_ROLE_SELECT;
-  
+
   @Override
   public List<ConfigParamDto> loadConfigParam() throws OSPBusinessException, Exception {
     List<ConfigParamDto> paramList = new ArrayList<ConfigParamDto>();
@@ -61,8 +61,7 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
     List<RoleBean> roleList = null;
 
     Object[] values = new Object[] {1};
-    roleList =
-        getJdbcTemplate().query(QUERY_OSP_ROLE_SELECT, values, new RoleMapper());
+    roleList = getJdbcTemplate().query(QUERY_OSP_ROLE_SELECT, values, new RoleMapper());
     if (!(roleList.size() > 0)) {
       throw new OSPBusinessException("", AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
           AppConstants.DB_NO_RECORD_FOUND_ERRMSG);

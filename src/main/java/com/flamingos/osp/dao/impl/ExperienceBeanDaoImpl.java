@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.OspExperienceBean;
 import com.flamingos.osp.dao.ExperienceBeanDao;
 import com.flamingos.osp.exception.OspDaoException;
+
 @Repository
 public class ExperienceBeanDaoImpl implements ExperienceBeanDao {
   @Autowired

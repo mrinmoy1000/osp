@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class OspAddressBean implements Serializable{
+public class OspAddressBean implements Serializable {
 
   private static final Logger logger = Logger.getLogger(OspAddressBean.class);
   private static final long serialVersionUID = 1L;

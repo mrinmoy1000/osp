@@ -11,17 +11,17 @@ import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.LocationService;
 
 @Service
-public class LocationServiceImpl implements LocationService{
-  
+public class LocationServiceImpl implements LocationService {
+
   @Autowired
   LocationDao countryDao;
 
   @Override
   public List<LocationDto> getLocationList() throws OSPBusinessException {
-    try{
+    try {
       countryDao.getLocationList();
-    }catch(Exception ex){
-      throw new OSPBusinessException("","","", ex);
+    } catch (Exception ex) {
+      throw new OSPBusinessException("", "", "", ex);
     }
     return null;
   }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.AddressDao;
 import com.flamingos.osp.exception.OspDaoException;
+
 @Repository
 public class AddressDaoImpl implements AddressDao {
   @Autowired
@@ -30,16 +31,16 @@ public class AddressDaoImpl implements AddressDao {
       namedParameters.addValue("LINE_1", professionalBean.getContact().getContactEmail());
       namedParameters.addValue("LINE_2", professionalBean.getContact().getActiveStatus());
       namedParameters.addValue("ACTIVE_STATUS", new Timestamp(new Date().getTime()));
-      namedParameters.addValue("CREATED_TS", professionalBean.getContact().getCreatedBy());      
+      namedParameters.addValue("CREATED_TS", professionalBean.getContact().getCreatedBy());
       namedParameters.addValue("CREATED_BY", professionalBean.getContact().getCreatedBy());
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 
       professionalBean.getAddress().setAddressId(generatedKeyHolder.getKey().intValue());
-      
+
     } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
-    }        
+    }
   }
 
 }

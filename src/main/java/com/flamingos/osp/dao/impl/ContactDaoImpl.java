@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ContactDao;
 import com.flamingos.osp.exception.OspDaoException;
+
 @Repository
 public class ContactDaoImpl implements ContactDao {
   @Autowired
@@ -30,15 +31,15 @@ public class ContactDaoImpl implements ContactDao {
       namedParameters.addValue("CONTACT_EMAIL", professionalBean.getContact().getContactEmail());
       namedParameters.addValue("ACTIVE_STATUS", professionalBean.getContact().getActiveStatus());
       namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
-      namedParameters.addValue("CREATED_BY", professionalBean.getContact().getCreatedBy());      
+      namedParameters.addValue("CREATED_BY", professionalBean.getContact().getCreatedBy());
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 
       professionalBean.getContact().setContactId(generatedKeyHolder.getKey().intValue());
-      
+
     } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
-    }    
+    }
   }
 
 }

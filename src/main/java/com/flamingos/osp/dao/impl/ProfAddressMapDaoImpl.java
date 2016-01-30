@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfAddressMapDao;
 import com.flamingos.osp.exception.OspDaoException;
+
 @Repository
 public class ProfAddressMapDaoImpl implements ProfAddressMapDao {
   @Autowired

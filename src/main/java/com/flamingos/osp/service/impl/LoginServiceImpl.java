@@ -1,5 +1,7 @@
 package com.flamingos.osp.service.impl;
 
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -13,14 +15,11 @@ import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dao.SignUpDao;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
-import com.flamingos.osp.exception.OspDaoException;
-import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.EmailService;
 import com.flamingos.osp.service.LoginService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
-import java.util.UUID;
 @Transactional
 @Service
 public class LoginServiceImpl implements LoginService {
@@ -50,55 +49,52 @@ public class LoginServiceImpl implements LoginService {
           userDTO = new UserDTO();
           userDTO.setReturnStatus(AppConstants.FAILURE);
           userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
-        }else
-        {
-            userDTO.setReturnStatus(AppConstants.SUCCESS);
-            userDTO.setReturnMessage(AppConstants.LOGIN_SUCCESS);
-            userDTO.setUserPass("");
-        	
+        } else {
+          userDTO.setReturnStatus(AppConstants.SUCCESS);
+          userDTO.setReturnMessage(AppConstants.LOGIN_SUCCESS);
+          userDTO.setUserPass("");
+
         }
-      }else
-      {userDTO= new UserDTO();
-    	  userDTO.setReturnStatus(AppConstants.FAILURE);
-          userDTO.setReturnMessage(AppConstants.USER_NOT_FOUND);   	  
+      } else {
+        userDTO = new UserDTO();
+        userDTO.setReturnStatus(AppConstants.FAILURE);
+        userDTO.setReturnMessage(AppConstants.USER_NOT_FOUND);
       }
-      
+
       return userDTO;
     } catch (Exception exp) {
-      throw new OSPBusinessException(AppConstants.LOGIN_MODULE,AppConstants.LOGIN_EXCEPTION_ERRCODE,AppConstants.LOGIN_EXCEPTION_ERRDESC);
+      throw new OSPBusinessException(AppConstants.LOGIN_MODULE,
+          AppConstants.LOGIN_EXCEPTION_ERRCODE, AppConstants.LOGIN_EXCEPTION_ERRDESC);
     }
 
   }
 
-	@Override
-	public UserDTO checkForUserAndSendLink(UserBean userBean,
-			HttpServletRequest request) throws OSPBusinessException {
-		logger.debug("user checking for link");
-		try {
-			UserDTO user = loginDao.checkForUser(userBean);
-			if (user != null) {
-				String Uuid = String.valueOf(UUID.randomUUID());
-				userBean.setFupUUID(Uuid);
-				userBean.setUser_id(user.getUserId());
-				loginDao.addFUPAccessToken(userBean, fupExpireTime);
-				String link = sendLinkForForgotPassword(userBean, request);
-				logger.debug("Verfication link ,= " + link
-						+ " successfully sent");
-			}else
-			{
-				user = new UserDTO();
-				user.setReturnStatus("fail");
-				user.setReturnMessage("User doesn't exist");				
-			}			
-			return user;
-		} catch (Exception ex) {
-			throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
-					AppConstants.FUP_TOKEN__ERRCODE,
-					AppConstants.FUP_TOKEN_ERRDESC);
+  @Override
+  public UserDTO checkForUserAndSendLink(UserBean userBean, HttpServletRequest request)
+      throws OSPBusinessException {
+    logger.debug("user checking for link");
+    try {
+      UserDTO user = loginDao.checkForUser(userBean);
+      if (user != null) {
+        String Uuid = String.valueOf(UUID.randomUUID());
+        userBean.setFupUUID(Uuid);
+        userBean.setUser_id(user.getUserId());
+        loginDao.addFUPAccessToken(userBean, fupExpireTime);
+        String link = sendLinkForForgotPassword(userBean, request);
+        logger.debug("Verfication link ,= " + link + " successfully sent");
+      } else {
+        user = new UserDTO();
+        user.setReturnStatus("fail");
+        user.setReturnMessage("User doesn't exist");
+      }
+      return user;
+    } catch (Exception ex) {
+      throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
+          AppConstants.FUP_TOKEN__ERRCODE, AppConstants.FUP_TOKEN_ERRDESC);
 
-		}
+    }
 
-	}
+  }
 
 
   public String sendLinkForForgotPassword(UserBean userBean, HttpServletRequest request)
@@ -109,7 +105,8 @@ public class LoginServiceImpl implements LoginService {
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath() + "/verifyForgotPassword?username=" + encryptedUserName
             + "&UUID=" + userBean.getFupUUID();
-    emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(),linkTobeSend,"Forgot Password Link",userBean.getUserName());
+    emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(), linkTobeSend,
+        "Forgot Password Link", userBean.getUserName());
     return linkTobeSend;
   }
 

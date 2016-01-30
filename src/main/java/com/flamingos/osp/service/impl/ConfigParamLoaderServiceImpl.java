@@ -9,9 +9,6 @@ import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
 import com.flamingos.osp.dto.ConfigParamDto;
-import com.flamingos.osp.exception.OSPBusinessException;
-import com.flamingos.osp.exception.OspDaoException;
-import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ConfigParamLoaderService;
 
 @Service

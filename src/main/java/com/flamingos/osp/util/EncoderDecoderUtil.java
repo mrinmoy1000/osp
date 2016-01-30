@@ -1,15 +1,11 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this license header, choose License Headers in Project Properties. To change this
+ * template file, choose Tools | Templates and open the template in the editor.
  */
 package com.flamingos.osp.util;
 
 import java.nio.charset.StandardCharsets;
-import java.sql.Timestamp;
 import java.util.Base64;
-import java.util.Calendar;
-import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
@@ -20,21 +16,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class EncoderDecoderUtil {
 
-	public String getEncodedValue(String decryptData) {
-		final String s = decryptData;
-		final byte[] authBytes = s.getBytes(StandardCharsets.UTF_8);
-		final String encoded = Base64.getEncoder().encodeToString(authBytes);
-		return encoded;
+  public String getEncodedValue(String decryptData) {
+    final String s = decryptData;
+    final byte[] authBytes = s.getBytes(StandardCharsets.UTF_8);
+    final String encoded = Base64.getEncoder().encodeToString(authBytes);
+    return encoded;
 
-	}
+  }
 
-	public String getDecodedValue(String encryptData) {
+  public String getDecodedValue(String encryptData) {
 
-		final String s = encryptData;
+    final String s = encryptData;
 
-		final byte[] authBytes = Base64.getDecoder().decode(s);
-		final String decoded = new String(authBytes);
+    final byte[] authBytes = Base64.getDecoder().decode(s);
+    final String decoded = new String(authBytes);
 
-		return decoded;
-	}
+    return decoded;
+  }
 }

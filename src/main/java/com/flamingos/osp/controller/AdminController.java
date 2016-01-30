@@ -43,7 +43,7 @@ public class AdminController {
     } catch (OspServiceException e) {
       logger.error(e);
       return new ResponseEntity<String>("success", HttpStatus.OK);
-      
+
     }
 
   }

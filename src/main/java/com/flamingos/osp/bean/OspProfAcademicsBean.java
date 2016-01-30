@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class OspProfAcademicsBean implements Serializable{
+public class OspProfAcademicsBean implements Serializable {
 
   private static final Logger logger = Logger.getLogger(OspProfAcademicsBean.class);
   private static final long serialVersionUID = 1L;
@@ -69,7 +69,7 @@ public class OspProfAcademicsBean implements Serializable{
     this.profId = profId;
   }
 
- 
+
 
   public int getActiveStatus() {
     return activeStatus;
