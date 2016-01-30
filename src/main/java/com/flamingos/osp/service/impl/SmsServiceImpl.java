@@ -28,8 +28,7 @@ public class SmsServiceImpl implements SmsService {
     try {
       SmS sms = new SmS();
       sms.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
-      sms.setMessage(content);
-      sms.setRecipient(recipient);
+      sms.setURL(content);
       sms.setUsername(userId);
       sms.setPassword(password);
       String status = smsGateway.sendSms(sms);

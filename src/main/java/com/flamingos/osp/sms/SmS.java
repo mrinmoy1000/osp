@@ -15,8 +15,18 @@ public class SmS {
 	private String content;
 
 	private String password;
+	
+	private String URL;
 
 	
+	public String getURL() {
+		return URL;
+	}
+
+	public void setURL(String uRL) {
+		URL = uRL;
+	}
+
 	public String getTemplateName() {
 		return templateName;
 	}

@@ -4,45 +4,43 @@ import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.exception.OspDaoException;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.flamingos.osp.dao.LoginDao;
 import com.flamingos.osp.dto.ConfigParamDto;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
+import org.apache.log4j.Logger;
 
 @Repository
 public class LoginDaoImpl implements LoginDao {
-
+private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
     @Autowired
     private ConfigParamBean configParamBean;
 
-    private String loginCheckSql = "select  * from OSP_USER_CREDENTIAL where " + AppConstants.USER_NAME + " = :username";
+    private final String loginCheckSql = "select  * from OSP_USER_CREDENTIAL where " + AppConstants.USER_NAME + " = :username";
 
+    @Override
     public UserDTO getUser(UserBean loginBean) throws OspDaoException {
-
+       logger.debug("Entrying LoginDao >> getUser() method");
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("username", loginBean.getUserName());
 
         try {
 
             return namedJdbcTemplate.queryForObject(loginCheckSql, paramMap, new RowMapper<UserDTO>() {
+                @Override
                 public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
                     UserDTO user = new UserDTO();
                     user.setUserId(rs.getLong(AppConstants.RECORD_ID));
@@ -56,12 +54,16 @@ public class LoginDaoImpl implements LoginDao {
             });
 
         } catch (EmptyResultDataAccessException e) {
+            logger.error("no record found . Explicitly throwing exception",e);
             return null;
+        }finally{
+        logger.debug("Exiting LoginDao << getUser() method");
         }
     }
 
     @Override
     public UserDTO checkForUser(UserBean usrBean) throws OSPBusinessException {
+            logger.debug("entrying LoginDao getUser method");
         String userNameSql = "SELECT * FROM OSP_USER_CREDENTIAL WHERE  " + AppConstants.USER_NAME + "=:USERNAME and " + AppConstants.EMAIL + "=:EMAIl";
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("USERNAME", usrBean.getUserName());
@@ -71,6 +73,7 @@ public class LoginDaoImpl implements LoginDao {
 
             return namedJdbcTemplate.queryForObject(userNameSql, paramMap,
                     new RowMapper<UserDTO>() {
+                        @Override
                         public UserDTO mapRow(ResultSet rs, int rowNum)
                         throws SQLException {
                             UserDTO user = new UserDTO();
@@ -84,14 +87,18 @@ public class LoginDaoImpl implements LoginDao {
                         }
                     });
 
-        } catch (RuntimeException e) {
+         } catch (EmptyResultDataAccessException e) {
+            logger.error("no record found . Explicitly throwing exception",e);
             return null;
+        }finally{
+        logger.debug("Exiting LoginDao << checkUser() method");
         }
     }
 
     @Override
     public int addFUPAccessToken(UserBean user, int fupExpireTime) throws OSPBusinessException {
-    	 ConfigParamDto oParamFUPChannel =
+    	      logger.debug("Entrying LoginDao >> addFUPAccessToken() method");
+        ConfigParamDto oParamFUPChannel =
     	          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
     	              AppConstants.PARAM_NAME_FUP);
             String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
@@ -115,6 +122,7 @@ public class LoginDaoImpl implements LoginDao {
             accessTokenMapforFUP.put(AppConstants.CREATED_BY, user.getUserName());
             accessTokenMapforFUP.put(AppConstants.UPDATE_BY, null);
             int count = namedJdbcTemplate.update(insertAccessToken, accessTokenMapforFUP);
+            logger.debug("Exiting LoginDao << addFUPAccessToken() method");
             return count;
       
     }

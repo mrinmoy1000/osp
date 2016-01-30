@@ -20,13 +20,14 @@ public class EmailServiceImpl implements EmailService {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  public void sendMail(String templateName, String toemailId, String content, String subject,
+  public void sendMail(String templateName, String toemailId, String content,String content2, String subject,
       String addresseeName) throws OSPBusinessException {
     try {
       Mail mail = new Mail();
       mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
       mail.setMailTo(toemailId);
-      mail.setMailContent(content);
+      mail.setVerifyURL(content);
+      mail.setGenerateURL(content2);
       mail.setMailFrom(mailFrom);
       mail.setMailSubject(subject);
       mail.setFirstName(addresseeName);

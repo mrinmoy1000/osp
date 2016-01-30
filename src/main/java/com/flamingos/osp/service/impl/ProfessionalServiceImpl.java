@@ -76,7 +76,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     @Override
     public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
             throws OSPBusinessException {
-        logger.debug("verfiying email....");
+        logger.debug("Entrying ProfessionalService >> verifyEmailDataAndUpdateStatus method");
         UserDTO userDto = new UserDTO();
         try {
             String decryptedUserName = encDecUtil.getDecodedValue(username);
@@ -112,6 +112,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             return userDto;
         } catch (OspDaoException exp) {
             throw new OSPBusinessException(AppConstants.INVALID_LINK, "", "",exp);
+        }finally
+        {
+        logger.debug("Entrying ProfessionalService << verifyEmailDataAndUpdateStatus method");
         }
 
     }
@@ -120,7 +123,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	public String verifyAndGenerateNewToken(String username, String UUID)
 			throws OSPBusinessException {
 
-		logger.debug("verfiying token....");
+		logger.debug("Entrying ProfessionalService >> verifyAndGenerateNewToken() method");
 		try {
 			UserBean user = new UserBean();
 			String decryptedUserName = encDecUtil.getDecodedValue(username);
@@ -151,16 +154,17 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 						  profDao.generateNewToken(user, smsExpireTime);  
 						  
 					  }
-					  logger.debug("token verified and generated");
 						return AppConstants.SUCCESS;
 					 
 				} else {
-				logger.debug(AppConstants.INVALID_LINK);
 				return AppConstants.INVALID_LINK;
 				}
 		} catch (OspDaoException exp) {
 			throw new OSPBusinessException(AppConstants.TOKEN_GENERATED_FAIL, "", "",exp);
-		}
+		}finally
+                {
+                logger.debug("Exiting ProfessionalService << verifyAndGenerateNewToken() method");
+                }
 
 	}
 
@@ -168,7 +172,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     @Override
     public UserDTO verifyForgotPassword(String username, String UUID, String type)
             throws OSPBusinessException {
-        logger.debug("verfiying forgot password method....");
+        logger.debug("Entrying ProfessionalService >> verifyForgotPassword() method....");
         UserDTO userDto = new UserDTO();
         try {
 
@@ -191,11 +195,15 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         } catch (OspDaoException exp) {
             throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
                     AppConstants.FUP_TOKEN_VERIFY_ERRCODE, AppConstants.INVALID_LINK);
+        }finally
+        {
+        logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
         }
     }
 
     @Override
     public UserDTO changePassword(UserBean userBean) throws OSPBusinessException {
+       logger.debug("Entrying ProfessionalService >> changePassword() method....");
         try {
             userBean.setPassword(encDecUtil.getEncodedValue(userBean.getPassword()));
             profDao.updatePassword(userBean);
@@ -205,8 +213,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             return user;
         } catch (OspDaoException ex) {
             throw new OSPBusinessException(AppConstants.PASSWORD_CHANGE_MODULE,
-                    AppConstants.CHANGE_PASSWORD_ERRCODE, AppConstants.CHANGE_PASSWORD_ERRDESC);
+                    AppConstants.CHANGE_PASSWORD_ERRCODE, AppConstants.CHANGE_PASSWORD_ERRDESC,ex);
 
+        }finally
+        {
+        logger.debug("Exiting ProfessionalService << changePassword() method....");
         }
     }
 
