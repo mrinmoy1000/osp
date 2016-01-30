@@ -25,6 +25,12 @@ public class Mail {
 
   private String contentType;
 
+	private String firstName;
+	
+	private String middleName;
+	
+	private String lastName;
+
 	private Map<String, String> mapInlineImages;
 	
 	private String verifyURL;
@@ -47,12 +53,6 @@ public class Mail {
 	public void setGenerateURL(String generateURL) {
 		this.generateURL = generateURL;
 	}
-
-  private String middleName;
-
-  private String lastName;
-
-  private Map<String, String> mapInlineImages;
 
   public Mail() {
     contentType = "text/html";

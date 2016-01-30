@@ -5,10 +5,18 @@ public class SmS {
 
   private String recipient;
 
+	private String message;
+	
+	private String username;
+	
+	private String templateName;
+	
+	
+	private String content;
+
 	private String password;
 	
 	private String URL;
-  private String message;
 
 	
 	public String getURL() {
@@ -22,19 +30,6 @@ public class SmS {
 	public String getTemplateName() {
 		return templateName;
 	}
-  private String username;
-
-  private String templateName;
-
-
-  private String content;
-
-  private String password;
-
-
-  public String getTemplateName() {
-    return templateName;
-  }
 
   public void setTemplateName(String templateName) {
     this.templateName = templateName;
