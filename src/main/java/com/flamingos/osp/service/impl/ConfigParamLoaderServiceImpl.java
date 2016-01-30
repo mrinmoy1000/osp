@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.service.ConfigParamLoaderService;
 
 @Service
@@ -18,7 +18,7 @@ public class ConfigParamLoaderServiceImpl implements ConfigParamLoaderService {
   private ConfigLoaderDao configLoaderDao;
 
   @Override
-  public List<ConfigParamDto> loadConfigParam() throws Exception {
+  public List<ConfigParamDTO> loadConfigParam() throws Exception {
     return getConfigLoaderDao().loadConfigParam();
   }
 

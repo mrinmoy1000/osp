@@ -17,7 +17,7 @@
 		init-method="loadConfigParam"></bean>
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
 	<bean id="professionalBean" class="com.flamingos.osp.bean.OspProfessionalBean"></bean>
-	
+
 
 	<!-- Properties File -->
 	<bean

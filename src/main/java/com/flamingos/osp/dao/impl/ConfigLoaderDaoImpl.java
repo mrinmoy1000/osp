@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.mapper.ConfigParamRowMapper;
 import com.flamingos.osp.mapper.RoleMapper;
@@ -28,8 +28,8 @@ public class ConfigLoaderDaoImpl extends BaseDaoImpl implements ConfigLoaderDao 
   private String QUERY_OSP_ROLE_SELECT;
 
   @Override
-  public List<ConfigParamDto> loadConfigParam() throws OSPBusinessException, Exception {
-    List<ConfigParamDto> paramList = new ArrayList<ConfigParamDto>();
+  public List<ConfigParamDTO> loadConfigParam() throws OSPBusinessException, Exception {
+    List<ConfigParamDTO> paramList = new ArrayList<ConfigParamDTO>();
     Object[] values = new Object[] {1};
     paramList =
         getJdbcTemplate().query(QUERY_OSP_PARAMETER_SELECT, values, new ConfigParamRowMapper());

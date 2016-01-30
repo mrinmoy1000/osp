@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.SignUpDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -170,7 +170,7 @@ public class SignUpDaoImpl implements SignUpDao {
             + AppConstants.CREATED_TS + "," + ":" + AppConstants.UPDATED_TS + "," + ":"
             + AppConstants.CREATED_BY + "," + ":" + AppConstants.UPDATED_BY + ")";
 
-    ConfigParamDto oParamEmailChannel =
+    ConfigParamDTO oParamEmailChannel =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
             AppConstants.PARAM_NAME_EMAIL);
     Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
@@ -185,7 +185,7 @@ public class SignUpDaoImpl implements SignUpDao {
     accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
     accessTokenMapforEmail.put(AppConstants.UPDATE_BY, null);
     namedParameterJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
-    ConfigParamDto oParamSMSChannel =
+    ConfigParamDTO oParamSMSChannel =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
             AppConstants.PARAM_NAME_SMS);
     Map<String, Object> accessTokenMapforSms = new HashMap<String, Object>();

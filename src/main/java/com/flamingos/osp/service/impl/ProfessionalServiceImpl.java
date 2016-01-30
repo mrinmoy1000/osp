@@ -25,7 +25,7 @@ import com.flamingos.osp.dao.ProfContactMapDao;
 import com.flamingos.osp.dao.ProfSpecializationDao;
 import com.flamingos.osp.dao.ProfessionalDao;
 import com.flamingos.osp.dao.SignUpDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -71,7 +71,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  ConfigParamDto userStatusBean = null;
+  ConfigParamDTO userStatusBean = null;
 
   @Override
   public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
@@ -126,7 +126,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
       user.setUserName(decryptedUserName);
       AccessToken access = new AccessToken();
       access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-      ConfigParamDto oParamEmailChannelEmail =
+      ConfigParamDTO oParamEmailChannelEmail =
           configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
               AppConstants.PARAM_NAME_EMAIL);
       user.setTokenType(oParamEmailChannelEmail.getParameterid());
@@ -138,7 +138,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         user.setUser_id(userDt.getUserId());
         user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));
         profDao.generateNewToken(user, emailExpireTime);
-        ConfigParamDto oParamEmailChannelSms =
+        ConfigParamDTO oParamEmailChannelSms =
             configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
                 AppConstants.PARAM_NAME_SMS);
         user.setTokenType(oParamEmailChannelSms.getParameterid());

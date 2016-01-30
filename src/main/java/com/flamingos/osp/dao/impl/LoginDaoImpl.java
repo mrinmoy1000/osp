@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -89,7 +89,7 @@ public class LoginDaoImpl implements LoginDao {
 
   @Override
   public int addFUPAccessToken(UserBean user, int fupExpireTime) throws OSPBusinessException {
-    ConfigParamDto oParamFUPChannel =
+    ConfigParamDTO oParamFUPChannel =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
             AppConstants.PARAM_NAME_FUP);
     String insertAccessToken =

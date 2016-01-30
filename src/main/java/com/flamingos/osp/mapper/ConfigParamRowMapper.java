@@ -5,15 +5,15 @@ import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 
-public class ConfigParamRowMapper implements RowMapper<ConfigParamDto> {
+public class ConfigParamRowMapper implements RowMapper<ConfigParamDTO> {
 
   @Override
-  public ConfigParamDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-    ConfigParamDto param = null;
+  public ConfigParamDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+    ConfigParamDTO param = null;
     if (rs != null) {
-      param = new ConfigParamDto();
+      param = new ConfigParamDTO();
       param.setParameterid(rs.getInt("param_id"));
       param.setCode(rs.getString("param_code"));
       param.setName(rs.getString("param_name"));

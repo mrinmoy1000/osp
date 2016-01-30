@@ -28,7 +28,7 @@ import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.ProfessionalDao;
-import com.flamingos.osp.dto.ConfigParamDto;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
