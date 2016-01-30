@@ -11,271 +11,288 @@ import com.flamingos.osp.bean.OspProfSpecializationBean;
 
 public class OspProfessionalDTO {
 
+	private int profId;
+	private int recordId;
+	private String profFirstName;
+	private String profMiddleName;
+	private String profLastName;
+	private String profEmpId;
+	private Date profDob;
+	private int profGender;
+	private String profNationality;
+	private String profPan;
+	private int profMeritalStatus;
+	private Date profMerriageAnniversary;
+	private int dndActivatedFlag;
+	private byte[] profSignature;
+	private String profPhotograph;
+	private String profSubscId;
+	private String profPublicId;
+	private double profFees;
+	private String profRemark;
+	private int status;
 
-  private int profId;
-  private int recordId;
-  private String profFirstName;
-  private String profMiddleName;
-  private String profLastName;
-  private String profEmpId;
-  private Date profDob;
-  private int profGender;
-  private String profNationality;
-  private String profPan;
-  private int profMeritalStatus;
-  private Date profMerriageAnniversary;
-  private int dndActivatedFlag;
-  private byte[] profSignature;
-  private String profPhotograph;
-  private String profSubscId;
-  private String profPublicId;
-  private double profFees;
-  private String profRemark;
-  private int status;
+	private String returnStatus;
 
-  private OspContactBean contact;
-  private OspAddressBean address;
-  private List<OspProfSpecializationBean> specializationList;
-  private List<OspProfAcademicsBean> qualificationList;
-  private List<OspExperienceBean> experienceList;
+	private String returnMessage;
 
-  private Date createdTs;
-  private Date updatedTs;
-  private String createdBy;
-  private String updatedBy;
+	public String getReturnStatus() {
+		return returnStatus;
+	}
 
-  public int getProfId() {
-    return profId;
-  }
+	public void setReturnStatus(String returnStatus) {
+		this.returnStatus = returnStatus;
+	}
 
-  public void setProfId(int profId) {
-    this.profId = profId;
-  }
+	public String getReturnMessage() {
+		return returnMessage;
+	}
 
-  public int getRecordId() {
-    return recordId;
-  }
+	public void setReturnMessage(String returnMessage) {
+		this.returnMessage = returnMessage;
+	}
 
-  public void setRecordId(int recordId) {
-    this.recordId = recordId;
-  }
+	private OspContactBean contact;
+	private OspAddressBean address;
+	private List<OspProfSpecializationBean> specializationList;
+	private List<OspProfAcademicsBean> qualificationList;
+	private List<OspExperienceBean> experienceList;
 
-  public String getProfFirstName() {
-    return profFirstName;
-  }
+	private Date createdTs;
+	private Date updatedTs;
+	private String createdBy;
+	private String updatedBy;
 
-  public void setProfFirstName(String profFirstName) {
-    this.profFirstName = profFirstName;
-  }
+	public int getProfId() {
+		return profId;
+	}
 
-  public String getProfMiddleName() {
-    return profMiddleName;
-  }
+	public void setProfId(int profId) {
+		this.profId = profId;
+	}
 
-  public void setProfMiddleName(String profMiddleName) {
-    this.profMiddleName = profMiddleName;
-  }
+	public int getRecordId() {
+		return recordId;
+	}
 
-  public String getProfLastName() {
-    return profLastName;
-  }
+	public void setRecordId(int recordId) {
+		this.recordId = recordId;
+	}
 
-  public void setProfLastName(String profLastName) {
-    this.profLastName = profLastName;
-  }
+	public String getProfFirstName() {
+		return profFirstName;
+	}
 
-  public String getProfEmpId() {
-    return profEmpId;
-  }
+	public void setProfFirstName(String profFirstName) {
+		this.profFirstName = profFirstName;
+	}
 
-  public void setProfEmpId(String profEmpId) {
-    this.profEmpId = profEmpId;
-  }
+	public String getProfMiddleName() {
+		return profMiddleName;
+	}
 
-  public Date getProfDob() {
-    return profDob;
-  }
+	public void setProfMiddleName(String profMiddleName) {
+		this.profMiddleName = profMiddleName;
+	}
 
-  public void setProfDob(Date profDob) {
-    this.profDob = profDob;
-  }
+	public String getProfLastName() {
+		return profLastName;
+	}
 
-  public int getProfGender() {
-    return profGender;
-  }
+	public void setProfLastName(String profLastName) {
+		this.profLastName = profLastName;
+	}
 
-  public void setProfGender(int profGender) {
-    this.profGender = profGender;
-  }
+	public String getProfEmpId() {
+		return profEmpId;
+	}
 
-  public String getProfNationality() {
-    return profNationality;
-  }
+	public void setProfEmpId(String profEmpId) {
+		this.profEmpId = profEmpId;
+	}
 
-  public void setProfNationality(String profNationality) {
-    this.profNationality = profNationality;
-  }
+	public Date getProfDob() {
+		return profDob;
+	}
 
-  public String getProfPan() {
-    return profPan;
-  }
+	public void setProfDob(Date profDob) {
+		this.profDob = profDob;
+	}
 
-  public void setProfPan(String profPan) {
-    this.profPan = profPan;
-  }
+	public int getProfGender() {
+		return profGender;
+	}
 
-  public int getProfMeritalStatus() {
-    return profMeritalStatus;
-  }
+	public void setProfGender(int profGender) {
+		this.profGender = profGender;
+	}
 
-  public void setProfMeritalStatus(int profMeritalStatus) {
-    this.profMeritalStatus = profMeritalStatus;
-  }
+	public String getProfNationality() {
+		return profNationality;
+	}
 
-  public Date getProfMerriageAnniversary() {
-    return profMerriageAnniversary;
-  }
+	public void setProfNationality(String profNationality) {
+		this.profNationality = profNationality;
+	}
 
-  public void setProfMerriageAnniversary(Date profMerriageAnniversary) {
-    this.profMerriageAnniversary = profMerriageAnniversary;
-  }
+	public String getProfPan() {
+		return profPan;
+	}
 
-  public int getDndActivatedFlag() {
-    return dndActivatedFlag;
-  }
+	public void setProfPan(String profPan) {
+		this.profPan = profPan;
+	}
 
-  public void setDndActivatedFlag(int dndActivatedFlag) {
-    this.dndActivatedFlag = dndActivatedFlag;
-  }
+	public int getProfMeritalStatus() {
+		return profMeritalStatus;
+	}
 
+	public void setProfMeritalStatus(int profMeritalStatus) {
+		this.profMeritalStatus = profMeritalStatus;
+	}
 
+	public Date getProfMerriageAnniversary() {
+		return profMerriageAnniversary;
+	}
 
-  public byte[] getProfSignature() {
-    return profSignature;
-  }
+	public void setProfMerriageAnniversary(Date profMerriageAnniversary) {
+		this.profMerriageAnniversary = profMerriageAnniversary;
+	}
 
-  public void setProfSignature(byte[] profSignature) {
-    this.profSignature = profSignature;
-  }
+	public int getDndActivatedFlag() {
+		return dndActivatedFlag;
+	}
 
-  public String getProfPhotograph() {
-    return profPhotograph;
-  }
+	public void setDndActivatedFlag(int dndActivatedFlag) {
+		this.dndActivatedFlag = dndActivatedFlag;
+	}
 
-  public void setProfPhotograph(String profPhotograph) {
-    this.profPhotograph = profPhotograph;
-  }
+	public byte[] getProfSignature() {
+		return profSignature;
+	}
 
-  public String getProfSubscId() {
-    return profSubscId;
-  }
+	public void setProfSignature(byte[] profSignature) {
+		this.profSignature = profSignature;
+	}
 
-  public void setProfSubscId(String profSubscId) {
-    this.profSubscId = profSubscId;
-  }
+	public String getProfPhotograph() {
+		return profPhotograph;
+	}
 
-  public String getProfPublicId() {
-    return profPublicId;
-  }
+	public void setProfPhotograph(String profPhotograph) {
+		this.profPhotograph = profPhotograph;
+	}
 
-  public void setProfPublicId(String profPublicId) {
-    this.profPublicId = profPublicId;
-  }
+	public String getProfSubscId() {
+		return profSubscId;
+	}
 
-  public double getProfFees() {
-    return profFees;
-  }
+	public void setProfSubscId(String profSubscId) {
+		this.profSubscId = profSubscId;
+	}
 
-  public void setProfFees(double profFees) {
-    this.profFees = profFees;
-  }
+	public String getProfPublicId() {
+		return profPublicId;
+	}
 
-  public String getProfRemark() {
-    return profRemark;
-  }
+	public void setProfPublicId(String profPublicId) {
+		this.profPublicId = profPublicId;
+	}
 
-  public void setProfRemark(String profRemark) {
-    this.profRemark = profRemark;
-  }
+	public double getProfFees() {
+		return profFees;
+	}
 
-  public int getStatus() {
-    return status;
-  }
+	public void setProfFees(double profFees) {
+		this.profFees = profFees;
+	}
 
-  public void setStatus(int status) {
-    this.status = status;
-  }
+	public String getProfRemark() {
+		return profRemark;
+	}
 
-  public OspContactBean getContact() {
-    return contact;
-  }
+	public void setProfRemark(String profRemark) {
+		this.profRemark = profRemark;
+	}
 
-  public void setContact(OspContactBean contact) {
-    this.contact = contact;
-  }
+	public int getStatus() {
+		return status;
+	}
 
-  public OspAddressBean getAddress() {
-    return address;
-  }
+	public void setStatus(int status) {
+		this.status = status;
+	}
 
-  public void setAddress(OspAddressBean address) {
-    this.address = address;
-  }
+	public OspContactBean getContact() {
+		return contact;
+	}
 
-  public List<OspProfSpecializationBean> getSpecializationList() {
-    return specializationList;
-  }
+	public void setContact(OspContactBean contact) {
+		this.contact = contact;
+	}
 
-  public void setSpecializationList(List<OspProfSpecializationBean> specializationList) {
-    this.specializationList = specializationList;
-  }
+	public OspAddressBean getAddress() {
+		return address;
+	}
 
-  public List<OspProfAcademicsBean> getQualificationList() {
-    return qualificationList;
-  }
+	public void setAddress(OspAddressBean address) {
+		this.address = address;
+	}
 
-  public void setQualificationList(List<OspProfAcademicsBean> qualificationList) {
-    this.qualificationList = qualificationList;
-  }
+	public List<OspProfSpecializationBean> getSpecializationList() {
+		return specializationList;
+	}
 
-  public List<OspExperienceBean> getExperienceList() {
-    return experienceList;
-  }
+	public void setSpecializationList(List<OspProfSpecializationBean> specializationList) {
+		this.specializationList = specializationList;
+	}
 
-  public void setExperienceList(List<OspExperienceBean> experienceList) {
-    this.experienceList = experienceList;
-  }
+	public List<OspProfAcademicsBean> getQualificationList() {
+		return qualificationList;
+	}
 
-  public Date getCreatedTs() {
-    return createdTs;
-  }
+	public void setQualificationList(List<OspProfAcademicsBean> qualificationList) {
+		this.qualificationList = qualificationList;
+	}
 
-  public void setCreatedTs(Date createdTs) {
-    this.createdTs = createdTs;
-  }
+	public List<OspExperienceBean> getExperienceList() {
+		return experienceList;
+	}
 
-  public Date getUpdatedTs() {
-    return updatedTs;
-  }
+	public void setExperienceList(List<OspExperienceBean> experienceList) {
+		this.experienceList = experienceList;
+	}
 
-  public void setUpdatedTs(Date updatedTs) {
-    this.updatedTs = updatedTs;
-  }
+	public Date getCreatedTs() {
+		return createdTs;
+	}
 
-  public String getCreatedBy() {
-    return createdBy;
-  }
+	public void setCreatedTs(Date createdTs) {
+		this.createdTs = createdTs;
+	}
 
-  public void setCreatedBy(String createdBy) {
-    this.createdBy = createdBy;
-  }
+	public Date getUpdatedTs() {
+		return updatedTs;
+	}
 
-  public String getUpdatedBy() {
-    return updatedBy;
-  }
+	public void setUpdatedTs(Date updatedTs) {
+		this.updatedTs = updatedTs;
+	}
 
-  public void setUpdatedBy(String updatedBy) {
-    this.updatedBy = updatedBy;
-  }
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(String updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
 }
