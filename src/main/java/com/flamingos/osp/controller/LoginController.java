@@ -23,7 +23,7 @@ public class LoginController {
 
     @Autowired
     LoginService loginService;
-    private static final Logger logger = Logger.getLogger(ProfessionalController.class);
+    private static final Logger logger = Logger.getLogger(LoginController.class);
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<UserDTO> Login(@RequestBody UserBean userBean) {
