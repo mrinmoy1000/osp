@@ -31,6 +31,7 @@ public class OspProfessionalBean implements Serializable {
   private double profFees;
   private String profRemark;
   private int status;
+  private String actionTaken;
 
   private OspContactBean contact;
   private OspAddressBean address;
@@ -276,5 +277,15 @@ public class OspProfessionalBean implements Serializable {
   public void setUpdatedBy(String updatedBy) {
     this.updatedBy = updatedBy;
   }
+
+public String getActionTaken() {
+	return actionTaken;
+}
+
+public void setActionTaken(String actionTaken) {
+	this.actionTaken = actionTaken;
+}
+  
+  
 
 }
