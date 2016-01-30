@@ -26,6 +26,7 @@
 			<list>
 				<value>/WEB-INF/classes/queryList.properties</value>
 				<value>file:${CATALINA_HOME}/conf/osp.properties</value>
+				<!-- <value>file:${CATALINA_HOME}/ospresources/osp.properties</value> -->
 			</list>
 		</property>
 	</bean>
