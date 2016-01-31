@@ -57,7 +57,7 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	@Override
-	public OspProfessionalDTO professionalDetails(int profId) throws OSPBusinessException {
+	public OspProfessionalDTO professionalDetails(long profId) throws OSPBusinessException {
 		OspProfessionalDTO profDetails = null;
 		List<OspProfSpecializationBean> specializationList = null;
 		List<OspProfAcademicsBean> qualificationList = null;

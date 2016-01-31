@@ -12,7 +12,7 @@ public class OspProfSpecializationBean implements Serializable {
   private int profSpecId;
   private String profSpecName;
   private String profSpecDesc;
-  private int profId;
+  private long profId;
   private int activeStatus;
   private Date createdTs;
   private Date updatedTs;
@@ -43,11 +43,11 @@ public class OspProfSpecializationBean implements Serializable {
     this.profSpecDesc = profSpecDesc;
   }
 
-  public int getProfId() {
+  public long getProfId() {
     return profId;
   }
 
-  public void setProfId(int profId) {
+  public void setProfId(long profId) {
     this.profId = profId;
   }
 

@@ -14,7 +14,7 @@ public class OspProfAcademicsBean implements Serializable {
   private String profAcdmcDesc;
   private String profAcdmcUniversity;
   private String profAcdmcPassYear;
-  private int profId;
+  private long profId;
   private int activeStatus;
   private Date createdTs;
   private Date updatedTs;
@@ -61,11 +61,11 @@ public class OspProfAcademicsBean implements Serializable {
     this.profAcdmcPassYear = profAcdmcPassYear;
   }
 
-  public int getProfId() {
+  public long getProfId() {
     return profId;
   }
 
-  public void setProfId(int profId) {
+  public void setProfId(long profId) {
     this.profId = profId;
   }
 

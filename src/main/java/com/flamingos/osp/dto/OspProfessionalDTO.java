@@ -14,7 +14,7 @@ import com.flamingos.osp.bean.OspProfSpecializationBean;
 @JsonInclude(Include.NON_NULL)
 public class OspProfessionalDTO {
 
-  private int profId;
+  private long profId;
   private int recordId;
   private String profFirstName;
   private String profMiddleName;
@@ -66,11 +66,11 @@ public class OspProfessionalDTO {
   private String createdBy;
   private String updatedBy;
 
-  public int getProfId() {
+  public long getProfId() {
     return profId;
   }
 
-  public void setProfId(int profId) {
+  public void setProfId(long profId) {
     this.profId = profId;
   }
 

@@ -492,7 +492,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public OspProfessionalDTO getProfessionalDetails(int profId) throws OspDaoException {
+  public OspProfessionalDTO getProfessionalDetails(long profId) throws OspDaoException {
 
     OspProfessionalDTO professionalDetail = null;
 
@@ -549,7 +549,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public List<OspProfSpecializationBean> getProfSpecializationList(int profId)
+  public List<OspProfSpecializationBean> getProfSpecializationList(long profId)
       throws OspDaoException {
     List<OspProfSpecializationBean> specializationList = null;
 
@@ -585,7 +585,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public List<OspProfAcademicsBean> getProfQualificationList(int profId) throws OspDaoException {
+  public List<OspProfAcademicsBean> getProfQualificationList(long profId) throws OspDaoException {
     List<OspProfAcademicsBean> qualificationList = null;
     String getAcademicsSql =
         "select opa.ACTIVE_STATUS, opa.PROF_ACDMC_DESC, "
@@ -618,7 +618,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public List<OspExperienceBean> getProfExperienceList(int profId) throws OspDaoException {
+  public List<OspExperienceBean> getProfExperienceList(long profId) throws OspDaoException {
     List<OspExperienceBean> experienceList = null;
     String getExperienceSql =
         "select ope.ACTIVE_STATUS, ope.PROF_EXP_BEGIN_DT, "
@@ -685,7 +685,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public List<OspContactBean> fetchContactDetails(int id) {
+  public List<OspContactBean> fetchContactDetails(long profId) {
 
     List<OspContactBean> contactDetailList = null;
     {
@@ -694,8 +694,8 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
           "select oc.CONTACT_ID,oc.CONTACT_TYPE,oc.CONTACT_PHONE,oc.CONTACT_EMAIL,oc.ACTIVE_STATUS from OSP_PROFESSIONAL op, OSP_CONTACT oc,OSP_PROF_CONTACT_MAP ocm  where ocm.CONTACT_ID = oc.CONTACT_ID and op.PROF_ID = ocm.PROF_ID"
               + " and op.PROF_ID =:" + AppConstants.PROF_ID;
 
-      HashMap<String, Integer> paramMap = new HashMap<String, Integer>();
-      paramMap.put(AppConstants.PROF_ID, id);
+      HashMap<String, Long> paramMap = new HashMap<String, Long>();
+      paramMap.put(AppConstants.PROF_ID, profId);
 
       contactDetailList =
           namedJdbcTemplate.query(getAddressSql, paramMap, new RowMapper<OspContactBean>() {
@@ -719,7 +719,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public List<OspAddressBean> fetchAddressDetails(int id) {
+  public List<OspAddressBean> fetchAddressDetails(long profId) {
 
     List<OspAddressBean> addressDetailList = null;
     {
@@ -728,8 +728,8 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
           "select oad.ADDRESS_ID,oad.LOCATION_ID,oad.OTHER_AREA,oad.LINE_1,oad.LINE_2,oad.PIN_CODE,oad.ACTIVE_STATUS from OSP_PROFESSIONAL op,OSP_ADDRESS oad,OSP_PROF_ADDRESS_MAP oadmap  where oadmap.ADDRESS_ID = oad.ADDRESS_ID and op.PROF_ID = oadmap.PROF_ID"
               + " and op.PROF_ID =:" + AppConstants.PROF_ID;
 
-      HashMap<String, Integer> paramMap = new HashMap<String, Integer>();
-      paramMap.put(AppConstants.PROF_ID, id);
+      HashMap<String, Long> paramMap = new HashMap<String, Long>();
+      paramMap.put(AppConstants.PROF_ID, profId);
 
       addressDetailList =
           namedJdbcTemplate.query(getAddressSql, paramMap, new RowMapper<OspAddressBean>() {

@@ -46,17 +46,17 @@ public interface ProfessionalDAO {
 
 	public List<OspProfessionalDTO> getAllProfessionalDetails() throws OspDaoException;
 
-	public OspProfessionalDTO getProfessionalDetails(int profId) throws OspDaoException;
+	public OspProfessionalDTO getProfessionalDetails(long profId) throws OspDaoException;
 
-	public List<OspProfSpecializationBean> getProfSpecializationList(int profId) throws OspDaoException;
+	public List<OspProfSpecializationBean> getProfSpecializationList(long profId) throws OspDaoException;
 
-	public List<OspProfAcademicsBean> getProfQualificationList(int profId) throws OspDaoException;
+	public List<OspProfAcademicsBean> getProfQualificationList(long profId) throws OspDaoException;
 
-	public List<OspExperienceBean> getProfExperienceList(int profId) throws OspDaoException;
+	public List<OspExperienceBean> getProfExperienceList(long profId) throws OspDaoException;
 
 	public List<OspProfessionalDTO> fetchApprovalProfList() throws OspDaoException;
 	
-	public List<OspContactBean> fetchContactDetails(int id) ;
+	public List<OspContactBean> fetchContactDetails(long id) ;
 	
-	public List<OspAddressBean> fetchAddressDetails(int id) ;
+	public List<OspAddressBean> fetchAddressDetails(long id) ;
 }
