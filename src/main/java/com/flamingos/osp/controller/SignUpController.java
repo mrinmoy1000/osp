@@ -68,6 +68,7 @@ public class SignUpController {
     public ResponseEntity<UserDTO> checkUserName(@RequestParam(value = "userName") String userName)
             throws Exception {
         logger.debug("Entrying SignupController >> checkUserName() method");
+        
         UserDTO userDto = new UserDTO();
         try {
             userDto = signUpService.checkUserName(userName);
