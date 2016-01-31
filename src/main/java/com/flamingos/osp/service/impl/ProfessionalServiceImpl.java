@@ -58,7 +58,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   @Autowired
   private ProfContactMapDAO contactMapDAO;
   @Autowired
-  private SignUpDAO signUpDao;
+  private SignUpDAO signUpDAO;
 
   private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
@@ -139,7 +139,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
       if (userCount == 0) {
         user.setEmailUUID(UUID);
         profDAO.emailUpdateStatus(user, access);
-        UserDTO userDt = signUpDao.findByUserName(decryptedUserName);
+        UserDTO userDt = signUpDAO.findByUserName(decryptedUserName);
         user.setUser_id(userDt.getUserId());
         user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));
         profDAO.generateNewToken(user, emailExpireTime);
@@ -222,7 +222,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
 
   @Override
-  public String saveProfile(OspProfessionalBean professional, HttpServletRequest request)
+  public void saveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException {
     try {
       profDAO.saveProfile(professional);
@@ -231,6 +231,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
       addressMapDAO.saveAddressMap(professional);
       contactMapDAO.saveContactMap(professional);
       academicsDAO.saveAcademics(professional.getQualificationList());
+      profSubCatDAO.saveProfessionalSubCategory(professional);
       specializationDAO.saveSpecializations(professional.getSpecializationList());
       experienceDAO.saveExperience(professional.getExperienceList());
     } catch (Exception ex) {
@@ -238,24 +239,21 @@ public class ProfessionalServiceImpl implements ProfessionalService {
           AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
           AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
     }
-    return null;
   }
 
   @Override
-  public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
+  public void approveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OspServiceException {
     // TODO Auto-generated method stub
     userStatusBean =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
             AppConstants.PARAM_NAME_INITIAL);
     try {
-      profDAO.approveProfile(professional, 1);
+      profDAO.approveProfile(professional, AppConstants.INT_ONE);
     } catch (OspDaoException ex) {
       throw new OspServiceException(ex);
 
     }
-
-    return null;
   }
 
 }

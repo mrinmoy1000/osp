@@ -19,10 +19,10 @@ public interface ProfessionalService {
 
   public UserDTO changePassword(UserBean loginBean) throws OSPBusinessException;
 
-  public String saveProfile(OspProfessionalBean professional, HttpServletRequest request)
+  public void saveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OspServiceException;
 
-  public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
+  public void approveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OspServiceException;
 
 

@@ -72,9 +72,9 @@ public class ProfessionalController {
       method = RequestMethod.POST, consumes = "application/json")
   public ResponseEntity<String> saveProfile(@RequestBody OspProfessionalBean professionalBean,
       HttpServletRequest request) throws Exception {
-    String successMessage = profService.saveProfile(professionalBean, request);
+    profService.saveProfile(professionalBean, request);
 
-    return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
+    return new ResponseEntity<String>("Success", HttpStatus.CREATED);
   }
 
 

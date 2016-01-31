@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -46,7 +47,10 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
   @Autowired
   private ConfigParamBean configParamBean;
-
+  
+  @Value("${query_osp_professional_insert}")
+  private String SQL_INSERT_OSP_PROFESSIONAL;
+  
   @Override
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
 
@@ -75,8 +79,6 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   @Override
   public long saveProfile(OspProfessionalBean professionalBean) throws OspDaoException {
     logger.debug("Entering ProfessionalDao >> saveProfile() method");
-    String sql =
-        "INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
     try {
       GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
       MapSqlParameterSource namedParameters = new MapSqlParameterSource();
@@ -100,10 +102,10 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
       namedParameters.addValue("STATUS", professionalBean.getStatus());
       namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
       namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
-      logger.info("ProfessionalDao.saveProfile() query" + sql);
-      namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
+      logger.info("ProfessionalDao.saveProfile() query" + SQL_INSERT_OSP_PROFESSIONAL);
+      namedJdbcTemplate.update(SQL_INSERT_OSP_PROFESSIONAL, namedParameters, generatedKeyHolder);
 
-      professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+      professionalBean.setProfId(generatedKeyHolder.getKey().longValue());
       return professionalBean.getProfId();
     } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
@@ -432,7 +434,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 
-      professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
+      professionalBean.setProfId(generatedKeyHolder.getKey().longValue());
       return professionalBean.getProfId();
     } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
