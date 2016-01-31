@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDao;
+import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.service.ConfigParamLoaderService;
 
@@ -34,5 +35,15 @@ public class ConfigParamLoaderServiceImpl implements ConfigParamLoaderService {
   @Override
   public List<RoleBean> getAllRoles() throws Exception {
     return configLoaderDao.getAllRoles();
+  }
+
+  @Override
+  public List<CatSubCatDTO> getAllCategories() throws Exception {
+    return configLoaderDao.getAllCategories();
+  }
+
+  @Override
+  public List<CatSubCatDTO> getAllSubCategories() throws Exception {
+    return configLoaderDao.getAllSubCategories();
   }
 }

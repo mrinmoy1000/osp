@@ -15,6 +15,7 @@
 	<bean id="ospErrorHandler" class="com.flamingos.osp.exception.OSPErrorHandler"></bean>
 	<bean id="configParamBean" class="com.flamingos.osp.bean.ConfigParamBean"
 		init-method="loadConfigParam"></bean>
+	<!-- init-method="loadConfigParam" -->
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
 	<bean id="professionalBean" class="com.flamingos.osp.bean.OspProfessionalBean"></bean>
 	<bean id="locationService" class="com.flamingos.osp.service.impl.LocationServiceImpl"></bean>

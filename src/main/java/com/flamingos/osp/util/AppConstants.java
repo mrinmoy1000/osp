@@ -1,6 +1,9 @@
 package com.flamingos.osp.util;
 
 public class AppConstants {
+  
+  public static Boolean TRUE=Boolean.TRUE;
+  public static Boolean FALSE=Boolean.FALSE;
 
   public static String LOG_TYPE_INFO = "INFO";
   public static String LOG_TYPE_DEBUG = "DEBUG";

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
+import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.CommonParamDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.LocationDTO;
@@ -50,6 +51,18 @@ public class ProfessionalController {
       }
     }
     profileDto.setLocations(countryList);
+    List<CatSubCatDTO> categoryList=configParamBean.getCategoryList();
+    List<CatSubCatDTO> subCategoryList=configParamBean.getSubCategoryList();
+    for(CatSubCatDTO category:categoryList){
+      category.setSubCatId(null);
+      for(CatSubCatDTO subCategory:subCategoryList){
+        if(category.getCatId()==subCategory.getCatId()){
+          subCategory.setCatId(null);
+          category.getSubCategoryList().add(subCategory);
+        }
+      }
+    }
+    profileDto.setCategories(categoryList);
 
     return profileDto;
   }

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
@@ -51,6 +52,10 @@ public class ConfigParamBean {
   private List<LocationDTO> districtList = new ArrayList<LocationDTO>();
   private List<LocationDTO> cityList = new ArrayList<LocationDTO>();
   private List<LocationDTO> areaList = new ArrayList<LocationDTO>();
+  
+  /* OSP Categories & SubCategories */
+  private List<CatSubCatDTO> categoryList=new ArrayList<CatSubCatDTO>();
+  private List<CatSubCatDTO> subCategoryList=new ArrayList<CatSubCatDTO>();
 
   public void loadConfigParam() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -110,9 +115,11 @@ public class ConfigParamBean {
             areaList.add(location);
           }
         }
-
-
       }
+      
+      categoryList=configParamLoaderService.getAllCategories();
+      subCategoryList=configParamLoaderService.getAllSubCategories();
+      
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
         ospEx.setModuleName(AppConstants.CONFIG_LOADING_MODULE);
@@ -176,5 +183,12 @@ public class ConfigParamBean {
 
   public List<LocationDTO> getAreaList() {
     return areaList;
+  }
+  
+  public List<CatSubCatDTO> getCategoryList(){
+    return categoryList;
+  }
+  public List<CatSubCatDTO> getSubCategoryList(){
+    return subCategoryList;
   }
 }
