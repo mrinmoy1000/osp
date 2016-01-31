@@ -225,16 +225,22 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   public void saveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException {
     try {
-      profDAO.saveProfile(professional);
-      contactDAO.saveContact(professional);
-      addressDAO.saveAddress(professional);
-      addressMapDAO.saveAddressMap(professional);
-      contactMapDAO.saveContactMap(professional);
-      academicsDAO.saveAcademics(professional.getQualificationList());
-      profSubCatDAO.saveProfessionalSubCategory(professional);
-      specializationDAO.saveSpecializations(professional.getSpecializationList());
-      experienceDAO.saveExperience(professional.getExperienceList());
+      String userId = request.getHeader("userId");
+      if (null != userId && !userId.isEmpty()) {
+        professional.setCreatedBy(userId);
+        professional.setUpdatedBy(userId);
+        profDAO.saveProfile(professional);
+        contactDAO.saveContact(professional);
+        addressDAO.saveAddress(professional);
+        addressMapDAO.saveAddressMap(professional);
+        contactMapDAO.saveContactMap(professional);
+        academicsDAO.saveAcademics(professional.getQualificationList());
+        profSubCatDAO.saveProfessionalSubCategory(professional);
+        specializationDAO.saveSpecializations(professional.getSpecializationList());
+        experienceDAO.saveExperience(professional.getExperienceList());
+      }
     } catch (Exception ex) {
+      ex.printStackTrace();
       throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
           AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
           AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRDESC, ex);
