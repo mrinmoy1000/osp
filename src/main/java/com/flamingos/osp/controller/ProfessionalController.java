@@ -33,8 +33,7 @@ public class ProfessionalController {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  @RequestMapping(value = "/addProfile", produces = "application/json", method = RequestMethod.GET,
-      consumes = "application/json")
+  @RequestMapping(value = "/addProfile",  method = RequestMethod.GET)
   public ProfileDTO addProfile(HttpServletRequest request) throws Exception {
     ProfileDTO profileDto = new ProfileDTO();
     List<ConfigParamDTO> genderList=configParamBean.getParamByCode(AppConstants.PARAM_CODE_USER_GENDER);

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 public class LocationDTO implements Serializable {
 
@@ -16,6 +18,7 @@ public class LocationDTO implements Serializable {
   private long locationParentId;
   @JsonIgnore
   private String locationCode;
+  @JsonInclude(Include.NON_EMPTY)
   private List<LocationDTO> childLocations=new ArrayList<LocationDTO>();
 
   public long getLocationId() {
