@@ -9,11 +9,11 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
-import com.flamingos.osp.dao.ProfContactMapDao;
+import com.flamingos.osp.dao.ProfContactMapDAO;
 import com.flamingos.osp.exception.OspDaoException;
 
 @Repository
-public class ProfContactMapDaoImpl implements ProfContactMapDao {
+public class ProfContactMapDAOImpl implements ProfContactMapDAO {
   @Autowired
   private NamedParameterJdbcTemplate namedJdbcTemplate;
 

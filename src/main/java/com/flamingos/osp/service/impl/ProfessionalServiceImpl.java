@@ -16,15 +16,16 @@ import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dao.AddressDao;
-import com.flamingos.osp.dao.ContactDao;
-import com.flamingos.osp.dao.ExperienceBeanDao;
-import com.flamingos.osp.dao.ProfAcademicsBeanDao;
-import com.flamingos.osp.dao.ProfAddressMapDao;
-import com.flamingos.osp.dao.ProfContactMapDao;
-import com.flamingos.osp.dao.ProfSpecializationDao;
+import com.flamingos.osp.dao.AddressDAO;
+import com.flamingos.osp.dao.ContactDAO;
+import com.flamingos.osp.dao.ExperienceBeanDAO;
+import com.flamingos.osp.dao.ProfAcademicsBeanDAO;
+import com.flamingos.osp.dao.ProfAddressMapDAO;
+import com.flamingos.osp.dao.ProfContactMapDAO;
+import com.flamingos.osp.dao.ProfSpecializationAO;
+import com.flamingos.osp.dao.ProfSubCategoryDAO;
 import com.flamingos.osp.dao.ProfessionalDAO;
-import com.flamingos.osp.dao.SignUpDao;
+import com.flamingos.osp.dao.SignUpDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
@@ -39,23 +40,25 @@ import com.flamingos.osp.util.EncoderDecoderUtil;
 public class ProfessionalServiceImpl implements ProfessionalService {
 
   @Autowired
-  private ProfessionalDAO profDao;
+  private ProfessionalDAO profDAO;
   @Autowired
-  private ContactDao contactDao;
+  private ContactDAO contactDAO;
   @Autowired
-  private AddressDao addressDao;
+  private AddressDAO addressDAO;
   @Autowired
-  private ProfAcademicsBeanDao academicsDao;
+  private ProfAcademicsBeanDAO academicsDAO;
   @Autowired
-  private ProfSpecializationDao specializationDao;
+  private ProfSpecializationAO specializationDAO;
+  
+  private ProfSubCategoryDAO profSubCatDAO;
   @Autowired
-  private ExperienceBeanDao experienceDao;
+  private ExperienceBeanDAO experienceDAO;
   @Autowired
-  private ProfAddressMapDao addressMapDao;
+  private ProfAddressMapDAO addressMapDAO;
   @Autowired
-  private ProfContactMapDao contactMapDao;
+  private ProfContactMapDAO contactMapDAO;
   @Autowired
-  SignUpDao signUpDao;
+  private SignUpDAO signUpDao;
 
   private static final Logger logger = Logger.getLogger(ProfessionalServiceImpl.class);
 
@@ -87,11 +90,11 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             if (type.equals(AppConstants.EMAIL_TYPE)) {
                 user.setEmailUUID(UUID);
                 access.setType(0);
-                userDto = profDao.getUserLinkValidCheckForEmail(user, access);
+                userDto = profDAO.getUserLinkValidCheckForEmail(user, access);
                 user.setActiveStatus(1);
                 user.setEmailVerified(1);
                 if (userDto != null) {
-                    profDao.emailUpdateStatus(user, access);
+                    profDAO.emailUpdateStatus(user, access);
                     userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
                     logger.info(AppConstants.VALID);
                 }
@@ -99,10 +102,10 @@ public class ProfessionalServiceImpl implements ProfessionalService {
                 if (type.equals(AppConstants.SMS_TYPE)) {
                     user.setSmsUUID(UUID);
                     access.setType(1);
-                    userDto = profDao.getUserLinkValidCheckForSms(user, access);
+                    userDto = profDAO.getUserLinkValidCheckForSms(user, access);
                     user.setActiveStatus(1);
                     if (userDto != null) {
-                        profDao.smsUpdateStatus(user, access);
+                        profDAO.smsUpdateStatus(user, access);
                         userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
                         logger.info(AppConstants.VALID);
                     }
@@ -134,24 +137,24 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
 				              AppConstants.PARAM_NAME_EMAIL);
 				  user.setTokenType(oParamEmailChannelEmail.getParameterid());
-			int userCount= profDao.getTokenCheck(user, access);
+			int userCount= profDAO.getTokenCheck(user, access);
 			if (userCount == 0) {
 				user.setEmailUUID(UUID);
-				profDao.emailUpdateStatus(user, access);
+				profDAO.emailUpdateStatus(user, access);
 				UserDTO userDt = signUpDao.findByUserName(decryptedUserName);
 				user.setUser_id(userDt.getUserId());
 				user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));				 
-					profDao.generateNewToken(user, emailExpireTime);					
+					profDAO.generateNewToken(user, emailExpireTime);					
 					  ConfigParamDTO oParamEmailChannelSms =
 					          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
 					              AppConstants.PARAM_NAME_SMS);
 					  user.setTokenType(oParamEmailChannelSms.getParameterid());
-					  UserDTO smsDTO = profDao.getTokenCheckforSms(user, access);
+					  UserDTO smsDTO = profDAO.getTokenCheckforSms(user, access);
 					  if(null!=smsDTO)
 					  {	 user.setSmsUUID(smsDTO.getUserType());
-						  profDao.smsUpdateStatus(user, access);
+						  profDAO.smsUpdateStatus(user, access);
 						  user.setUser_id(userDt.getUserId());
-						  profDao.generateNewToken(user, smsExpireTime);  
+						  profDAO.generateNewToken(user, smsExpireTime);  
 						  
 					  }
 						return AppConstants.SUCCESS;
@@ -183,8 +186,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
             user.setFupUUID(UUID);
             access.setType(0);
-            userDto = profDao.checkForForgotPassword(user, access);
-            profDao.FUPUpdateStatus(user, access);
+            userDto = profDAO.checkForForgotPassword(user, access);
+            profDAO.FUPUpdateStatus(user, access);
             logger.info(AppConstants.VALID);
             userDto.setReturnStatus(AppConstants.SUCCESS);
             return userDto;
@@ -206,7 +209,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
        logger.debug("Entrying ProfessionalService >> changePassword() method....");
         try {
             userBean.setPassword(encDecUtil.getEncodedValue(userBean.getPassword()));
-            profDao.updatePassword(userBean);
+            profDAO.updatePassword(userBean);
             UserDTO user = new UserDTO();
             user.setReturnStatus(AppConstants.SUCCESS);
             user.setReturnMessage(AppConstants.CHANGE_PASSWORD_MESSAGE);
@@ -228,14 +231,14 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   public String saveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException {
     try {
-      profDao.saveProfile(professional);
-      contactDao.saveContact(professional);
-      addressDao.saveAddress(professional);
-      addressMapDao.saveAddressMap(professional);
-      contactMapDao.saveContactMap(professional);
-      academicsDao.saveAcademics(professional.getQualificationList());
-      specializationDao.saveSpecializations(professional.getSpecializationList());
-      experienceDao.saveExperience(professional.getExperienceList());
+      profDAO.saveProfile(professional);
+      contactDAO.saveContact(professional);
+      addressDAO.saveAddress(professional);
+      addressMapDAO.saveAddressMap(professional);
+      contactMapDAO.saveContactMap(professional);
+      academicsDAO.saveAcademics(professional.getQualificationList());
+      specializationDAO.saveSpecializations(professional.getSpecializationList());
+      experienceDAO.saveExperience(professional.getExperienceList());
     } catch (Exception ex) {
       throw new OSPBusinessException(AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
           AppConstants.PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE,
@@ -252,7 +255,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
             AppConstants.PARAM_NAME_INITIAL);
     try {
-      profDao.approveProfile(professional, 1);
+      profDAO.approveProfile(professional, 1);
     } catch (OspDaoException ex) {
       throw new OspServiceException(ex);
 

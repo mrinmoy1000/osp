@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dao.LoginDao;
-import com.flamingos.osp.dao.SignUpDao;
+import com.flamingos.osp.dao.LoginDAO;
+import com.flamingos.osp.dao.SignUpDAO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.EmailService;
@@ -25,9 +25,9 @@ import java.util.UUID;
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
-    LoginDao loginDao;
+    LoginDAO loginDao;
     @Autowired
-    SignUpDao signUpDao;
+    SignUpDAO signUpDao;
     @Autowired
     EncoderDecoderUtil encDecUtil;
     @Autowired

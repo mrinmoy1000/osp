@@ -4,7 +4,7 @@ import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 
-public interface SignUpDao {
+public interface SignUpDAO {
 
   public UserDTO findByUserName(String userName) throws OspDaoException;
 

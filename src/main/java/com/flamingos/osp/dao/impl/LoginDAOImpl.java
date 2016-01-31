@@ -15,15 +15,15 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.flamingos.osp.dao.LoginDao;
+import com.flamingos.osp.dao.LoginDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import org.apache.log4j.Logger;
 
 @Repository
-public class LoginDaoImpl implements LoginDao {
-private static final Logger logger = Logger.getLogger(LoginDaoImpl.class);
+public class LoginDAOImpl implements LoginDAO {
+private static final Logger logger = Logger.getLogger(LoginDAOImpl.class);
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
     @Autowired

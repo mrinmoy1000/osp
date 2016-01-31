@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dao.SignUpDao;
+import com.flamingos.osp.dao.SignUpDAO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -38,7 +38,7 @@ public class SignUpServiceImpl implements SignUpService {
     @Value("${sms.verification.message}")
     private String smsVerificationMessage;
     @Autowired
-    SignUpDao signUpDao;
+    SignUpDAO signUpDao;
 
     @Autowired
     EncoderDecoderUtil encDecUtil;

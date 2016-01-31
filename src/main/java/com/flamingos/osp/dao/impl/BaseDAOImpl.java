@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class BaseDaoImpl {
+public class BaseDAOImpl {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;

@@ -5,9 +5,9 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-public class OspLocationDto implements Serializable {
+public class OspLocationDTO implements Serializable {
 
-  private static final Logger logger = Logger.getLogger(OspLocationDto.class);
+  private static final Logger logger = Logger.getLogger(OspLocationDTO.class);
   private static final long serialVersionUID = 1L;
 
   private int locationId;

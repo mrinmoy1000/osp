@@ -11,11 +11,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfAcademicsBean;
-import com.flamingos.osp.dao.ProfAcademicsBeanDao;
+import com.flamingos.osp.dao.ProfAcademicsBeanDAO;
 import com.flamingos.osp.exception.OspDaoException;
 
 @Repository
-public class ProfAcademicsBeanDaoImpl implements ProfAcademicsBeanDao {
+public class ProfAcademicsBeanDAOImpl implements ProfAcademicsBeanDAO {
 
   @Autowired
   private JdbcTemplate jdbcTemplate;

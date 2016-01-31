@@ -1,10 +1,11 @@
 package com.flamingos.osp.dao;
 
+
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.exception.OspDaoException;
 
-public interface ProfAddressMapDao {
+public interface AddressDAO {
 
-  public void saveAddressMap(OspProfessionalBean professionalBean) throws OspDaoException;
+  public void saveAddress(OspProfessionalBean professionalBean) throws OspDaoException;
 
 }

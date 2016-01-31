@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
-import com.flamingos.osp.dao.ConfigLoaderDao;
+import com.flamingos.osp.dao.ConfigLoaderDAO;
 import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.service.ConfigParamLoaderService;
@@ -16,14 +16,14 @@ import com.flamingos.osp.service.ConfigParamLoaderService;
 public class ConfigParamLoaderServiceImpl implements ConfigParamLoaderService {
 
   @Autowired
-  private ConfigLoaderDao configLoaderDao;
+  private ConfigLoaderDAO configLoaderDao;
 
   @Override
   public List<ConfigParamDTO> loadConfigParam() throws Exception {
     return getConfigLoaderDao().loadConfigParam();
   }
 
-  public ConfigLoaderDao getConfigLoaderDao() {
+  public ConfigLoaderDAO getConfigLoaderDao() {
     return configLoaderDao;
   }
 

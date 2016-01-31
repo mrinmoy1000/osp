@@ -18,7 +18,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dao.SignUpDao;
+import com.flamingos.osp.dao.SignUpDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
@@ -27,8 +27,8 @@ import com.flamingos.osp.util.AppConstants;
 import org.apache.log4j.Logger;
 
 @Repository
-public class SignUpDaoImpl implements SignUpDao {
-private static final Logger logger = Logger.getLogger(SignUpDaoImpl.class);
+public class SignUpDAOImpl implements SignUpDAO {
+private static final Logger logger = Logger.getLogger(SignUpDAOImpl.class);
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
