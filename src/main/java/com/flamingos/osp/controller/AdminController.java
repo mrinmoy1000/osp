@@ -42,7 +42,7 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/profDetails", method = RequestMethod.GET)
-	public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(@RequestParam(value = "id") int id) {
+	public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(@RequestParam(value = "profId") int id) {
 		logger.debug(" Entering AdminController.getProfessionalDetails");
 		OspProfessionalDTO prof = null;
 		try {
