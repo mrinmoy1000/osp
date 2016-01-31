@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.flamingos.osp.dao.LocationDAO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
+import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.service.LocationService;
+import com.flamingos.osp.util.AppConstants;
 
 @Service
 public class LocationServiceImpl implements LocationService {
@@ -18,12 +20,7 @@ public class LocationServiceImpl implements LocationService {
 
   @Override
   public List<LocationDTO> getLocationList() throws OSPBusinessException {
-    try {
-      locationDao.getLocationList();
-    } catch (Exception ex) {
-      throw new OSPBusinessException("", "", "", ex);
-    }
-    return null;
+    return locationDao.getLocationList();
   }
 
 }

@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.flamingos.osp.dto.ConfigParamDTO;
+import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OSPErrorHandler;
 import com.flamingos.osp.service.ConfigParamLoaderService;
+import com.flamingos.osp.service.LocationService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.AppUtil;
 
@@ -22,6 +24,8 @@ public class ConfigParamBean {
   private ConfigParamLoaderService configParamLoaderService;
   @Autowired
   private OSPErrorHandler ospErrorHandler;
+  @Autowired
+  private LocationService locationService;
 
   /* OSP Parameters */
   private List<ConfigParamDTO> listParam = new ArrayList<ConfigParamDTO>();
@@ -40,6 +44,13 @@ public class ConfigParamBean {
   private Map<String, RoleBean> roleMapByName = new HashMap<String, RoleBean>();
   private Map<Integer, RoleBean> roleMapById = new HashMap<Integer, RoleBean>();
 
+  /* OSP Locations */
+  private List<LocationDTO> locationList = new ArrayList<LocationDTO>();
+  private List<LocationDTO> countryList = new ArrayList<LocationDTO>();
+  private List<LocationDTO> stateList = new ArrayList<LocationDTO>();
+  private List<LocationDTO> districtList = new ArrayList<LocationDTO>();
+  private List<LocationDTO> cityList = new ArrayList<LocationDTO>();
+  private List<LocationDTO> areaList = new ArrayList<LocationDTO>();
 
   public void loadConfigParam() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -73,6 +84,35 @@ public class ConfigParamBean {
           roleMapByName.put(oRoleBean.getRoleName(), oRoleBean);
         }
       }
+
+      locationList = locationService.getLocationList();
+      if (locationList.size() > 0) {
+        for (LocationDTO location : locationList) {
+          if (location.getLocationType() == getParameterByCodeName(
+              AppConstants.PARAM_CODE_LOCATION_TYPE, AppConstants.PARAM_CODE_LOCATION_NAME_COUNTRY)
+              .getParameterid()) {
+            countryList.add(location);
+          } else if (location.getLocationType() == getParameterByCodeName(
+              AppConstants.PARAM_CODE_LOCATION_TYPE, AppConstants.PARAM_CODE_LOCATION_NAME_STATE)
+              .getParameterid()) {
+            stateList.add(location);
+          } else if (location.getLocationType() == getParameterByCodeName(
+              AppConstants.PARAM_CODE_LOCATION_TYPE, AppConstants.PARAM_CODE_LOCATION_NAME_DISTRICT)
+              .getParameterid()) {
+            districtList.add(location);
+          } else if (location.getLocationType() == getParameterByCodeName(
+              AppConstants.PARAM_CODE_LOCATION_TYPE, AppConstants.PARAM_CODE_LOCATION_NAME_CITY_UA)
+              .getParameterid()) {
+            cityList.add(location);
+          } else if (location.getLocationType() == getParameterByCodeName(
+              AppConstants.PARAM_CODE_LOCATION_TYPE, AppConstants.PARAM_CODE_LOCATION_NAME_AREA)
+              .getParameterid()) {
+            areaList.add(location);
+          }
+        }
+
+
+      }
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
         ospEx.setModuleName(AppConstants.CONFIG_LOADING_MODULE);
@@ -101,6 +141,10 @@ public class ConfigParamBean {
   public Map<String, ConfigParamDTO> getMapByParamCodeAndName() {
     return mapByParamCodeAndName;
   }
+  
+  public List<ConfigParamDTO> getParamByCode(String paramCode){
+    return mapByParamCode.get(paramCode);
+  }
 
   public List<RoleBean> getAllRoles() {
     return lstRoles;
@@ -112,5 +156,25 @@ public class ConfigParamBean {
 
   public RoleBean getRoleById(int roleId) {
     return roleMapById.get(roleId);
+  }
+
+  public List<LocationDTO> getCountryList() {
+    return countryList;
+  }
+
+  public List<LocationDTO> getStateList() {
+    return stateList;
+  }
+
+  public List<LocationDTO> getDistrictList() {
+    return districtList;
+  }
+
+  public List<LocationDTO> getCityList() {
+    return cityList;
+  }
+
+  public List<LocationDTO> getAreaList() {
+    return areaList;
   }
 }

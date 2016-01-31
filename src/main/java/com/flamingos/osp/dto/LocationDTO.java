@@ -1,9 +1,8 @@
 package com.flamingos.osp.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,19 +10,19 @@ public class LocationDTO implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  private int locationId;
+  private long locationId;
   private String locationName;
   private int locationType;
-  private int locationParentId;
+  private long locationParentId;
   @JsonIgnore
   private String locationCode;
-  private List<LocationDTO> childLocations;
+  private List<LocationDTO> childLocations=new ArrayList<LocationDTO>();
 
-  public int getLocationId() {
+  public long getLocationId() {
     return locationId;
   }
 
-  public void setLocationId(int locationId) {
+  public void setLocationId(long locationId) {
     this.locationId = locationId;
   }
 
@@ -43,11 +42,11 @@ public class LocationDTO implements Serializable {
     this.locationType = locationType;
   }
 
-  public int getLocationParentId() {
+  public long getLocationParentId() {
     return locationParentId;
   }
 
-  public void setLocationParentId(int locationParentId) {
+  public void setLocationParentId(long locationParentId) {
     this.locationParentId = locationParentId;
   }
 

@@ -1,9 +1,12 @@
 package com.flamingos.osp.dao;
 
-import com.flamingos.osp.exception.OspDaoException;
+import java.util.List;
+
+import com.flamingos.osp.dto.LocationDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
 
 public interface LocationDAO {
 
-  public void getLocationList() throws OspDaoException;
+  public List<LocationDTO> getLocationList() throws OSPBusinessException;
 
 }

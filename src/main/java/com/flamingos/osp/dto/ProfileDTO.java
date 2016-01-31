@@ -10,24 +10,24 @@ public class ProfileDTO implements Serializable {
   private static final Logger logger = Logger.getLogger(ProfileDTO.class);
   private static final long serialVersionUID = 1L;
 
-  private List<CommonParamDto> genders;
-  private List<CommonParamDto> maritalStatus;
+  private List<CommonParamDTO> genders;
+  private List<CommonParamDTO> maritalStatus;
 
   private List<LocationDTO> locations;
 
-  public List<CommonParamDto> getGenders() {
+  public List<CommonParamDTO> getGenders() {
     return genders;
   }
 
-  public void setGenders(List<CommonParamDto> genders) {
+  public void setGenders(List<CommonParamDTO> genders) {
     this.genders = genders;
   }
 
-  public List<CommonParamDto> getMaritalStatus() {
+  public List<CommonParamDTO> getMaritalStatus() {
     return maritalStatus;
   }
 
-  public void setMaritalStatus(List<CommonParamDto> maritalStatus) {
+  public void setMaritalStatus(List<CommonParamDTO> maritalStatus) {
     this.maritalStatus = maritalStatus;
   }
 
