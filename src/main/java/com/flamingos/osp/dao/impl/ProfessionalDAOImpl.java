@@ -420,12 +420,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 		List<OspProfessionalDTO> professionalDetailList = null;
 		try {
 
-			String getProSql = "select * from OSP_PROFESSIONAL op, OSP_CONTACT oc, OSP_ADDRESS oad, "
-					+ "OSP_PROF_SPECIALIZATIONS ops, OSP_PROF_ACADEMICS opa, OSP_PROF_EXPERIENCE ope, "
-					+ "OSP_PROF_CONTACT_MAP ocm, OSP_PROF_ADDRESS_MAP oadmap" + " where op.PROF_ID = ocm.PROF_ID"
-					+ " and ocm.CONTACT_ID = oc.CONTACT_ID" + " and op.PROF_ID = oadmap.PROF_ID"
-					+ " and oadmap.ADDRESS_ID = oad.ADDRESS_ID" + " and op.PROF_ID = ops.PROF_ID"
-					+ " and op.PROF_ID = opa.PROF_ID" + " and op.PROF_ID = ope.PROF_ID";
+			String getProSql = "select * from OSP_PROFESSIONAL op where  op.PROF_ID = ope.PROF_ID";
 
 			professionalDetailList = namedJdbcTemplate.query(getProSql, new RowMapper<OspProfessionalDTO>() {
 				@Override
@@ -480,10 +475,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 			Map<String, Object> paramMap = new HashMap<String, Object>();
 			paramMap.put("prof_id", profId);
 
-			String getProSql = "select * from OSP_PROFESSIONAL op, OSP_CONTACT oc, OSP_ADDRESS oad,"
-					+ " OSP_PROF_CONTACT_MAP ocm, OSP_PROF_ADDRESS_MAP oadmap" + " where op.PROF_ID = ocm.PROF_ID"
-					+ " and ocm.CONTACT_ID = oc.CONTACT_ID" + " and op.PROF_ID = oadmap.PROF_ID"
-					+ " and oadmap.ADDRESS_ID = oad.ADDRESS_ID" + " and op.PROF_ID = :prof_id ";
+			String getProSql = "select * from OSP_PROFESSIONAL op where op.PROF_ID = :prof_id ";
 
 			professionalDetail = namedJdbcTemplate.queryForObject(getProSql, paramMap,
 					new RowMapper<OspProfessionalDTO>() {
