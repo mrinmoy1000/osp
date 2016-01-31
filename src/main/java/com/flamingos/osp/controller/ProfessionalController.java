@@ -68,15 +68,12 @@ public class ProfessionalController {
     return profileDto;
   }
 
-  @RequestMapping(value = "/saveProfile", produces = "application/json",
-      method = RequestMethod.POST, consumes = "application/json")
+  @RequestMapping(value = "/saveProfile",// produces = "application/json",
+      method = RequestMethod.POST/*, consumes = "application/json"*/)
   public ResponseEntity<String> saveProfile(@RequestBody OspProfessionalBean professionalBean,
       HttpServletRequest request) throws Exception {
     profService.saveProfile(professionalBean, request);
 
     return new ResponseEntity<String>("Success", HttpStatus.CREATED);
   }
-
-
-
 }
