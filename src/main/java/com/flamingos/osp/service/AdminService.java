@@ -17,4 +17,6 @@ public interface AdminService {
   public OspProfessionalDTO professionalDetails(int profId) throws OSPBusinessException;
 
   public List<OspProfessionalDTO> allProfessionalDetails() throws OSPBusinessException;
+
+public List<OspProfessionalDTO> fetchApprovalProfList() throws OSPBusinessException;;
 }

@@ -95,4 +95,17 @@ public class AdminServiceImpl implements AdminService {
 
 	}
 
+	@Override
+	public List<OspProfessionalDTO> fetchApprovalProfList() throws OSPBusinessException {
+		List<OspProfessionalDTO> profDetailsList = null;
+		try {
+			profDetailsList = profDao.fetchApprovalProfList();
+		} catch (OspDaoException exp) {
+			throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+					AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+		}
+		return profDetailsList;
+
+	}
 }

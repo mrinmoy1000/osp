@@ -75,4 +75,19 @@ public class AdminController {
 		logger.debug(" Exiting AdminController.getAllProfessionalDetails");
 		}
 	}
+	
+	@RequestMapping(value = "/fetchApprovalProfList", method = RequestMethod.GET)
+	public ResponseEntity<List<OspProfessionalDTO>> fetchApprovalProfList() {
+		List<OspProfessionalDTO> profList = null;
+		logger.debug(" Entering AdminController.fetchApprovalProfList");
+		try {
+			profList = adminService.fetchApprovalProfList();
+			return new ResponseEntity<List<OspProfessionalDTO>>(profList, HttpStatus.OK);
+		} catch (OSPBusinessException e) {
+			logger.error(" Exception occured in AdminController.fetchApprovalProfList" + e.getMessage());
+			return new ResponseEntity<List<OspProfessionalDTO>>(profList, HttpStatus.OK);
+		}finally{
+		logger.debug(" Exiting AdminController.fetchApprovalProfList");
+		}
+	}
 }

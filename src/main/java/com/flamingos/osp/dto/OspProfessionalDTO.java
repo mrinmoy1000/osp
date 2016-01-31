@@ -55,8 +55,8 @@ public class OspProfessionalDTO {
     this.returnMessage = returnMessage;
   }
 
-  private OspContactBean contact;
-  private OspAddressBean address;
+  private List<OspContactBean> contactList;
+  private List<OspAddressBean> addressList;
   private List<OspProfSpecializationBean> specializationList;
   private List<OspProfAcademicsBean> qualificationList;
   private List<OspExperienceBean> experienceList;
@@ -226,21 +226,9 @@ public class OspProfessionalDTO {
     this.status = status;
   }
 
-  public OspContactBean getContact() {
-    return contact;
-  }
 
-  public void setContact(OspContactBean contact) {
-    this.contact = contact;
-  }
 
-  public OspAddressBean getAddress() {
-    return address;
-  }
-
-  public void setAddress(OspAddressBean address) {
-    this.address = address;
-  }
+  
 
   public List<OspProfSpecializationBean> getSpecializationList() {
     return specializationList;
@@ -297,5 +285,23 @@ public class OspProfessionalDTO {
   public void setUpdatedBy(String updatedBy) {
     this.updatedBy = updatedBy;
   }
+
+public List<OspContactBean> getContactList() {
+	return contactList;
+}
+
+public void setContactList(List<OspContactBean> contactList) {
+	this.contactList = contactList;
+}
+
+public List<OspAddressBean> getAddressList() {
+	return addressList;
+}
+
+public void setAddressList(List<OspAddressBean> addressList) {
+	this.addressList = addressList;
+}
+  
+  
 
 }
