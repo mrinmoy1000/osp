@@ -1,6 +1,7 @@
 package com.flamingos.osp.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,24 +11,24 @@ public class ProfileDTO implements Serializable {
   private static final Logger logger = Logger.getLogger(ProfileDTO.class);
   private static final long serialVersionUID = 1L;
 
-  private List<CommonParamDTO> genders;
-  private List<CommonParamDTO> maritalStatus;
+  private List<ConfigParamDTO> genders=new ArrayList<ConfigParamDTO>();
+  private List<ConfigParamDTO> maritalStatus=new ArrayList<ConfigParamDTO>();
 
-  private List<LocationDTO> locations;
+  private List<LocationDTO> locations=new ArrayList<LocationDTO>();
 
-  public List<CommonParamDTO> getGenders() {
+  public List<ConfigParamDTO> getGenders() {
     return genders;
   }
 
-  public void setGenders(List<CommonParamDTO> genders) {
+  public void setGenders(List<ConfigParamDTO> genders) {
     this.genders = genders;
   }
 
-  public List<CommonParamDTO> getMaritalStatus() {
+  public List<ConfigParamDTO> getMaritalStatus() {
     return maritalStatus;
   }
 
-  public void setMaritalStatus(List<CommonParamDTO> maritalStatus) {
+  public void setMaritalStatus(List<ConfigParamDTO> maritalStatus) {
     this.maritalStatus = maritalStatus;
   }
 

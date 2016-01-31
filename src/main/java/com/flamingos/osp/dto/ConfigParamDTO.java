@@ -1,11 +1,16 @@
 package com.flamingos.osp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class ConfigParamDTO {
 
   private int parameterid;
+  @JsonIgnore
   private String code;
+  @JsonIgnore
   private String name;
   private String value;
+  @JsonIgnore
   private String description;
 
   public int getParameterid() {

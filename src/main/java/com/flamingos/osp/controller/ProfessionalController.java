@@ -1,5 +1,7 @@
 package com.flamingos.osp.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -11,9 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
+import com.flamingos.osp.dto.CommonParamDTO;
+import com.flamingos.osp.dto.ConfigParamDTO;
+import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.dto.ProfileDTO;
 import com.flamingos.osp.service.ProfessionalService;
+import com.flamingos.osp.util.AppConstants;
 
 @RestController
 @RequestMapping(value = "/professional")
@@ -22,12 +29,28 @@ public class ProfessionalController {
   private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 
   @Autowired
-  ProfessionalService profService;
+  private ProfessionalService profService;
+  @Autowired
+  private ConfigParamBean configParamBean;
 
   @RequestMapping(value = "/addProfile", produces = "application/json", method = RequestMethod.GET,
       consumes = "application/json")
   public ProfileDTO addProfile(HttpServletRequest request) throws Exception {
     ProfileDTO profileDto = new ProfileDTO();
+    List<ConfigParamDTO> genderList=configParamBean.getParamByCode(AppConstants.PARAM_CODE_USER_GENDER);
+    List<ConfigParamDTO> maritialStatusList=configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
+    profileDto.setGenders(genderList);
+    profileDto.setMaritalStatus(maritialStatusList);
+    List<LocationDTO> countryList=configParamBean.getCountryList();
+    List<LocationDTO> stateList=configParamBean.getStateList();
+    for(LocationDTO country:countryList){
+      for(LocationDTO state:stateList){
+        if(country.getLocationId()==state.getLocationParentId()){
+          country.getChildLocations().add(state);
+        }
+      }
+    }
+    profileDto.setLocations(countryList);
 
     return profileDto;
   }
