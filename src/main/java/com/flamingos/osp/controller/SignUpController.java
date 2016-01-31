@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.RoleBean;
@@ -61,14 +62,15 @@ public class SignUpController {
         }
 
     }
-
+    
+    //http://localhost:8080/osp/checkUser?userName=raja
     @RequestMapping(value = "/checkUser", produces = "application/json", method = RequestMethod.GET, consumes = "application/json")
-    public ResponseEntity<UserDTO> checkUserName(@RequestBody UserBean userBean)
+    public ResponseEntity<UserDTO> checkUserName(@RequestParam(value = "userName") String userName)
             throws Exception {
         logger.debug("Entrying SignupController >> checkUserName() method");
         UserDTO userDto = new UserDTO();
         try {
-            userDto = signUpService.checkUserName(userBean);
+            userDto = signUpService.checkUserName(userName);
             return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
         } catch (OSPBusinessException exp) {
             userDto.setReturnStatus(AppConstants.FAILURE);

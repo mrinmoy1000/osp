@@ -149,11 +149,10 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
     @Override
-    public UserDTO checkUserName(UserBean userBean) throws OspDaoException {
+    public UserDTO checkUserName(String  userName) throws OspDaoException {
           logger.debug("Entrying SignUpService >>  checkUserName() method");
         try {
-            UserDTO userDTOForUserName = signUpDao.findByUserName(userBean
-                    .getUserName());
+            UserDTO userDTOForUserName = signUpDao.findByUserName(  userName);
             if (userDTOForUserName != null) {
                 throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
                         AppConstants.DUPLICATE_USER_ERRCODE,
