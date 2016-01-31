@@ -1,9 +1,6 @@
 package com.flamingos.osp.util;
 
 public class AppConstants {
-  
-  public static Boolean TRUE=Boolean.TRUE;
-  public static Boolean FALSE=Boolean.FALSE;
 
   public static String LOG_TYPE_INFO = "INFO";
   public static String LOG_TYPE_DEBUG = "DEBUG";
@@ -77,27 +74,23 @@ public class AppConstants {
   public static String PARAM_NAME_FAILES = "FAILED";
   public static String PARAM_NAME_PROCESSED = "PROCESSED";
   public static String PARAM_NAME_FUP = "FUP";
-  public static String PARAM_CODE_LOCATION_TYPE="LOCATION_TYPE";
-  public static String PARAM_CODE_LOCATION_NAME_COUNTRY="COUNTRY";
-  public static String PARAM_CODE_LOCATION_NAME_CITY_UA="CITY_UA";
-  public static String PARAM_CODE_LOCATION_NAME_STATE="STATE";
-  public static String PARAM_CODE_LOCATION_NAME_AREA="AREA";
-  public static String PARAM_CODE_LOCATION_NAME_DISTRICT="DISTRICT";
-  
-  public static String PARAM_CODE_USER_GENDER="USER_GENDER";
-  public static String PARAM_NAME_GENDER_MALE="MALE";
-  public static String PARAM_NAME_GENDER_FEMALE="FEMALE";
-  public static String PARAM_NAME_GENDER_NOT_SHARED="NOT SHARED";
-  public static String PARAM_NAME_GENDER_OTHER="OTHER";
+  public static String PARAM_CODE_LOCATION_TYPE = "LOCATION_TYPE";
+  public static String PARAM_CODE_LOCATION_NAME_COUNTRY = "COUNTRY";
+  public static String PARAM_CODE_LOCATION_NAME_CITY_UA = "CITY_UA";
+  public static String PARAM_CODE_LOCATION_NAME_STATE = "STATE";
+  public static String PARAM_CODE_LOCATION_NAME_AREA = "AREA";
+  public static String PARAM_CODE_LOCATION_NAME_DISTRICT = "DISTRICT";
 
-  public static String PARAM_CODE_MARITIAL_STATUS="MARITIAL_STATUS";
+  public static String PARAM_CODE_USER_GENDER = "USER_GENDER";
+  public static String PARAM_NAME_GENDER_MALE = "MALE";
+  public static String PARAM_NAME_GENDER_FEMALE = "FEMALE";
+  public static String PARAM_NAME_GENDER_NOT_SHARED = "NOT SHARED";
+  public static String PARAM_NAME_GENDER_OTHER = "OTHER";
 
-  
-  
-  
-  
+  public static String PARAM_CODE_MARITIAL_STATUS = "MARITIAL_STATUS";
 
-
+  public static boolean TRUE = true;
+  public static boolean FALSE = false;
 
   /* ROLE */
   public static String ROLE_ADMINISTRATOR = "ADMINISTRATOR";
@@ -166,4 +159,36 @@ public class AppConstants {
 
   public static final String USER_STATUS = "STATUS";
   public static final String PROF_ID = "PROF_ID";
+
+  /** Magic Number Constants + */
+  public static final int INT_ZERO = 0;
+  public static final int INT_ONE = 1;
+  public static final int INT_TWO = 2;
+  public static final int INT_THREE = 3;
+  public static final int INT_FOUR = 4;
+  public static final int INT_FIVE = 5;
+  public static final int INT_SIX = 6;
+  public static final int INT_SEVEN = 7;
+  public static final int INT_EIGHT = 8;
+  public static final int INT_NINE = 9;
+  public static final int INT_TEN = 10;
+  public static final int INT_ELEVEN = 11;
+  public static final int INT_TWELVE = 12;
+  public static final int INT_THIRTEEN = 13;
+  public static final int INT_FOURTEEN = 14;
+  public static final int INT_FIFTEEN = 15;
+  public static final int INT_TWENTY = 20;
+  public static final int INT_THIRTY = 30;
+  public static final int INT_FOURTY = 40;
+  public static final int INT_FIFTY = 50;
+  public static final int INT_SIXTY = 60;
+  public static final int INT_SEVENTY = 70;
+  public static final int INT_EIGHTY = 80;
+  public static final int INT_NINETY = 90;
+  public static final int INT_HUNDRED = 100;
+  public static final int INT_TWO_HUNDRED = 200;
+  public static final int INT_FIVE_HUNDRED = 500;
+  public static final int INT_THOUSAND = 1000;
+  /** Magic Number Constants - */
+
 }
