@@ -7,7 +7,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,6 +19,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspAddressBean;
@@ -25,13 +30,10 @@ import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.ProfessionalDAO;
-import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 @Repository
 public class ProfessionalDAOImpl implements ProfessionalDAO {
@@ -114,24 +116,25 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
       throws OspDaoException {
 	  	  
     try {
-    	
+    	int count=0;
     	int initalStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
     	              AppConstants.PARAM_NAME_INITIAL).getParameterid();
     	
     	int actionStatusCode=0;
-    	 if(!StringUtils.isEmpty(professionalBean.getActionTaken()))
+    	 if(!StringUtils.isEmpty(professionalBean.getActionTaken())){
     		 configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,professionalBean.getActionTaken()).getParameterid();
     	
         String updateStatus =" UPDATE  osp_professional opp" + "  SET opp." + AppConstants.USER_STATUS + "= ? ,"
               + "where " + AppConstants.PROF_ID + " = ? "+" and "+AppConstants.USER_STATUS +"=?";
 
-      int count =
+       count =
           jdbcTemplate.update(updateStatus, new Object[] {actionStatusCode, professionalBean.getProfId(),initalStatusCode});
+    	 }
       if (count != 1) {
-        throw new OspDaoException();
+        throw new OspDaoException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC);
       }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException();
+    } catch (DataAccessException exp) {
+      throw new OspDaoException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC);
     }
   }
     @Override
