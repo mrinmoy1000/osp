@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 public class AppUtil {
 
@@ -25,6 +26,15 @@ public class AppUtil {
     } else if (AppConstants.LOG_TYPE_ERROR.equalsIgnoreCase(loggingType)) {
       LOGGER.error(sb);
     }
+  }
+
+  public static String trimLeadingTrailingQuote(Object value) {
+    String trimmedVal = null;
+    if (null != value) {
+      trimmedVal = StringUtils.trimLeadingCharacter(value.toString(), '"');
+      trimmedVal = StringUtils.trimTrailingCharacter(trimmedVal, '"');
+    }
+    return trimmedVal;
   }
 
 }

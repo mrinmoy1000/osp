@@ -31,7 +31,7 @@ public class ContactDAOImpl implements ContactDAO {
       namedParameters.addValue("CONTACT_EMAIL", professionalBean.getContact().getContactEmail());
       namedParameters.addValue("ACTIVE_STATUS", professionalBean.getContact().getActiveStatus());
       namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
-      namedParameters.addValue("CREATED_BY", professionalBean.getContact().getCreatedBy());
+      namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 

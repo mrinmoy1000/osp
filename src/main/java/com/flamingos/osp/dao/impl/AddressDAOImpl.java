@@ -30,9 +30,9 @@ public class AddressDAOImpl implements AddressDAO {
       namedParameters.addValue("OTHER_AREA", professionalBean.getAddress().getOtherArea());
       namedParameters.addValue("LINE_1", professionalBean.getAddress().getLine1());
       namedParameters.addValue("LINE_2", professionalBean.getAddress().getLine2());
-      namedParameters.addValue("ACTIVE_STATUS",professionalBean.getAddress().getActiveStatus());
-      namedParameters.addValue("CREATED_TS", professionalBean.getAddress().getCreatedTs());
-      namedParameters.addValue("CREATED_BY", professionalBean.getAddress().getCreatedBy());
+      namedParameters.addValue("ACTIVE_STATUS", professionalBean.getAddress().getActiveStatus());
+      namedParameters.addValue("CREATED_TS", new java.sql.Date(new Date().getTime()));
+      namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 

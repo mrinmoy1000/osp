@@ -1,13 +1,11 @@
 package com.flamingos.osp.dao;
 
-import java.util.List;
-
-import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfAcademicsBeanDAO {
 
-  public void saveAcademics(List<OspProfAcademicsBean> profAcademicsBeanList)
+  public void saveAcademics(OspProfessionalBean professional)
       throws OspDaoException;
 
 }

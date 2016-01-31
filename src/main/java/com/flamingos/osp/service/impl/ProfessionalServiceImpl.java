@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
@@ -37,6 +38,7 @@ import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.exception.OspServiceException;
 import com.flamingos.osp.service.ProfessionalService;
 import com.flamingos.osp.util.AppConstants;
+import com.flamingos.osp.util.AppUtil;
 import com.flamingos.osp.util.EncoderDecoderUtil;
 
 @Transactional(propagation = Propagation.REQUIRED)
@@ -53,7 +55,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   private ProfAcademicsBeanDAO academicsDAO;
   @Autowired
   private ProfSpecializationAO specializationDAO;
-
+  @Autowired
   private ProfSubCategoryDAO profSubCatDAO;
   @Autowired
   private ExperienceBeanDAO experienceDAO;
@@ -229,35 +231,20 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   public void saveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException {
     try {
-      String userId = request.getHeader("userId");
-      if (null != userId && !userId.isEmpty()) {
+      String userId = AppUtil.trimLeadingTrailingQuote(request.getHeader("userId"));
+      if (!StringUtils.isEmpty(userId)) {
+        Date currentTime=new Date();
         professional.setCreatedBy(userId);
         professional.setUpdatedBy(userId);
         profDAO.saveProfile(professional);
-        professional.getContact().setCreatedBy(userId);
-        professional.getContact().setCreatedTs(new Date());
         contactDAO.saveContact(professional);
-        professional.getAddress().setCreatedBy(userId);
-        professional.getAddress().setCreatedTs(new Date());
         addressDAO.saveAddress(professional);
         addressMapDAO.saveAddressMap(professional);
         contactMapDAO.saveContactMap(professional);
-        for(OspProfAcademicsBean academicBean:professional.getQualificationList()){
-          academicBean.setCreatedBy(userId);
-          academicBean.setCreatedTs(new Date());
-        }
-        for(OspProfSpecializationBean specializationBean:professional.getSpecializationList()){
-          specializationBean.setCreatedBy(userId);
-          specializationBean.setCreatedTs(new Date());
-        }
-        for(OspExperienceBean expBean:professional.getExperienceList()){
-          expBean.setCreatedBy(userId);
-          expBean.setCreatedTs(new Date());
-        }
-        academicsDAO.saveAcademics(professional.getQualificationList());
+        academicsDAO.saveAcademics(professional);
         profSubCatDAO.saveProfessionalSubCategory(professional);
-        specializationDAO.saveSpecializations(professional.getSpecializationList());
-        experienceDAO.saveExperience(professional.getExperienceList());
+        specializationDAO.saveSpecializations(professional);
+        experienceDAO.saveExperience(professional);
       }
     } catch (Exception ex) {
       ex.printStackTrace();

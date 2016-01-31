@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dao.ProfSubCategoryDAO;
@@ -21,6 +22,7 @@ import com.flamingos.osp.util.AppConstants;
  * @author Mrinmoy
  *
  */
+@Repository
 public class ProfSubCategoryDAOImpl implements ProfSubCategoryDAO {
 
   @Autowired
