@@ -572,10 +572,10 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                   OspProfSpecializationBean ospProfSpecializationBean =
                       new OspProfSpecializationBean();
                   ospProfSpecializationBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
-                  ospProfSpecializationBean.setProfId(rs.getInt("PROF_ID"));
+                  ospProfSpecializationBean.setProfId(rs.getLong("PROF_ID"));
                   ospProfSpecializationBean.setProfSpecDesc(rs.getString("PROF_SPEC_DESC"));
                   ospProfSpecializationBean.setProfSpecName(rs.getString("PROF_SPEC_NAME"));
-                  ospProfSpecializationBean.setProfSpecId(rs.getInt("PROF_SPEC_ID"));
+                  ospProfSpecializationBean.setProfSpecId(rs.getLong("PROF_SPEC_ID"));
                   return ospProfSpecializationBean;
                 }
               });
@@ -605,7 +605,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
               OspProfAcademicsBean ospProfAcademicsBean = new OspProfAcademicsBean();
               ospProfAcademicsBean.setActiveStatus(rs.getInt("ACTIVE_STATUS"));
               ospProfAcademicsBean.setProfAcdmcDesc(rs.getString("PROF_ACDMC_DESC"));
-              ospProfAcademicsBean.setProfAcdmcId(rs.getInt("PROF_ACDMC_ID"));
+              ospProfAcademicsBean.setProfAcdmcId(rs.getLong("PROF_ACDMC_ID"));
               ospProfAcademicsBean.setProfAcdmcName(rs.getString("PROF_ACDMC_NAME"));
               ospProfAcademicsBean.setProfAcdmcPassYear(rs.getString("PROF_ACDMC_PASS_YEAR"));
               ospProfAcademicsBean.setProfAcdmcUniversity(rs.getString("PROF_ACDMC_UNIVERSITY"));
@@ -639,7 +639,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
               ospExperienceBean.setProfExpBeginDt(rs.getDate("PROF_EXP_BEGIN_DT"));
               ospExperienceBean.setProfExpEndDt(rs.getDate("PROF_EXP_END_DT"));
               ospExperienceBean.setProfExpDesc(rs.getString("PROF_EXP_DESC"));
-              ospExperienceBean.setProfExpId(rs.getInt("PROF_EXP_ID"));
+              ospExperienceBean.setProfExpId(rs.getLong("PROF_EXP_ID"));
               return ospExperienceBean;
             }
           });
