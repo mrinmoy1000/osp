@@ -22,17 +22,17 @@ public class AddressDAOImpl implements AddressDAO {
   @Override
   public void saveAddress(OspProfessionalBean professionalBean) throws OspDaoException {
     String sql =
-        "INSERT INTO OSP_CONTACT(LOCATION_ID,OTHER_AREA,LINE_1,LINE_2,ACTIVE_STATUS,CREATED_TS,CREATED_BY) VALUES(:LOCATION_ID, :OTHER_AREA, :LINE_1, :LINE_2, :ACTIVE_STATUS, :CREATED_TS, :CREATED_BY)";
+        "INSERT INTO OSP_ADDRESS(LOCATION_ID,OTHER_AREA,LINE_1,LINE_2,ACTIVE_STATUS,CREATED_TS,CREATED_BY) VALUES(:LOCATION_ID, :OTHER_AREA, :LINE_1, :LINE_2, :ACTIVE_STATUS, :CREATED_TS, :CREATED_BY)";
     try {
       GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
       MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-      namedParameters.addValue("LOCATION_ID", professionalBean.getContact().getContactType());
-      namedParameters.addValue("OTHER_AREA", professionalBean.getContact().getContactPhone());
-      namedParameters.addValue("LINE_1", professionalBean.getContact().getContactEmail());
-      namedParameters.addValue("LINE_2", professionalBean.getContact().getActiveStatus());
-      namedParameters.addValue("ACTIVE_STATUS", new Timestamp(new Date().getTime()));
-      namedParameters.addValue("CREATED_TS", professionalBean.getContact().getCreatedBy());
-      namedParameters.addValue("CREATED_BY", professionalBean.getContact().getCreatedBy());
+      namedParameters.addValue("LOCATION_ID", professionalBean.getAddress().getLocationId());
+      namedParameters.addValue("OTHER_AREA", professionalBean.getAddress().getOtherArea());
+      namedParameters.addValue("LINE_1", professionalBean.getAddress().getLine1());
+      namedParameters.addValue("LINE_2", professionalBean.getAddress().getLine2());
+      namedParameters.addValue("ACTIVE_STATUS",professionalBean.getAddress().getActiveStatus());
+      namedParameters.addValue("CREATED_TS", professionalBean.getAddress().getCreatedTs());
+      namedParameters.addValue("CREATED_BY", professionalBean.getAddress().getCreatedBy());
 
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 

@@ -1,6 +1,7 @@
 package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.AddressDAO;
@@ -230,10 +234,26 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         professional.setCreatedBy(userId);
         professional.setUpdatedBy(userId);
         profDAO.saveProfile(professional);
+        professional.getContact().setCreatedBy(userId);
+        professional.getContact().setCreatedTs(new Date());
         contactDAO.saveContact(professional);
+        professional.getAddress().setCreatedBy(userId);
+        professional.getAddress().setCreatedTs(new Date());
         addressDAO.saveAddress(professional);
         addressMapDAO.saveAddressMap(professional);
         contactMapDAO.saveContactMap(professional);
+        for(OspProfAcademicsBean academicBean:professional.getQualificationList()){
+          academicBean.setCreatedBy(userId);
+          academicBean.setCreatedTs(new Date());
+        }
+        for(OspProfSpecializationBean specializationBean:professional.getSpecializationList()){
+          specializationBean.setCreatedBy(userId);
+          specializationBean.setCreatedTs(new Date());
+        }
+        for(OspExperienceBean expBean:professional.getExperienceList()){
+          expBean.setCreatedBy(userId);
+          expBean.setCreatedTs(new Date());
+        }
         academicsDAO.saveAcademics(professional.getQualificationList());
         profSubCatDAO.saveProfessionalSubCategory(professional);
         specializationDAO.saveSpecializations(professional.getSpecializationList());
