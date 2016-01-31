@@ -228,8 +228,6 @@ public class OspProfessionalDTO {
 
 
 
-  
-
   public List<OspProfSpecializationBean> getSpecializationList() {
     return specializationList;
   }
@@ -286,22 +284,22 @@ public class OspProfessionalDTO {
     this.updatedBy = updatedBy;
   }
 
-public List<OspContactBean> getContactList() {
-	return contactList;
-}
+  public List<OspContactBean> getContactList() {
+    return contactList;
+  }
 
-public void setContactList(List<OspContactBean> contactList) {
-	this.contactList = contactList;
-}
+  public void setContactList(List<OspContactBean> contactList) {
+    this.contactList = contactList;
+  }
 
-public List<OspAddressBean> getAddressList() {
-	return addressList;
-}
+  public List<OspAddressBean> getAddressList() {
+    return addressList;
+  }
 
-public void setAddressList(List<OspAddressBean> addressList) {
-	this.addressList = addressList;
-}
-  
-  
+  public void setAddressList(List<OspAddressBean> addressList) {
+    this.addressList = addressList;
+  }
+
+
 
 }

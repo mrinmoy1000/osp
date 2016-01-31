@@ -20,8 +20,8 @@ public class EmailServiceImpl implements EmailService {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  public void sendMail(String templateName, String toemailId, String content,String content2, String subject,
-      String addresseeName) throws OSPBusinessException {
+  public void sendMail(String templateName, String toemailId, String content, String content2,
+      String subject, String addresseeName) throws OSPBusinessException {
     try {
       Mail mail = new Mail();
       mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());

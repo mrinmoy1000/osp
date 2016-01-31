@@ -11,5 +11,5 @@ import com.flamingos.osp.exception.OspDaoException;
  *
  */
 public interface ProfSubCategoryDAO {
-    void saveProfessionalSubCategory(OspProfessionalBean professionalBean) throws OspDaoException;
+  void saveProfessionalSubCategory(OspProfessionalBean professionalBean) throws OspDaoException;
 }

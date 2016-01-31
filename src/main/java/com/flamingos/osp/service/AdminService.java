@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
-import com.flamingos.osp.exception.OspServiceException;
 
 public interface AdminService {
 
@@ -18,5 +17,5 @@ public interface AdminService {
 
   public List<OspProfessionalDTO> allProfessionalDetails() throws OSPBusinessException;
 
-public List<OspProfessionalDTO> fetchApprovalProfList() throws OSPBusinessException;;
+  public List<OspProfessionalDTO> fetchApprovalProfList() throws OSPBusinessException;;
 }

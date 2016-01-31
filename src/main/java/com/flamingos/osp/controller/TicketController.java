@@ -14,14 +14,15 @@ import com.flamingos.osp.bean.ConfigParamBean;
 public class TicketController {
   @Autowired
   ConfigParamBean configParamBean;
+
   // @Autowired
   // TicketService ticketService;
   //
-  @RequestMapping(value="/generate", method=RequestMethod.GET)
-  public ResponseEntity<String> generateTicket(){
+  @RequestMapping(value = "/generate", method = RequestMethod.GET)
+  public ResponseEntity<String> generateTicket() {
     configParamBean.loadConfigParam();
-  return new ResponseEntity<String>("Generate", HttpStatus.OK);
-   }
+    return new ResponseEntity<String>("Generate", HttpStatus.OK);
+  }
   //
   // @RequestMapping(value="/showproflist/{proftype}", method=RequestMethod.GET)
   // public @ResponseBody List<Professional> showListProfessionals(@PathVariable String proftype){

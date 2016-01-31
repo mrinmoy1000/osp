@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.CatSubCatDTO;
-import com.flamingos.osp.dto.CommonParamDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.dto.ProfileDTO;
@@ -34,29 +33,31 @@ public class ProfessionalController {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  @RequestMapping(value = "/addProfile",  method = RequestMethod.GET)
+  @RequestMapping(value = "/addProfile", method = RequestMethod.GET)
   public ProfileDTO addProfile(HttpServletRequest request) throws Exception {
     ProfileDTO profileDto = new ProfileDTO();
-    List<ConfigParamDTO> genderList=configParamBean.getParamByCode(AppConstants.PARAM_CODE_USER_GENDER);
-    List<ConfigParamDTO> maritialStatusList=configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
+    List<ConfigParamDTO> genderList =
+        configParamBean.getParamByCode(AppConstants.PARAM_CODE_USER_GENDER);
+    List<ConfigParamDTO> maritialStatusList =
+        configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
-    List<LocationDTO> countryList=configParamBean.getCountryList();
-    List<LocationDTO> stateList=configParamBean.getStateList();
-    for(LocationDTO country:countryList){
-      for(LocationDTO state:stateList){
-        if(country.getLocationId()==state.getLocationParentId()){
+    List<LocationDTO> countryList = configParamBean.getCountryList();
+    List<LocationDTO> stateList = configParamBean.getStateList();
+    for (LocationDTO country : countryList) {
+      for (LocationDTO state : stateList) {
+        if (country.getLocationId() == state.getLocationParentId()) {
           country.getChildLocations().add(state);
         }
       }
     }
     profileDto.setLocations(countryList);
-    List<CatSubCatDTO> categoryList=configParamBean.getCategoryList();
-    List<CatSubCatDTO> subCategoryList=configParamBean.getSubCategoryList();
-    for(CatSubCatDTO category:categoryList){
+    List<CatSubCatDTO> categoryList = configParamBean.getCategoryList();
+    List<CatSubCatDTO> subCategoryList = configParamBean.getSubCategoryList();
+    for (CatSubCatDTO category : categoryList) {
       category.setSubCatId(null);
-      for(CatSubCatDTO subCategory:subCategoryList){
-        if(category.getCatId()==subCategory.getCatId()){
+      for (CatSubCatDTO subCategory : subCategoryList) {
+        if (category.getCatId() == subCategory.getCatId()) {
           subCategory.setCatId(null);
           category.getSubCategoryList().add(subCategory);
         }

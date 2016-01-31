@@ -1,6 +1,5 @@
 package com.flamingos.osp.dao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -38,9 +37,9 @@ public class ConfigLoaderDAOImpl extends BaseDAOImpl implements ConfigLoaderDAO 
     Object[] values = new Object[] {1};
     paramList =
         getJdbcTemplate().query(QUERY_OSP_PARAMETER_SELECT, values, new ConfigParamRowMapper());
-    if (null==paramList) {
-      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE, AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
-          AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
+    if (null == paramList) {
+      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
+          AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
     return paramList;
   }
@@ -53,7 +52,7 @@ public class ConfigLoaderDAOImpl extends BaseDAOImpl implements ConfigLoaderDAO 
     Object[] values = new Object[] {1};
     templateList =
         getJdbcTemplate().query(QUERY_OSP_TEMPLATE_SELECT, values, new TemplateRowMapper());
-    if (null==templateList) {
+    if (null == templateList) {
       throw new OSPBusinessException("", AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
           AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
@@ -67,7 +66,7 @@ public class ConfigLoaderDAOImpl extends BaseDAOImpl implements ConfigLoaderDAO 
 
     Object[] values = new Object[] {1};
     roleList = getJdbcTemplate().query(QUERY_OSP_ROLE_SELECT, values, new RoleMapper());
-    if (null==roleList) {
+    if (null == roleList) {
       throw new OSPBusinessException("", AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
           AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
@@ -76,24 +75,26 @@ public class ConfigLoaderDAOImpl extends BaseDAOImpl implements ConfigLoaderDAO 
 
   @Override
   public List<CatSubCatDTO> getAllCategories() throws Exception {
-    List<CatSubCatDTO> categoryList=null;
+    List<CatSubCatDTO> categoryList = null;
     Object[] values = new Object[] {1};
-    categoryList = getJdbcTemplate().query(QUERY_OSP_CATEGORY_SELECT, values, new CatSubCatRowMapper());
-    if (null==categoryList) {
-      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE, AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
-          AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
+    categoryList =
+        getJdbcTemplate().query(QUERY_OSP_CATEGORY_SELECT, values, new CatSubCatRowMapper());
+    if (null == categoryList) {
+      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
+          AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
     return categoryList;
   }
 
   @Override
   public List<CatSubCatDTO> getAllSubCategories() throws Exception {
-    List<CatSubCatDTO> subCategoryList=null;
+    List<CatSubCatDTO> subCategoryList = null;
     Object[] values = new Object[] {1};
-    subCategoryList = getJdbcTemplate().query(QUERY_OSP_SUBCATEGORY_SELECT, values, new CatSubCatRowMapper());
-    if (null==subCategoryList) {
-      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE, AppConstants.DB_NO_RECORD_FOUND_ERRCODE,
-          AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
+    subCategoryList =
+        getJdbcTemplate().query(QUERY_OSP_SUBCATEGORY_SELECT, values, new CatSubCatRowMapper());
+    if (null == subCategoryList) {
+      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
+          AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
     return subCategoryList;
   }

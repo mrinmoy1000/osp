@@ -19,7 +19,7 @@ public interface SignUpService {
 
   public void checkUniqueness(UserBean userBean) throws OspDaoException;
 
-  public UserDTO checkUserName(String  userName) throws OspDaoException;
+  public UserDTO checkUserName(String userName) throws OspDaoException;
 
   public String sendVerificationLinkinEmail(UserBean userBean, HttpServletRequest request)
       throws OspServiceException;

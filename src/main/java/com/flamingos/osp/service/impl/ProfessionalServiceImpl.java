@@ -49,7 +49,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
   private ProfAcademicsBeanDAO academicsDAO;
   @Autowired
   private ProfSpecializationAO specializationDAO;
-  
+
   private ProfSubCategoryDAO profSubCatDAO;
   @Autowired
   private ExperienceBeanDAO experienceDAO;
@@ -76,154 +76,148 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
   ConfigParamDTO userStatusBean = null;
 
-    @Override
-    public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
-            throws OSPBusinessException {
-        logger.debug("Entrying ProfessionalService >> verifyEmailDataAndUpdateStatus method");
-        UserDTO userDto = new UserDTO();
-        try {
-            String decryptedUserName = encDecUtil.getDecodedValue(username);
-            UserBean user = new UserBean();
-            user.setUserName(decryptedUserName);
-            AccessToken access = new AccessToken();
-            access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-            if (type.equals(AppConstants.EMAIL_TYPE)) {
-                user.setEmailUUID(UUID);
-                access.setType(0);
-                userDto = profDAO.getUserLinkValidCheckForEmail(user, access);
-                user.setActiveStatus(1);
-                user.setEmailVerified(1);
-                if (userDto != null) {
-                    profDAO.emailUpdateStatus(user, access);
-                    userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
-                    logger.info(AppConstants.VALID);
-                }
-            } else {
-                if (type.equals(AppConstants.SMS_TYPE)) {
-                    user.setSmsUUID(UUID);
-                    access.setType(1);
-                    userDto = profDAO.getUserLinkValidCheckForSms(user, access);
-                    user.setActiveStatus(1);
-                    if (userDto != null) {
-                        profDAO.smsUpdateStatus(user, access);
-                        userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
-                        logger.info(AppConstants.VALID);
-                    }
-                }
-            }
-
-            return userDto;
-        } catch (OspDaoException exp) {
-            throw new OSPBusinessException(AppConstants.INVALID_LINK, "", "",exp);
-        }finally
-        {
-        logger.debug("Entrying ProfessionalService << verifyEmailDataAndUpdateStatus method");
+  @Override
+  public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
+      throws OSPBusinessException {
+    logger.debug("Entrying ProfessionalService >> verifyEmailDataAndUpdateStatus method");
+    UserDTO userDto = new UserDTO();
+    try {
+      String decryptedUserName = encDecUtil.getDecodedValue(username);
+      UserBean user = new UserBean();
+      user.setUserName(decryptedUserName);
+      AccessToken access = new AccessToken();
+      access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
+      if (type.equals(AppConstants.EMAIL_TYPE)) {
+        user.setEmailUUID(UUID);
+        access.setType(0);
+        userDto = profDAO.getUserLinkValidCheckForEmail(user, access);
+        user.setActiveStatus(1);
+        user.setEmailVerified(1);
+        if (userDto != null) {
+          profDAO.emailUpdateStatus(user, access);
+          userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
+          logger.info(AppConstants.VALID);
         }
-
-    }
-
-   @Override
-	public String verifyAndGenerateNewToken(String username, String UUID)
-			throws OSPBusinessException {
-
-		logger.debug("Entrying ProfessionalService >> verifyAndGenerateNewToken() method");
-		try {
-			UserBean user = new UserBean();
-			String decryptedUserName = encDecUtil.getDecodedValue(username);
-			user.setUserName(decryptedUserName);
-			AccessToken access = new AccessToken();
-			access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-                        ConfigParamDTO oParamEmailChannelEmail =
-				          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
-				              AppConstants.PARAM_NAME_EMAIL);
-				  user.setTokenType(oParamEmailChannelEmail.getParameterid());
-			int userCount= profDAO.getTokenCheck(user, access);
-			if (userCount == 0) {
-				user.setEmailUUID(UUID);
-				profDAO.emailUpdateStatus(user, access);
-				UserDTO userDt = signUpDao.findByUserName(decryptedUserName);
-				user.setUser_id(userDt.getUserId());
-				user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));				 
-					profDAO.generateNewToken(user, emailExpireTime);					
-					  ConfigParamDTO oParamEmailChannelSms =
-					          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
-					              AppConstants.PARAM_NAME_SMS);
-					  user.setTokenType(oParamEmailChannelSms.getParameterid());
-					  UserDTO smsDTO = profDAO.getTokenCheckforSms(user, access);
-					  if(null!=smsDTO)
-					  {	 user.setSmsUUID(smsDTO.getUserType());
-						  profDAO.smsUpdateStatus(user, access);
-						  user.setUser_id(userDt.getUserId());
-						  profDAO.generateNewToken(user, smsExpireTime);  
-						  
-					  }
-						return AppConstants.SUCCESS;
-					 
-				} else {
-				return AppConstants.INVALID_LINK;
-				}
-		} catch (OspDaoException exp) {
-			throw new OSPBusinessException(AppConstants.TOKEN_GENERATED_FAIL, "", "",exp);
-		}finally
-                {
-                logger.debug("Exiting ProfessionalService << verifyAndGenerateNewToken() method");
-                }
-
-	}
-
-
-    @Override
-    public UserDTO verifyForgotPassword(String username, String UUID, String type)
-            throws OSPBusinessException {
-        logger.debug("Entrying ProfessionalService >> verifyForgotPassword() method....");
-        UserDTO userDto = new UserDTO();
-        try {
-
-            String decryptedUserName = encDecUtil.getDecodedValue(username);
-            UserBean user = new UserBean();
-            user.setUserName(decryptedUserName);
-            AccessToken access = new AccessToken();
-            access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
-            user.setFupUUID(UUID);
-            access.setType(0);
-            userDto = profDAO.checkForForgotPassword(user, access);
-            profDAO.FUPUpdateStatus(user, access);
+      } else {
+        if (type.equals(AppConstants.SMS_TYPE)) {
+          user.setSmsUUID(UUID);
+          access.setType(1);
+          userDto = profDAO.getUserLinkValidCheckForSms(user, access);
+          user.setActiveStatus(1);
+          if (userDto != null) {
+            profDAO.smsUpdateStatus(user, access);
+            userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
             logger.info(AppConstants.VALID);
-            userDto.setReturnStatus(AppConstants.SUCCESS);
-            return userDto;
-        } catch (EmptyResultDataAccessException exp) {
-            userDto.setReturnStatus(AppConstants.FAILURE);
-            userDto.setReturnMessage(AppConstants.INVALID_LINK);
-            return userDto;
-        } catch (OspDaoException exp) {
-            throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
-                    AppConstants.FUP_TOKEN_VERIFY_ERRCODE, AppConstants.INVALID_LINK);
-        }finally
-        {
-        logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
           }
-        }
-
-    @Override
-    public UserDTO changePassword(UserBean userBean) throws OSPBusinessException {
-       logger.debug("Entrying ProfessionalService >> changePassword() method....");
-        try {
-            userBean.setPassword(encDecUtil.getEncodedValue(userBean.getPassword()));
-            profDAO.updatePassword(userBean);
-            UserDTO user = new UserDTO();
-            user.setReturnStatus(AppConstants.SUCCESS);
-            user.setReturnMessage(AppConstants.CHANGE_PASSWORD_MESSAGE);
-            return user;
-        } catch (OspDaoException ex) {
-            throw new OSPBusinessException(AppConstants.PASSWORD_CHANGE_MODULE,
-                    AppConstants.CHANGE_PASSWORD_ERRCODE, AppConstants.CHANGE_PASSWORD_ERRDESC,ex);
-
-        }finally
-        {
-        logger.debug("Exiting ProfessionalService << changePassword() method....");
         }
       }
 
+      return userDto;
+    } catch (OspDaoException exp) {
+      throw new OSPBusinessException(AppConstants.INVALID_LINK, "", "", exp);
+    } finally {
+      logger.debug("Entrying ProfessionalService << verifyEmailDataAndUpdateStatus method");
+    }
+
+  }
+
+  @Override
+  public String verifyAndGenerateNewToken(String username, String UUID) throws OSPBusinessException {
+
+    logger.debug("Entrying ProfessionalService >> verifyAndGenerateNewToken() method");
+    try {
+      UserBean user = new UserBean();
+      String decryptedUserName = encDecUtil.getDecodedValue(username);
+      user.setUserName(decryptedUserName);
+      AccessToken access = new AccessToken();
+      access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
+      ConfigParamDTO oParamEmailChannelEmail =
+          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
+              AppConstants.PARAM_NAME_EMAIL);
+      user.setTokenType(oParamEmailChannelEmail.getParameterid());
+      int userCount = profDAO.getTokenCheck(user, access);
+      if (userCount == 0) {
+        user.setEmailUUID(UUID);
+        profDAO.emailUpdateStatus(user, access);
+        UserDTO userDt = signUpDao.findByUserName(decryptedUserName);
+        user.setUser_id(userDt.getUserId());
+        user.setCommonUUID(String.valueOf(java.util.UUID.randomUUID()));
+        profDAO.generateNewToken(user, emailExpireTime);
+        ConfigParamDTO oParamEmailChannelSms =
+            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
+                AppConstants.PARAM_NAME_SMS);
+        user.setTokenType(oParamEmailChannelSms.getParameterid());
+        UserDTO smsDTO = profDAO.getTokenCheckforSms(user, access);
+        if (null != smsDTO) {
+          user.setSmsUUID(smsDTO.getUserType());
+          profDAO.smsUpdateStatus(user, access);
+          user.setUser_id(userDt.getUserId());
+          profDAO.generateNewToken(user, smsExpireTime);
+
+        }
+        return AppConstants.SUCCESS;
+
+      } else {
+        return AppConstants.INVALID_LINK;
+      }
+    } catch (OspDaoException exp) {
+      throw new OSPBusinessException(AppConstants.TOKEN_GENERATED_FAIL, "", "", exp);
+    } finally {
+      logger.debug("Exiting ProfessionalService << verifyAndGenerateNewToken() method");
+    }
+
+  }
+
+
+  @Override
+  public UserDTO verifyForgotPassword(String username, String UUID, String type)
+      throws OSPBusinessException {
+    logger.debug("Entrying ProfessionalService >> verifyForgotPassword() method....");
+    UserDTO userDto = new UserDTO();
+    try {
+
+      String decryptedUserName = encDecUtil.getDecodedValue(username);
+      UserBean user = new UserBean();
+      user.setUserName(decryptedUserName);
+      AccessToken access = new AccessToken();
+      access.setExpireTime(new Timestamp(new java.util.Date().getTime()));
+      user.setFupUUID(UUID);
+      access.setType(0);
+      userDto = profDAO.checkForForgotPassword(user, access);
+      profDAO.FUPUpdateStatus(user, access);
+      logger.info(AppConstants.VALID);
+      userDto.setReturnStatus(AppConstants.SUCCESS);
+      return userDto;
+    } catch (EmptyResultDataAccessException exp) {
+      userDto.setReturnStatus(AppConstants.FAILURE);
+      userDto.setReturnMessage(AppConstants.INVALID_LINK);
+      return userDto;
+    } catch (OspDaoException exp) {
+      throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
+          AppConstants.FUP_TOKEN_VERIFY_ERRCODE, AppConstants.INVALID_LINK);
+    } finally {
+      logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
+    }
+  }
+
+  @Override
+  public UserDTO changePassword(UserBean userBean) throws OSPBusinessException {
+    logger.debug("Entrying ProfessionalService >> changePassword() method....");
+    try {
+      userBean.setPassword(encDecUtil.getEncodedValue(userBean.getPassword()));
+      profDAO.updatePassword(userBean);
+      UserDTO user = new UserDTO();
+      user.setReturnStatus(AppConstants.SUCCESS);
+      user.setReturnMessage(AppConstants.CHANGE_PASSWORD_MESSAGE);
+      return user;
+    } catch (OspDaoException ex) {
+      throw new OSPBusinessException(AppConstants.PASSWORD_CHANGE_MODULE,
+          AppConstants.CHANGE_PASSWORD_ERRCODE, AppConstants.CHANGE_PASSWORD_ERRDESC, ex);
+
+    } finally {
+      logger.debug("Exiting ProfessionalService << changePassword() method....");
+    }
+  }
 
 
 

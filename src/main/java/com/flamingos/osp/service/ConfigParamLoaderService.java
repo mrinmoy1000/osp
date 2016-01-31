@@ -14,8 +14,8 @@ public interface ConfigParamLoaderService {
   public List<TemplateBean> getAllTemplate() throws Exception;
 
   public List<RoleBean> getAllRoles() throws Exception;
-  
-  public List<CatSubCatDTO> getAllCategories()throws Exception;
-  
+
+  public List<CatSubCatDTO> getAllCategories() throws Exception;
+
   public List<CatSubCatDTO> getAllSubCategories() throws Exception;
 }

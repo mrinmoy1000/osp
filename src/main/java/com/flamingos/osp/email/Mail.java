@@ -25,34 +25,34 @@ public class Mail {
 
   private String contentType;
 
-	private String firstName;
-	
-	private String middleName;
-	
-	private String lastName;
+  private String firstName;
 
-	private Map<String, String> mapInlineImages;
-	
-	private String verifyURL;
-	
-	private String generateURL;
+  private String middleName;
+
+  private String lastName;
+
+  private Map<String, String> mapInlineImages;
+
+  private String verifyURL;
+
+  private String generateURL;
 
 
-	public String getVerifyURL() {
-		return verifyURL;
-	}
+  public String getVerifyURL() {
+    return verifyURL;
+  }
 
-	public void setVerifyURL(String verifyURL) {
-		this.verifyURL = verifyURL;
-	}
+  public void setVerifyURL(String verifyURL) {
+    this.verifyURL = verifyURL;
+  }
 
-	public String getGenerateURL() {
-		return generateURL;
-	}
+  public String getGenerateURL() {
+    return generateURL;
+  }
 
-	public void setGenerateURL(String generateURL) {
-		this.generateURL = generateURL;
-	}
+  public void setGenerateURL(String generateURL) {
+    this.generateURL = generateURL;
+  }
 
   public Mail() {
     contentType = "text/html";

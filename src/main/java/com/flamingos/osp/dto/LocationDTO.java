@@ -19,7 +19,7 @@ public class LocationDTO implements Serializable {
   @JsonIgnore
   private String locationCode;
   @JsonInclude(Include.NON_EMPTY)
-  private List<LocationDTO> childLocations=new ArrayList<LocationDTO>();
+  private List<LocationDTO> childLocations = new ArrayList<LocationDTO>();
 
   public long getLocationId() {
     return locationId;

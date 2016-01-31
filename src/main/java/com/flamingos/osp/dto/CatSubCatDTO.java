@@ -20,7 +20,7 @@ public class CatSubCatDTO implements Serializable {
   private String catName;
   private String displayName;
   @JsonInclude(Include.NON_EMPTY)
-  private List<CatSubCatDTO> subCategoryList=new ArrayList<CatSubCatDTO>();
+  private List<CatSubCatDTO> subCategoryList = new ArrayList<CatSubCatDTO>();
 
   public Integer getCatId() {
     return catId;

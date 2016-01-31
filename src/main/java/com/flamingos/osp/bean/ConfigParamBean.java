@@ -52,10 +52,10 @@ public class ConfigParamBean {
   private List<LocationDTO> districtList = new ArrayList<LocationDTO>();
   private List<LocationDTO> cityList = new ArrayList<LocationDTO>();
   private List<LocationDTO> areaList = new ArrayList<LocationDTO>();
-  
+
   /* OSP Categories & SubCategories */
-  private List<CatSubCatDTO> categoryList=new ArrayList<CatSubCatDTO>();
-  private List<CatSubCatDTO> subCategoryList=new ArrayList<CatSubCatDTO>();
+  private List<CatSubCatDTO> categoryList = new ArrayList<CatSubCatDTO>();
+  private List<CatSubCatDTO> subCategoryList = new ArrayList<CatSubCatDTO>();
 
   public void loadConfigParam() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -116,10 +116,10 @@ public class ConfigParamBean {
           }
         }
       }
-      
-      categoryList=configParamLoaderService.getAllCategories();
-      subCategoryList=configParamLoaderService.getAllSubCategories();
-      
+
+      categoryList = configParamLoaderService.getAllCategories();
+      subCategoryList = configParamLoaderService.getAllSubCategories();
+
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
         ospEx.setModuleName(AppConstants.CONFIG_LOADING_MODULE);
@@ -148,8 +148,8 @@ public class ConfigParamBean {
   public Map<String, ConfigParamDTO> getMapByParamCodeAndName() {
     return mapByParamCodeAndName;
   }
-  
-  public List<ConfigParamDTO> getParamByCode(String paramCode){
+
+  public List<ConfigParamDTO> getParamByCode(String paramCode) {
     return mapByParamCode.get(paramCode);
   }
 
@@ -184,11 +184,12 @@ public class ConfigParamBean {
   public List<LocationDTO> getAreaList() {
     return areaList;
   }
-  
-  public List<CatSubCatDTO> getCategoryList(){
+
+  public List<CatSubCatDTO> getCategoryList() {
     return categoryList;
   }
-  public List<CatSubCatDTO> getSubCategoryList(){
+
+  public List<CatSubCatDTO> getSubCategoryList() {
     return subCategoryList;
   }
 }

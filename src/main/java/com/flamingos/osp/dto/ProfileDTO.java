@@ -11,12 +11,12 @@ public class ProfileDTO implements Serializable {
   private static final Logger logger = Logger.getLogger(ProfileDTO.class);
   private static final long serialVersionUID = 1L;
 
-  private List<ConfigParamDTO> genders=new ArrayList<ConfigParamDTO>();
-  private List<ConfigParamDTO> maritalStatus=new ArrayList<ConfigParamDTO>();
+  private List<ConfigParamDTO> genders = new ArrayList<ConfigParamDTO>();
+  private List<ConfigParamDTO> maritalStatus = new ArrayList<ConfigParamDTO>();
 
-  private List<LocationDTO> locations=new ArrayList<LocationDTO>();
-  
-  private List<CatSubCatDTO> categories=new ArrayList<CatSubCatDTO>();
+  private List<LocationDTO> locations = new ArrayList<LocationDTO>();
+
+  private List<CatSubCatDTO> categories = new ArrayList<CatSubCatDTO>();
 
   public List<ConfigParamDTO> getGenders() {
     return genders;
