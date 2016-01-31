@@ -76,7 +76,7 @@ public class SignUpController {
         } catch (OSPBusinessException exp) {
             userDto.setReturnStatus(AppConstants.FAILURE);
             userDto.setReturnMessage(exp.getMessage());
-            logger.error("Error in checking User name " + this.getClass(), exp);
+           // logger.error("Error in checking User name " + this.getClass(), exp);
             return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
         } finally {
             logger.debug("Exiting SignupController << checkUserName() method");
