@@ -121,14 +121,14 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 	  logger.debug("Entering ProfessionalDao >> approveProfile() method");
     try {
     	int count=0;
-    	int initalStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
+    	int initalStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
     	              AppConstants.PARAM_NAME_INITIAL).getParameterid();
     	
     	int actionStatusCode=0;
     	 if(!StringUtils.isEmpty(professionalBean.getActionTaken())){
-    		 configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,professionalBean.getActionTaken()).getParameterid();
+    		 actionStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,professionalBean.getActionTaken()).getParameterid();
     	
-        String updateStatus =" UPDATE  osp_professional opp" + "  SET opp." + AppConstants.USER_STATUS + "= ? ,"
+        String updateStatus =" UPDATE  OSP_PROFESSIONAL opp" + "  SET opp." + AppConstants.USER_STATUS + "= ? "
               + "where " + AppConstants.PROF_ID + " = ? "+" and "+AppConstants.USER_STATUS +"=?";
 
        count =
