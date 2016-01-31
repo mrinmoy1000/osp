@@ -9,7 +9,7 @@
 
 
 	<!-- config param configuration -->
-	<bean id="configLoaderDao" class="com.flamingos.osp.dao.impl.ConfigLoaderDaoImpl"></bean>
+	<bean id="configLoaderDao" class="com.flamingos.osp.dao.impl.ConfigLoaderDAOImpl"></bean>
 	<bean id="configParamLoaderService"
 		class="com.flamingos.osp.service.impl.ConfigParamLoaderServiceImpl"></bean>
 	<bean id="ospErrorHandler" class="com.flamingos.osp.exception.OSPErrorHandler"></bean>
