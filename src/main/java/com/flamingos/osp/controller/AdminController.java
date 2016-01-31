@@ -62,15 +62,17 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/allProfDetails", method = RequestMethod.GET)
-	public ResponseEntity<String> getAllProfessionalDetails() {
+	public ResponseEntity<List<OspProfessionalDTO>> getAllProfessionalDetails() {
 		List<OspProfessionalDTO> profList = null;
+		logger.debug(" Entering AdminController.getAllProfessionalDetails");
 		try {
 			profList = adminService.allProfessionalDetails();
-			return new ResponseEntity<String>("success", HttpStatus.OK);
+			return new ResponseEntity<List<OspProfessionalDTO>>(profList, HttpStatus.OK);
 		} catch (OSPBusinessException e) {
-			logger.error(e);
-			return new ResponseEntity<String>("success", HttpStatus.OK);
+			logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
+			return new ResponseEntity<List<OspProfessionalDTO>>(profList, HttpStatus.OK);
+		}finally{
+		logger.debug(" Exiting AdminController.getAllProfessionalDetails");
 		}
-
 	}
 }
