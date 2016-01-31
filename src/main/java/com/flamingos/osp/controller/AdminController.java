@@ -38,7 +38,7 @@ public class AdminController {
 			successMessage = e.getErrorDescription();
 		}
 		logger.debug(" Exiting AdminController.approveProfile");
-		return new ResponseEntity<String>(successMessage, HttpStatus.CREATED);
+		return new ResponseEntity<String>(successMessage, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/profDetails", method = RequestMethod.GET)
