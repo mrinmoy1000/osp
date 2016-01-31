@@ -12,7 +12,7 @@ import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OspDaoException;
 
-public interface ProfessionalDao {
+public interface ProfessionalDAO {
 
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException;
 
