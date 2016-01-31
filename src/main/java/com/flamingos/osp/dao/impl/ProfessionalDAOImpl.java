@@ -76,6 +76,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
   @Override
   public int saveProfile(OspProfessionalBean professionalBean) throws OspDaoException {
+	  logger.debug("Entering ProfessionalDao >> saveProfile() method");
     String sql =
         "INSERT INTO OSP_PROFESSIONAL(RECORD_ID,PROF_FIRST_NAME,PROF_MIDDLE_NAME,PROF_LAST_NAME,PROF_EMP_ID,PROF_DOB,PROF_GENDER,PROF_NATIONALITY,PROF_PAN,PROF_MERITAL_STATUS,PROF_MERRIAGE_ANNIVERSARY,DND_ACTIVATED_FLAG,PROF_SIGNATURE,PROF_SUBSC_ID,PROF_PUBLIC_ID,PROF_FEES,PROF_REMARK,STATUS,CREATED_TS,CREATED_BY) VALUES(:RECORD_ID, :PROF_FIRST_NAME, :PROF_MIDDLE_NAME, :PROF_LAST_NAME, :PROF_EMP_ID, :PROF_DOB, :PROF_GENDER, :PROF_NATIONALITY, :PROF_PAN, :PROF_MERITAL_STATUS, :PROF_MERRIAGE_ANNIVERSARY, :DND_ACTIVATED_FLAG, :PROF_SIGNATURE, :PROF_SUBSC_ID, :PROF_PUBLIC_ID, :PROF_FEES, :PROF_REMARK, :STATUS, :CREATED_TS, :CREATED_BY)";
     try {
@@ -101,7 +102,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
       namedParameters.addValue("STATUS", professionalBean.getStatus());
       namedParameters.addValue("CREATED_TS", new Timestamp(new Date().getTime()));
       namedParameters.addValue("CREATED_BY", professionalBean.getCreatedBy());
-
+      logger.info("ProfessionalDao.saveProfile() query"+sql);
       namedJdbcTemplate.update(sql, namedParameters, generatedKeyHolder);
 
       professionalBean.setProfId(generatedKeyHolder.getKey().intValue());
@@ -109,12 +110,15 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
     } catch (EmptyResultDataAccessException exp) {
       throw new OspDaoException(exp);
     }
+    finally{
+    	logger.debug("Exiting ProfessionalDao << saveProfile() method");
+    }
   }
 
   @Override
   public void approveProfile(OspProfessionalBean professionalBean, int param_id)
       throws OspDaoException {
-	  	  
+	  logger.debug("Entering ProfessionalDao >> approveProfile() method");
     try {
     	int count=0;
     	int initalStatusCode=configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
@@ -134,7 +138,10 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
         throw new OspDaoException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC);
       }
     } catch (DataAccessException exp) {
-      throw new OspDaoException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC);
+      throw new OspDaoException(exp);
+    }
+    finally{
+    	logger.debug("Exiting ProfessionalDao << approveProfile() method");
     }
   }
     @Override
@@ -505,7 +512,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                         }
                     });
 
-        } catch (RuntimeException exp) {
+        } catch (DataAccessException exp) {
             throw new OspDaoException(exp);
 
         }
@@ -585,7 +592,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                                 }
                             });
 
-        } catch (RuntimeException exp) {
+        } catch (DataAccessException exp) {
             throw new OspDaoException(exp);
 
         }
@@ -621,7 +628,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                                     return ospProfSpecializationBean;
                                 }
                             });
-        } catch (RuntimeException exp) {
+        } catch (DataAccessException exp) {
             throw new OspDaoException(exp);
 
         }
@@ -654,7 +661,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                             return ospProfAcademicsBean;
                         }
                     });
-        } catch (RuntimeException exp) {
+        } catch (DataAccessException exp) {
             throw new OspDaoException(exp);
         }
 
@@ -685,7 +692,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                             return ospExperienceBean;
                         }
                     });
-        } catch (RuntimeException exp) {
+        } catch (DataAccessException exp) {
             throw new OspDaoException(exp);
         }
 
