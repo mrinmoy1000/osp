@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
+import com.flamingos.osp.dto.ProfileDTO;
 import com.flamingos.osp.service.ProfessionalService;
 
 @RestController
@@ -25,9 +26,10 @@ public class ProfessionalController {
 
   @RequestMapping(value = "/addProfile", produces = "application/json", method = RequestMethod.GET,
       consumes = "application/json")
-  public ResponseEntity<String> addProfile(HttpServletRequest request) throws Exception {
+  public ProfileDTO addProfile(HttpServletRequest request) throws Exception {
+    ProfileDTO profileDto = new ProfileDTO();
 
-    return new ResponseEntity<String>("", HttpStatus.CREATED);
+    return profileDto;
   }
 
   @RequestMapping(value = "/saveProfile", produces = "application/json",
