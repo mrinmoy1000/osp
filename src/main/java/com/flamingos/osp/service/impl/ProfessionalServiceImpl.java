@@ -253,6 +253,8 @@ public class ProfessionalServiceImpl implements ProfessionalService {
         profSubCatDAO.saveProfessionalSubCategory(professional);
         specializationDAO.saveSpecializations(professional);
         experienceDAO.saveExperience(professional);
+        profDAO.saveProfAcheivements(professional);
+        profDAO.saveProfRegMemNos(professional);
       }
     } catch (Exception ex) {
       ex.printStackTrace();

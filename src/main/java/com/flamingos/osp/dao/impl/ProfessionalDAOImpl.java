@@ -1,8 +1,10 @@
 package com.flamingos.osp.dao.impl;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -27,6 +30,8 @@ import com.flamingos.osp.bean.OspAddressBean;
 import com.flamingos.osp.bean.OspContactBean;
 import com.flamingos.osp.bean.OspExperienceBean;
 import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfAcheivementBean;
+import com.flamingos.osp.bean.OspProfRegMemNoBean;
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
@@ -47,10 +52,14 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
   @Autowired
   private ConfigParamBean configParamBean;
-  
+
   @Value("${query_osp_professional_insert}")
   private String SQL_INSERT_OSP_PROFESSIONAL;
-  
+  @Value("${query_osp_prof_acheivement_insert}")
+  private String SQL_INSERT_OSP_PROF_ACHIEVEMENT;
+  @Value("${query_osp_prof_reg_mem_no_insert}")
+  private String SQL_INSERT_OSP_PROF_REG_MEM_NO;
+
   @Override
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
 
@@ -820,6 +829,105 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
     }
     return professionalDetailList;
+  }
+
+  @Override
+  public void saveProfAcheivements(final OspProfessionalBean professionalBean) throws Exception {
+    final List<OspProfAcheivementBean> acheivements = professionalBean.getAcheivements();
+    if (null != acheivements && !acheivements.isEmpty()) {
+      try {
+        jdbcTemplate.batchUpdate(SQL_INSERT_OSP_PROF_ACHIEVEMENT,
+            new BatchPreparedStatementSetter() {
+
+              @Override
+              public void setValues(PreparedStatement ps, int index) throws SQLException {
+                OspProfAcheivementBean acheivement = acheivements.get(index);
+                ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+                if (null != acheivement.getProfAchvName()) {
+                  ps.setString(AppConstants.INT_TWO, acheivement.getProfAchvName());
+                } else {
+                  ps.setNull(AppConstants.INT_TWO, Types.VARCHAR);
+                }
+                if (null != acheivement.getProfAchvDesc()) {
+                  ps.setString(AppConstants.INT_THREE, acheivement.getProfAchvDesc());
+                } else {
+                  ps.setNull(AppConstants.INT_THREE, Types.VARCHAR);
+                }
+                if (null != acheivement.getProfAchvYear()) {
+                  ps.setString(AppConstants.INT_FOUR, acheivement.getProfAchvYear());
+                } else {
+                  ps.setNull(AppConstants.INT_FOUR, Types.VARCHAR);
+                }
+                ps.setLong(AppConstants.INT_FIVE, professionalBean.getProfId());
+                ps.setInt(AppConstants.INT_SIX, acheivement.getActiveStatus());
+                ps.setString(AppConstants.INT_SEVEN, acheivement.getCreatedBy());
+                ps.setTimestamp(AppConstants.INT_EIGHT,
+                    new java.sql.Timestamp(new Date().getTime()));
+                ps.setNull(AppConstants.INT_NINE, Types.VARCHAR);
+                ps.setNull(AppConstants.INT_TEN, Types.TIMESTAMP);
+              }
+
+              @Override
+              public int getBatchSize() {
+                return acheivements.size();
+              }
+            });
+      } catch (EmptyResultDataAccessException exp) {
+        throw new OspDaoException(exp);
+      }
+
+    }
+
+
+  }
+
+  @Override
+  public void saveProfRegMemNos(final OspProfessionalBean professionalBean) throws Exception {
+    final List<OspProfRegMemNoBean> regMemNos = professionalBean.getRegisteredMemNos();
+    if (null != regMemNos && !regMemNos.isEmpty()) {
+      try {
+        jdbcTemplate.batchUpdate(SQL_INSERT_OSP_PROF_REG_MEM_NO,
+            new BatchPreparedStatementSetter() {
+
+              @Override
+              public void setValues(PreparedStatement ps, int index) throws SQLException {
+                OspProfRegMemNoBean regMemNo = regMemNos.get(index);
+                ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+                if (null != regMemNo.getRegMemType()) {
+                  ps.setString(AppConstants.INT_TWO, regMemNo.getRegMemType());
+                } else {
+                  ps.setNull(AppConstants.INT_TWO, Types.VARCHAR);
+                }
+                if (null != regMemNo.getRegAuth()) {
+                  ps.setString(AppConstants.INT_THREE, regMemNo.getRegAuth());
+                } else {
+                  ps.setNull(AppConstants.INT_THREE, Types.VARCHAR);
+                }
+                if (null != regMemNo.getRegYear()) {
+                  ps.setString(AppConstants.INT_FOUR, regMemNo.getRegYear());
+                } else {
+                  ps.setNull(AppConstants.INT_FOUR, Types.VARCHAR);
+                }
+                ps.setLong(AppConstants.INT_FIVE, professionalBean.getProfId());
+                ps.setInt(AppConstants.INT_SIX, regMemNo.getActiveStatus());
+                ps.setString(AppConstants.INT_SEVEN, regMemNo.getCreatedBy());
+                ps.setTimestamp(AppConstants.INT_EIGHT,
+                    new java.sql.Timestamp(new Date().getTime()));
+                ps.setNull(AppConstants.INT_NINE, Types.VARCHAR);
+                ps.setNull(AppConstants.INT_TEN, Types.TIMESTAMP);
+              }
+
+              @Override
+              public int getBatchSize() {
+                return regMemNos.size();
+              }
+            });
+      } catch (EmptyResultDataAccessException exp) {
+        throw new OspDaoException(exp);
+      }
+
+    }
+
   }
 
 }

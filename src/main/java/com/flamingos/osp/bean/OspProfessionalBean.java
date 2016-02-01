@@ -39,6 +39,8 @@ public class OspProfessionalBean implements Serializable {
   private List<OspProfAcademicsBean> qualificationList;
   private List<OspExperienceBean> experienceList;
   private List<Integer> lstSubCategoryId;
+  private List<OspProfAcheivementBean> acheivements;
+  private List<OspProfRegMemNoBean> registeredMemNos;
 
   private Date createdTs;
   private Date updatedTs;
@@ -415,5 +417,17 @@ public class OspProfessionalBean implements Serializable {
    */
   public void setUpdatedBy(String updatedBy) {
     this.updatedBy = updatedBy;
+  }
+  public List<OspProfAcheivementBean> getAcheivements() {
+    return acheivements;
+  }
+  public void setAcheivements(List<OspProfAcheivementBean> acheivements) {
+    this.acheivements = acheivements;
+  }
+  public List<OspProfRegMemNoBean> getRegisteredMemNos() {
+    return registeredMemNos;
+  }
+  public void setRegisteredMemNos(List<OspProfRegMemNoBean> registeredMemNos) {
+    this.registeredMemNos = registeredMemNos;
   }
 }

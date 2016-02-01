@@ -64,4 +64,7 @@ public interface ProfessionalDAO {
   public List<OspContactBean> fetchContactDetails(long id);
 
   public List<OspAddressBean> fetchAddressDetails(long id);
+  
+  public void saveProfAcheivements(OspProfessionalBean professionalBean) throws Exception;
+  public void saveProfRegMemNos(OspProfessionalBean professionalBean) throws Exception;
 }
