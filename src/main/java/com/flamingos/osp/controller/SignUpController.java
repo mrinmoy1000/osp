@@ -48,15 +48,12 @@ public class SignUpController {
       userBean.setRoleId(oRoleProfessional.getRoleId());
 
       userDto = signUpService.createUser(userBean, request);
-      if (null == userDto) {
-        return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
-      }
 
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
 
     } catch (OSPBusinessException exp) {
       userDto.setReturnStatus(AppConstants.FAILURE);
-      userDto.setReturnMessage(exp.getMessage());
+      userDto.setReturnMessage(exp.getErrorDescription());
       logger.error("Error in  creating user " + this.getClass(), exp);
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
     } finally {

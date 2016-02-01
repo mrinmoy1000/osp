@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.ConfigParamBean;
@@ -18,14 +19,18 @@ import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.LocationDTO;
+import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.ProfileDTO;
+import com.flamingos.osp.exception.OSPBusinessException;
+import com.flamingos.osp.service.AdminService;
 import com.flamingos.osp.service.ProfessionalService;
 import com.flamingos.osp.util.AppConstants;
 
 @RestController
 @RequestMapping(value = "/professional")
 public class ProfessionalController {
-
+	  @Autowired
+	  AdminService adminService;
   private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 
   @Autowired
@@ -75,5 +80,26 @@ public class ProfessionalController {
     profService.saveProfile(professionalBean, request);
 
     return new ResponseEntity<String>("Success", HttpStatus.CREATED);
+  }
+  
+  @RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
+  public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(
+      @RequestParam(value = "profId") Long id) {
+    logger.debug(" Entering AdminController.getProfessionalDetails");
+    OspProfessionalDTO prof = null;
+    try {
+      prof = adminService.professionalDetails(id);
+      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
+    } catch (OSPBusinessException e) {
+      logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
+      prof = new OspProfessionalDTO();
+      prof.setReturnStatus(AppConstants.FAILURE);
+      prof.setReturnMessage(e.getMessage());
+      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
+
+    } finally {
+      logger.debug(" Exiting AdminController.getProfessionalDetails");
+    }
+
   }
 }

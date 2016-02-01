@@ -47,17 +47,14 @@ public class LoginController {
   }
 
   @RequestMapping(value = "/forgotPassword", method = RequestMethod.POST)
-  public ResponseEntity<UserDTO> forgotPasswordChecking(@ModelAttribute UserBean userBean,
+  public ResponseEntity<UserDTO> forgotPasswordChecking(@RequestBody UserBean userBean,
       HttpServletRequest request, Map<String, Object> model) {
     logger.debug("Entrying LoginController >> forgotPasswordChecking() method");
     UserDTO user = new UserDTO();
     try {
       user = loginService.checkForUserAndSendLink(userBean, request);
-      if (!user.getReturnStatus().equals(AppConstants.FAILURE)) {
-        user.setReturnStatus(AppConstants.SUCCESS);
-        user.setReturnMessage(AppConstants.VERIFICATION_LINK_NOTIFICATION);
-      }
-      return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+    	  return new ResponseEntity<UserDTO>(user, HttpStatus.OK);   	  
+     
     } catch (OSPBusinessException e) {
       logger.error("Error in forgot " + this.getClass(), e);
       user.setReturnStatus(AppConstants.FAILURE);

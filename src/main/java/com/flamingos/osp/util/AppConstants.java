@@ -105,20 +105,24 @@ public class AppConstants {
   public static final String ERROR = "error";
   public static final String VALID = "valid";
   public static final String INVALID = "invalid";
-  public static final String INVALID_LINK = "invalid link";
+  public static final String INVALID_LINK = "Sorry link has got expired.";
   public static final String LINK_VERFIED = "y";
   public static final String LINK_NOT_VERFIED = "n";
   public static final String EMAIL_TYPE = "email";
   public static final String SMS_TYPE = "sms";
-  public static final String LOGIN_SUCCESS = "login success";
-  public static final String LOGIN_FAILURE = "login success";
-  public static final String USER_NOT_FOUND = "user not found";
+  public static final String LOGIN_SUCCESS = "Login Success";
+  public static final String LOGIN_FAILURE = "Login Failed";
+  public static final String USER_NOT_FOUND = "User not found";
   public static final String VERIFICATION_LINK_NOTIFICATION =
       "A verification link send to your mail please, check your email";
+  public static final String VERIFICATION_LINK_NOTIFICATION_ERROR =
+	      "A verification link send failed";
   public static final String LINK_VERFIED_MESSAGE = "You have been Verified";
   public static final String CHANGE_PASSWORD_MESSAGE = "Password changed successfully";
-  public static final String TOKEN_GENERATED = "new token generated sucessfully";
-  public static final String TOKEN_GENERATED_FAIL = "new token generated sucessfully";
+  public static final String TOKEN_GENERATED = "New token generated sucessfully";
+  public static final String TOKEN_GENERATED_FAIL = "Token generated failed";
+  public static final String ADD_PROF_PROFILE = "add";
+  public static final String VIEW_PROF_PROFILE = "add";
 
 
   public static final String USER_NAME = "USER_NAME";

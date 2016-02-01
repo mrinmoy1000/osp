@@ -143,5 +143,35 @@ public class VerificationController {
     }
 
   }
+  @RequestMapping(value = "/verifyProf", method = RequestMethod.GET)
+  public ModelAndView verfyProfessional(@RequestParam(value = "profId", required = false) String profID) {
+      logger.debug("Entrying VerificationController >> verfyProfessional() method");
+      try {
+          UserDTO userDto = profService.verifyProfessional(profID);
+          if(!userDto.getReturnStatus().equals(AppConstants.SUCCESS))
+          {
+          ModelAndView mav = new ModelAndView("errorLinkPage");
+          mav.addObject("user", userDto);
+          return mav;
+          }else
+          {
+           ModelAndView mav = new ModelAndView("RedirectSuccessPage");
+          mav.addObject("user", userDto);
+          return mav;
+          }
+          
+      } catch (OSPBusinessException e) {
+          logger.error("Error in changing password " + this.getClass(), e);
+          UserDTO userDto = new UserDTO();
+          userDto.setReturnStatus(AppConstants.FAILURE);
+          userDto.setReturnMessage(e.getErrorDescription());
+          ModelAndView mav = new ModelAndView("errorLinkPage");
+          mav.addObject(userDto);
+          return mav;
+      } finally {
+          logger.debug("Exiting VerficationController << verfyProfessional() method");
+      }
+
+  }
 
 }

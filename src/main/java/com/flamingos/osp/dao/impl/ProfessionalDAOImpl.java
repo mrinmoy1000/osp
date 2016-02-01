@@ -381,7 +381,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
       });
     } catch (EmptyResultDataAccessException e) {
       logger.error("no record found . Explicitly throwing exception", e);
-      throw null;
+      throw new OspDaoException();
     } finally {
       logger.debug("Exiting ProfessionalDao << checkForForgotPassword() method");
     }

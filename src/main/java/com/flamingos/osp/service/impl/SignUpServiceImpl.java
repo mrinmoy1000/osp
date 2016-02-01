@@ -60,8 +60,11 @@ public class SignUpServiceImpl implements SignUpService {
       createNewUser(userBean);
       UserDTO userDto = signUpDao.findByUserName(userBean.getUserName());
       if (userBean.getProf_id() != null) {
-        UserDTO prof = signUpDao.checkForProfessional(userBean);
-        signUpDao.mapUserAndProfessional(userDto.getUserId(), prof.getUserId());
+          UserDTO prof = signUpDao.checkForProfessional(userBean);
+          if(prof!=null)
+          {
+          signUpDao.mapUserAndProfessional(userDto.getUserId(), userBean.getProf_id());
+          }
       }
       userBean.setEmail(userDto.getEmail());
       userBean.setContactNumber(Long.parseLong(userDto.getUserContact()));
@@ -72,7 +75,11 @@ public class SignUpServiceImpl implements SignUpService {
       userDto.setReturnStatus(AppConstants.SUCCESS);
       userDto.setReturnMessage("user created succcessfully");
       return userDto;
-    } catch (Exception e) {
+    } catch (OSPBusinessException e) {
+        throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+                AppConstants.SIGN_UP_EXCEPTION_ERRCODE, e.getErrorDescription(), e);
+          } 
+    catch (Exception e) {
       throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
           AppConstants.SIGN_UP_EXCEPTION_ERRCODE, AppConstants.SIGN_UP_EXCEPTION_ERRDESC, e);
     } finally {
@@ -147,7 +154,7 @@ public class SignUpServiceImpl implements SignUpService {
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
             + request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="
             + Uuid;
-    smsService.sendSms(String.valueOf(userBean.getContactNumber()), "SMS_VERIFY", linkTobeSend);
+   smsService.sendSms(String.valueOf(userBean.getContactNumber()), "SMS_VERIFY", linkTobeSend);
     logger.debug("Exiting SignUpService <<  sendVerificationLinkinSms() method");
     return linkTobeSend;
 

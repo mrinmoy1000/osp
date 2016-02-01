@@ -226,7 +226,7 @@ public class SignUpDAOImpl implements SignUpDAO {
       return namedParameterJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
           UserDTO user = new UserDTO();
-          user.setUserId(rs.getLong(AppConstants.PROF_ID));
+          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
           return user;
         }
       });
@@ -248,6 +248,25 @@ public class SignUpDAOImpl implements SignUpDAO {
       }
     } catch (RuntimeException exp) {
       throw new OspDaoException(exp);
+    }
+  }
+  @Override
+  public UserDTO checkForProfessionalRecordId(UserBean user) throws OspDaoException {
+    String profSql = "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.RECORD_ID + "=:USER_ID";
+    Map<String, Long> paramMap = new HashMap<String, Long>();
+    paramMap.put("USER_ID", user.getUser_id());
+
+    try {
+      return namedParameterJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
+        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+          UserDTO user = new UserDTO();
+          user.setUserId(rs.getLong(AppConstants.PROF_ID));
+          return user;
+        }
+      });
+
+    } catch (EmptyResultDataAccessException e) {
+     return null;
     }
   }
 }

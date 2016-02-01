@@ -50,8 +50,17 @@ public class LoginServiceImpl implements LoginService {
           userDTO.setReturnStatus(AppConstants.FAILURE);
           userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
         } else {
+          UserDTO profUser =  signUpDao.checkForProfessionalRecordId(loginBean);
           userDTO.setReturnStatus(AppConstants.SUCCESS);
-          userDTO.setReturnMessage(AppConstants.LOGIN_SUCCESS);
+          if(profUser.getUserId()!=0)
+          {  
+              userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
+              userDTO.setUserId(profUser.getUserId());
+          }else
+          {
+              userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
+          }
+          
           userDTO.setUserPass("");
         }
       } else {
@@ -82,6 +91,8 @@ public class LoginServiceImpl implements LoginService {
         loginDao.addFUPAccessToken(userBean, fupExpireTime);
         String link = sendLinkForForgotPassword(userBean, request);
         logger.debug("Verfication link =  " + link + " successfully sent");
+        user.setReturnStatus(AppConstants.SUCCESS);
+        user.setReturnMessage(AppConstants.VERIFICATION_LINK_NOTIFICATION);
       } else {
         user = new UserDTO();
         user.setReturnStatus(AppConstants.FAILURE);
