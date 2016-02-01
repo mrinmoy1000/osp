@@ -10,11 +10,11 @@ import com.flamingos.osp.dao.MasterDataLoaderDAO;
 import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.service.MasterDataService;
 
-public class MasterDataServiceImpl implements MasterDataService{
-  
+public class MasterDataServiceImpl implements MasterDataService {
+
   @Autowired
   MasterDataLoaderDAO masterDataLoaderDao;
-  
+
   @Override
   public List<TemplateBean> getAllTemplate() throws Exception {
     return masterDataLoaderDao.getAllTemplate();

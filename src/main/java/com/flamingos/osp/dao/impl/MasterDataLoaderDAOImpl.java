@@ -14,8 +14,8 @@ import com.flamingos.osp.mapper.RoleMapper;
 import com.flamingos.osp.mapper.TemplateRowMapper;
 import com.flamingos.osp.util.AppConstants;
 
-public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLoaderDAO{
-  
+public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLoaderDAO {
+
   @Value("${query_osp_template_select}")
   private String QUERY_OSP_TEMPLATE_SELECT;
   @Value("${query_osp_category_select}")
@@ -24,7 +24,7 @@ public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLo
   private String QUERY_OSP_SUBCATEGORY_SELECT;
   @Value("${query_osp_role_select}")
   private String QUERY_OSP_ROLE_SELECT;
-  
+
   @Override
   public List<TemplateBean> getAllTemplate() throws OSPBusinessException {
     // TODO Auto-generated method stub

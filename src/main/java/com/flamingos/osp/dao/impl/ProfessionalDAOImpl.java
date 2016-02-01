@@ -1,5 +1,6 @@
 package com.flamingos.osp.dao.impl;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -29,11 +31,15 @@ import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.OspAddressBean;
 import com.flamingos.osp.bean.OspContactBean;
 import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspPresentationDesc;
 import com.flamingos.osp.bean.OspProfAcademicsBean;
 import com.flamingos.osp.bean.OspProfAcheivementBean;
+import com.flamingos.osp.bean.OspProfPresentation;
+import com.flamingos.osp.bean.OspProfPublication;
 import com.flamingos.osp.bean.OspProfRegMemNoBean;
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
+import com.flamingos.osp.bean.OspPublicationDetails;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
@@ -59,6 +65,15 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   private String SQL_INSERT_OSP_PROF_ACHIEVEMENT;
   @Value("${query_osp_prof_reg_mem_no_insert}")
   private String SQL_INSERT_OSP_PROF_REG_MEM_NO;
+
+  @Value("${query_osp_prof_publication_insert}")
+  private String SQL_INSERT_OSP_PROF_PUBLICATION;
+  @Value("${query_osp_publication_desc_insert}")
+  private String SQL_INSERT_OSP_PUBLICATION_DESC;
+  @Value("${query_osp_prof_presentation_insert}")
+  private String SQL_INSERT_OSP_PROF_PRESENTATION;
+  @Value("${query_osp_presentation_desc_insert}")
+  private String SQL_INSERT_OSP_PRESENTATION_DESC;
 
   @Override
   public void emailUpdateStatus(UserBean user, AccessToken access) throws OspDaoException {
@@ -926,6 +941,120 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
         throw new OspDaoException(exp);
       }
 
+    }
+
+  }
+
+
+  @Override
+  public void saveProfPublication(final OspProfessionalBean professionalBean)
+      throws OspDaoException {
+
+    final List<OspProfPublication> lstProfPublications = professionalBean.getLstProfPublication();
+    if (null != lstProfPublications && !lstProfPublications.isEmpty()) {
+      for (final OspProfPublication publication : lstProfPublications) {
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+
+          @Override
+          public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+            PreparedStatement ps =
+                con.prepareStatement(SQL_INSERT_OSP_PROF_PUBLICATION, new String[] {"PROF_PUB_ID"});
+            ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+            ps.setString(AppConstants.INT_TWO, publication.getProfPublicationName());
+            ps.setLong(AppConstants.INT_THREE, professionalBean.getProfId());
+            ps.setInt(AppConstants.INT_FOUR, AppConstants.INT_ONE);
+            ps.setString(AppConstants.INT_FIVE, professionalBean.getCreatedBy());
+            ps.setTimestamp(AppConstants.INT_SIX, new java.sql.Timestamp(new Date().getTime()));
+            ps.setNull(AppConstants.INT_SEVEN, Types.VARBINARY);
+            ps.setNull(AppConstants.INT_EIGHT, Types.TIMESTAMP);
+            return ps;
+          }
+        }, keyHolder);
+
+        final long profPubId = keyHolder.getKey().longValue();
+        final List<OspPublicationDetails> lstPubDesc = publication.getLstPublicationDetails();
+        if (null != lstPubDesc && !lstPubDesc.isEmpty()) {
+          jdbcTemplate.batchUpdate(SQL_INSERT_OSP_PUBLICATION_DESC,
+              new BatchPreparedStatementSetter() {
+
+                @Override
+                public void setValues(PreparedStatement ps, int index) throws SQLException {
+                  OspPublicationDetails publicationDetails = lstPubDesc.get(index);
+                  ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+                  ps.setLong(AppConstants.INT_TWO, profPubId);
+                  ps.setString(AppConstants.INT_THREE, publicationDetails.getPublicationDesc());
+                  ps.setString(AppConstants.INT_FOUR, professionalBean.getCreatedBy());
+                  ps.setTimestamp(AppConstants.INT_FIVE,
+                      new java.sql.Timestamp(new Date().getTime()));
+                  ps.setNull(AppConstants.INT_SIX, Types.VARBINARY);
+                  ps.setNull(AppConstants.INT_SEVEN, Types.TIMESTAMP);
+                }
+
+                @Override
+                public int getBatchSize() {
+                  // TODO Auto-generated method stub
+                  return lstPubDesc.size();
+                }
+              });
+        }
+      }
+    }
+  }
+
+  @Override
+  public void saveProfPresentation(final OspProfessionalBean professionalBean)
+      throws OspDaoException {
+    final List<OspProfPresentation> lstProfPresentations =
+        professionalBean.getLstProfPresentation();
+    if (null != lstProfPresentations && !lstProfPresentations.isEmpty()) {
+      for (final OspProfPresentation presentaion : lstProfPresentations) {
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+
+          @Override
+          public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+            PreparedStatement ps =
+                con.prepareStatement(SQL_INSERT_OSP_PROF_PRESENTATION, new String[] {"PROF_PUB_ID"});
+            ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+            ps.setString(AppConstants.INT_TWO, presentaion.getProfPresentationName());
+            ps.setLong(AppConstants.INT_THREE, professionalBean.getProfId());
+            ps.setInt(AppConstants.INT_FOUR, AppConstants.INT_ONE);
+            ps.setString(AppConstants.INT_FIVE, professionalBean.getCreatedBy());
+            ps.setTimestamp(AppConstants.INT_SIX, new java.sql.Timestamp(new Date().getTime()));
+            ps.setNull(AppConstants.INT_SEVEN, Types.VARBINARY);
+            ps.setNull(AppConstants.INT_EIGHT, Types.TIMESTAMP);
+            return ps;
+          }
+        }, keyHolder);
+
+        final long presentationId = keyHolder.getKey().longValue();
+        final List<OspPresentationDesc> lstPresentation = presentaion.getLstPresentationDesc();
+        if (null != lstPresentation && !lstPresentation.isEmpty()) {
+          jdbcTemplate.batchUpdate(SQL_INSERT_OSP_PRESENTATION_DESC,
+              new BatchPreparedStatementSetter() {
+
+                @Override
+                public void setValues(PreparedStatement ps, int index) throws SQLException {
+                  OspPresentationDesc publicationDetails = lstPresentation.get(index);
+                  ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
+                  ps.setLong(AppConstants.INT_TWO, presentationId);
+                  ps.setString(AppConstants.INT_THREE, publicationDetails.getPresentationDesc());
+                  ps.setString(AppConstants.INT_FOUR, professionalBean.getCreatedBy());
+                  ps.setTimestamp(AppConstants.INT_FIVE,
+                      new java.sql.Timestamp(new Date().getTime()));
+                  ps.setNull(AppConstants.INT_SIX, Types.VARBINARY);
+                  ps.setNull(AppConstants.INT_SEVEN, Types.TIMESTAMP);
+                }
+
+                @Override
+                public int getBatchSize() {
+                  // TODO Auto-generated method stub
+                  return lstPresentation.size();
+                }
+              });
+        }
+      }
     }
 
   }

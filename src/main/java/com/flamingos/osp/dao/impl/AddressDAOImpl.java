@@ -1,6 +1,5 @@
 package com.flamingos.osp.dao.impl;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;

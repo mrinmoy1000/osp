@@ -250,9 +250,11 @@ public class SignUpDAOImpl implements SignUpDAO {
       throw new OspDaoException(exp);
     }
   }
+
   @Override
   public UserDTO checkForProfessionalRecordId(UserBean user) throws OspDaoException {
-    String profSql = "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.RECORD_ID + "=:USER_ID";
+    String profSql =
+        "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.RECORD_ID + "=:USER_ID";
     Map<String, Long> paramMap = new HashMap<String, Long>();
     paramMap.put("USER_ID", user.getUser_id());
 
@@ -266,7 +268,7 @@ public class SignUpDAOImpl implements SignUpDAO {
       });
 
     } catch (EmptyResultDataAccessException e) {
-     return null;
+      return null;
     }
   }
 }

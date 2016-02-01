@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,8 +52,8 @@ public class LoginController {
     UserDTO user = new UserDTO();
     try {
       user = loginService.checkForUserAndSendLink(userBean, request);
-    	  return new ResponseEntity<UserDTO>(user, HttpStatus.OK);   	  
-     
+      return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
+
     } catch (OSPBusinessException e) {
       logger.error("Error in forgot " + this.getClass(), e);
       user.setReturnStatus(AppConstants.FAILURE);

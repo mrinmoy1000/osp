@@ -50,17 +50,15 @@ public class LoginServiceImpl implements LoginService {
           userDTO.setReturnStatus(AppConstants.FAILURE);
           userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
         } else {
-          UserDTO profUser =  signUpDao.checkForProfessionalRecordId(loginBean);
+          UserDTO profUser = signUpDao.checkForProfessionalRecordId(loginBean);
           userDTO.setReturnStatus(AppConstants.SUCCESS);
-          if(profUser.getUserId()!=0)
-          {  
-              userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
-              userDTO.setUserId(profUser.getUserId());
-          }else
-          {
-              userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
+          if (profUser.getUserId() != 0) {
+            userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
+            userDTO.setUserId(profUser.getUserId());
+          } else {
+            userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
           }
-          
+
           userDTO.setUserPass("");
         }
       } else {

@@ -2,9 +2,7 @@ package com.flamingos.osp.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

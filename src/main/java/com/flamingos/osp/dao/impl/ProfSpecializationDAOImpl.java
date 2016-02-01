@@ -2,9 +2,7 @@ package com.flamingos.osp.dao.impl;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,11 +49,12 @@ public class ProfSpecializationDAOImpl implements ProfSpecializationAO {
                 } else {
                   ps.setNull(AppConstants.INT_THREE, Types.VARCHAR);
                 }
-                
+
                 ps.setLong(AppConstants.INT_FOUR, professional.getProfId());
                 ps.setInt(AppConstants.INT_FIVE, specialization.getActiveStatus());
                 ps.setString(AppConstants.INT_SIX, professional.getCreatedBy());
-                ps.setTimestamp(AppConstants.INT_SEVEN, new java.sql.Timestamp(new Date().getTime()));
+                ps.setTimestamp(AppConstants.INT_SEVEN,
+                    new java.sql.Timestamp(new Date().getTime()));
                 ps.setNull(AppConstants.INT_EIGHT, Types.VARCHAR);
                 ps.setNull(AppConstants.INT_NINE, Types.TIMESTAMP);
               }

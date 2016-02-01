@@ -29,8 +29,8 @@ import com.flamingos.osp.util.AppConstants;
 @RestController
 @RequestMapping(value = "/professional")
 public class ProfessionalController {
-	  @Autowired
-	  AdminService adminService;
+  @Autowired
+  AdminService adminService;
   private static final Logger logger = Logger.getLogger(ProfessionalController.class);
 
   @Autowired
@@ -74,14 +74,14 @@ public class ProfessionalController {
   }
 
   @RequestMapping(value = "/saveProfile",// produces = "application/json",
-      method = RequestMethod.POST/*, consumes = "application/json"*/)
-  public ResponseEntity<String> saveProfile(@RequestBody OspProfessionalBean professionalBean,
+      method = RequestMethod.POST/* , consumes = "application/json" */)
+  public ResponseEntity<Long> saveProfile(@RequestBody OspProfessionalBean professionalBean,
       HttpServletRequest request) throws Exception {
     profService.saveProfile(professionalBean, request);
 
-    return new ResponseEntity<String>("Success", HttpStatus.CREATED);
+    return new ResponseEntity<Long>(professionalBean.getProfId(), HttpStatus.CREATED);
   }
-  
+
   @RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
   public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(
       @RequestParam(value = "profId") Long id) {

@@ -17,7 +17,7 @@ public class MasterDataBean {
   private OSPErrorHandler ospErrorHandler;
   @Autowired
   private LocationService locationService;
-  
+
   /* Communication Templates */
   private List<TemplateBean> templateBeanList = new ArrayList<TemplateBean>();
   private Map<String, TemplateBean> templateMapByName = new HashMap<String, TemplateBean>();

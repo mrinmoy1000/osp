@@ -116,7 +116,7 @@ public class AppConstants {
   public static final String VERIFICATION_LINK_NOTIFICATION =
       "A verification link send to your mail please, check your email";
   public static final String VERIFICATION_LINK_NOTIFICATION_ERROR =
-	      "A verification link send failed";
+      "A verification link send failed";
   public static final String LINK_VERFIED_MESSAGE = "You have been Verified";
   public static final String CHANGE_PASSWORD_MESSAGE = "Password changed successfully";
   public static final String TOKEN_GENERATED = "New token generated sucessfully";

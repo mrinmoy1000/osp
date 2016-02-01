@@ -17,9 +17,8 @@ public interface ProfessionalService {
   public UserDTO verifyForgotPassword(String username, String UUID, String type)
       throws OSPBusinessException;
 
-  public UserDTO verifyProfessional(String encryptedProfId)
-	      throws OSPBusinessException;
-  
+  public UserDTO verifyProfessional(String encryptedProfId) throws OSPBusinessException;
+
   public UserDTO changePassword(UserBean loginBean) throws OSPBusinessException;
 
   public void saveProfile(OspProfessionalBean professional, HttpServletRequest request)

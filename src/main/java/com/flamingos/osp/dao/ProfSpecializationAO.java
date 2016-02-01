@@ -7,6 +7,5 @@ import com.flamingos.osp.exception.OspDaoException;
 
 public interface ProfSpecializationAO {
 
-  public void saveSpecializations(OspProfessionalBean professional)
-      throws OspDaoException;
+  public void saveSpecializations(OspProfessionalBean professional) throws OspDaoException;
 }

@@ -16,9 +16,6 @@ import org.springframework.util.StringUtils;
 
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
-import com.flamingos.osp.bean.OspExperienceBean;
-import com.flamingos.osp.bean.OspProfAcademicsBean;
-import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.AddressDAO;
@@ -103,10 +100,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
           profDAO.emailUpdateStatus(user, access);
           userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
           logger.info(AppConstants.VALID);
-        }else
-        {
-        	userDto= new UserDTO();
-        	 userDto.setReturnMessage(AppConstants.INVALID_LINK);
+        } else {
+          userDto = new UserDTO();
+          userDto.setReturnMessage(AppConstants.INVALID_LINK);
         }
       } else {
         if (type.equals(AppConstants.SMS_TYPE)) {
@@ -118,17 +114,17 @@ public class ProfessionalServiceImpl implements ProfessionalService {
             profDAO.smsUpdateStatus(user, access);
             userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
             logger.info(AppConstants.VALID);
-          }else
-          {
-        	  userDto= new UserDTO();
-         	 userDto.setReturnMessage(AppConstants.INVALID_LINK);
+          } else {
+            userDto = new UserDTO();
+            userDto.setReturnMessage(AppConstants.INVALID_LINK);
           }
         }
       }
 
       return userDto;
     } catch (OspDaoException exp) {
-      throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE, "", AppConstants.INVALID_LINK, exp);
+      throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE, "",
+          AppConstants.INVALID_LINK, exp);
     } finally {
       logger.debug("Entrying ProfessionalService << verifyEmailDataAndUpdateStatus method");
     }
@@ -241,7 +237,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
     try {
       String userId = AppUtil.trimLeadingTrailingQuote(request.getHeader("userId"));
       if (!StringUtils.isEmpty(userId)) {
-        Date currentTime=new Date();
+        Date currentTime = new Date();
         professional.setCreatedBy(userId);
         professional.setUpdatedBy(userId);
         profDAO.saveProfile(professional);
@@ -278,32 +274,32 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 
     }
   }
-  @Override
-  public UserDTO verifyProfessional(String encryptedProfId)
-          throws OSPBusinessException {
-      logger.debug("Entrying ProfessionalService >> verifyForgotPassword() method....");
-      try {
-          String decryptedProfId = encDecUtil.getDecodedValue(encDecUtil.getEncodedValue("1"));
-          UserBean user = new UserBean();
-          user.setProf_id(Long.parseLong(decryptedProfId));
-      UserDTO userDto  = signUpDAO.checkForProfessional(user);
-          if (null != userDto && userDto.getUserId() != 0) {
-              logger.info(AppConstants.FAILURE);
-              userDto.setReturnStatus(AppConstants.FAILURE);
-              userDto.setReturnMessage(AppConstants.INVALID_LINK);
-          } else {
-              logger.info(AppConstants.VALID);
-              userDto = new UserDTO();
-              userDto.setReturnStatus(AppConstants.SUCCESS);
-              userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
-          }
 
-          return userDto;
-      } catch (Exception exp) {
-          throw new OSPBusinessException("", "", "",exp);
-          
-      }  finally {
-          logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
+  @Override
+  public UserDTO verifyProfessional(String encryptedProfId) throws OSPBusinessException {
+    logger.debug("Entrying ProfessionalService >> verifyForgotPassword() method....");
+    try {
+      String decryptedProfId = encDecUtil.getDecodedValue(encDecUtil.getEncodedValue("1"));
+      UserBean user = new UserBean();
+      user.setProf_id(Long.parseLong(decryptedProfId));
+      UserDTO userDto = signUpDAO.checkForProfessional(user);
+      if (null != userDto && userDto.getUserId() != 0) {
+        logger.info(AppConstants.FAILURE);
+        userDto.setReturnStatus(AppConstants.FAILURE);
+        userDto.setReturnMessage(AppConstants.INVALID_LINK);
+      } else {
+        logger.info(AppConstants.VALID);
+        userDto = new UserDTO();
+        userDto.setReturnStatus(AppConstants.SUCCESS);
+        userDto.setReturnMessage(AppConstants.LINK_VERFIED_MESSAGE);
       }
+
+      return userDto;
+    } catch (Exception exp) {
+      throw new OSPBusinessException("", "", "", exp);
+
+    } finally {
+      logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
+    }
   }
 }

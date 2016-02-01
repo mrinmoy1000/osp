@@ -45,6 +45,10 @@ public interface ProfessionalDAO {
 
   public long saveProfile(OspProfessionalBean professionalBean) throws OspDaoException;
 
+  public void saveProfPublication(OspProfessionalBean professionalBean) throws OspDaoException;
+
+  public void saveProfPresentation(OspProfessionalBean professionalBean) throws OspDaoException;
+
   public void approveProfile(OspProfessionalBean professionalBean, int param_id)
       throws OspDaoException;
 
@@ -64,7 +68,8 @@ public interface ProfessionalDAO {
   public List<OspContactBean> fetchContactDetails(long id);
 
   public List<OspAddressBean> fetchAddressDetails(long id);
-  
+
   public void saveProfAcheivements(OspProfessionalBean professionalBean) throws Exception;
+
   public void saveProfRegMemNos(OspProfessionalBean professionalBean) throws Exception;
 }
