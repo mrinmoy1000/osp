@@ -114,6 +114,16 @@ public class ConfigParamBean {
               .getParameterid()) {
             areaList.add(location);
           }
+
+
+        }
+      }
+
+      for (LocationDTO country : countryList) {
+        for (LocationDTO state : stateList) {
+          if (country.getLocationId() == state.getLocationParentId()) {
+            country.getChildLocations().add(state);
+          }
         }
       }
 

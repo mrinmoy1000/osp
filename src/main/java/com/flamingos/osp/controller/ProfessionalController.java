@@ -1,6 +1,8 @@
 package com.flamingos.osp.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,7 +40,7 @@ public class ProfessionalController {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  @RequestMapping(value = "/addProfile", method = RequestMethod.GET,produces="application/json")
+  @RequestMapping(value = "/addProfile", method = RequestMethod.GET, produces = "application/json")
   public ResponseEntity<ProfileDTO> addProfile(HttpServletRequest request) throws Exception {
     ProfileDTO profileDto = new ProfileDTO();
     List<ConfigParamDTO> genderList =
@@ -48,14 +50,7 @@ public class ProfessionalController {
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
     List<LocationDTO> countryList = configParamBean.getCountryList();
-    List<LocationDTO> stateList = configParamBean.getStateList();
-    for (LocationDTO country : countryList) {
-      for (LocationDTO state : stateList) {
-        if (country.getLocationId() == state.getLocationParentId()) {
-          country.getChildLocations().add(state);
-        }
-      }
-    }
+
     profileDto.setLocations(countryList);
     List<CatSubCatDTO> categoryList = configParamBean.getCategoryList();
     List<CatSubCatDTO> subCategoryList = configParamBean.getSubCategoryList();
@@ -72,7 +67,7 @@ public class ProfessionalController {
 
     return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
   }
-  
+
   @RequestMapping(value = "/saveProfile",// produces = "application/json",
       method = RequestMethod.POST/* , consumes = "application/json" */)
   public ResponseEntity<Long> saveProfile(@RequestBody OspProfessionalBean professionalBean,
