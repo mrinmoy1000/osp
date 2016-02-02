@@ -51,39 +51,54 @@ public class SignUpServiceImpl implements SignUpService {
 
   private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
 
-  @Override
-  public UserDTO createUser(UserBean userBean, HttpServletRequest request)
-      throws OSPBusinessException {
-    try {
-      logger.debug("Entrying SignUpService >> createUser method");
-      checkUniqueness(userBean);
-      createNewUser(userBean);
-      UserDTO userDto = signUpDao.findByUserName(userBean.getUserName());
-      if (userBean.getProf_id() != null) {
-        UserDTO prof = signUpDao.checkForProfessional(userBean);
-        if (prof != null) {
-          signUpDao.mapUserAndProfessional(userDto.getUserId(), userBean.getProf_id());
-        }
-      }
-      userBean.setEmail(userDto.getEmail());
-      userBean.setContactNumber(Long.parseLong(userDto.getUserContact()));
-      String userMessageForEmail = sendVerificationLinkinEmail(userBean, request);
-      String userMessageForSMS = sendVerificationLinkinSms(userBean, request);
-      logger.info("verfication email  link send = " + userMessageForEmail);
-      logger.info("verfication sms link send = " + userMessageForSMS);
-      userDto.setReturnStatus(AppConstants.SUCCESS);
-      userDto.setReturnMessage("user created succcessfully");
-      return userDto;
-    } catch (OSPBusinessException e) {
-      throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
-          AppConstants.SIGN_UP_EXCEPTION_ERRCODE, e.getErrorDescription(), e);
-    } catch (Exception e) {
-      throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
-          AppConstants.SIGN_UP_EXCEPTION_ERRCODE, AppConstants.SIGN_UP_EXCEPTION_ERRDESC, e);
-    } finally {
-      logger.debug("Entrying SignUpService << createUser method");
-    }
-  }
+	@Override
+	public UserDTO createUser(UserBean userBean, HttpServletRequest request)
+			throws OSPBusinessException {
+		try {
+			logger.debug("Entrying SignUpService >> createUser method");
+			checkUniqueness(userBean);
+			createNewUser(userBean);
+			UserDTO userDto = signUpDao.findByUserName(userBean.getUserName());
+			if (userBean.getProf_id() != null) {
+				UserDTO prof = signUpDao.checkForProfessional(userBean);
+				if (prof != null) {
+					signUpDao.mapUserAndProfessional(userDto.getUserId(),
+							userBean.getProf_id());
+				}
+			}
+			userDto.setReturnStatus(AppConstants.SUCCESS);
+		
+			userBean.setEmail(userDto.getEmail());
+			userBean.setContactNumber(Long.parseLong(userDto.getUserContact()));
+			String userMessageForEmail = sendVerificationLinkinEmail(userBean,request);
+			String userMessageForSMS = sendVerificationLinkinSms(userBean,request);
+			if (userMessageForEmail.equals(AppConstants.SUCCESS) && userMessageForSMS.equals(AppConstants.SUCCESS)) {
+				userDto.setReturnMessage(AppConstants.USER_CREATED_SUCCESS+" "+AppConstants.VERIFICATION_LINK_SMS_NOTIFICATION);				
+			} else {
+				if (userMessageForEmail.equals(AppConstants.SUCCESS)) {
+					userDto.setReturnMessage(AppConstants.USER_CREATED_SUCCESS+" "+AppConstants.VERIFICATION_LINK_NOTIFICATION);	
+				}
+				if (userMessageForSMS.equals(AppConstants.SUCCESS)) {
+					userDto.setReturnMessage(AppConstants.USER_CREATED_SUCCESS+" "+AppConstants.VERIFICATION_SMS_NOTIFICATION);	
+				}
+				if (userMessageForEmail.equals(AppConstants.FAILURE) && userMessageForSMS.equals(AppConstants.FAILURE)) {
+					userDto.setReturnMessage(AppConstants.USER_CREATED_SUCCESS);	
+				}
+			}
+						
+			return userDto;
+		} catch (OSPBusinessException e) {
+			throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+					AppConstants.SIGN_UP_EXCEPTION_ERRCODE,
+					e.getErrorDescription(), e);
+		} catch (Exception e) {
+			throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+					AppConstants.SIGN_UP_EXCEPTION_ERRCODE,
+					AppConstants.SIGN_UP_EXCEPTION_ERRDESC, e);
+		} finally {
+			logger.debug("Entrying SignUpService << createUser method");
+		}
+	}
 
   @Override
   public void checkUniqueness(UserBean loginBean) throws OspDaoException {
@@ -125,7 +140,9 @@ public class SignUpServiceImpl implements SignUpService {
   public String sendVerificationLinkinEmail(UserBean userBean, HttpServletRequest request)
       throws OspServiceException {
     logger.debug("Entrying SignUpService >>  sendVerificationLinkinEmail() method");
-    String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
+   try {
+	
+ String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
     String Uuid = userBean.getEmailUUID();
     String linkTobeSend =
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
@@ -137,8 +154,13 @@ public class SignUpServiceImpl implements SignUpService {
             + "&UUID=" + Uuid;
     emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(), linkTobeSend, generatelinkTobeSend,
         emailVerficationMessage, userBean.getUserName());
-    logger.debug("Exiting SignUpService <<  sendVerificationLinkinEmail() method");
-    return linkTobeSend;
+    logger.info("verfication email  link send = " + linkTobeSend);
+    logger.debug("Exiting SignUpService <<  sendVerificationLinkinEmail() method");    
+    return AppConstants.SUCCESS;
+   } catch (OSPBusinessException e) {
+	   logger.error(this.getClass(),e);
+	   return AppConstants.FAILURE;
+	}
 
   }
 
@@ -146,6 +168,7 @@ public class SignUpServiceImpl implements SignUpService {
   public String sendVerificationLinkinSms(UserBean userBean, HttpServletRequest request)
       throws OspServiceException {
     logger.debug("Entrying SignUpService >>  sendVerificationLinkinSms() method");
+    try {
     String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
     String Uuid = userBean.getSmsUUID();
     String linkTobeSend =
@@ -153,8 +176,14 @@ public class SignUpServiceImpl implements SignUpService {
             + request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="
             + Uuid;
     smsService.sendSms(String.valueOf(userBean.getContactNumber()), "SMS_VERIFY", linkTobeSend);
+    logger.info("verfication sms link send = " + linkTobeSend);
     logger.debug("Exiting SignUpService <<  sendVerificationLinkinSms() method");
-    return linkTobeSend;
+    return AppConstants.SUCCESS;
+    } catch (OSPBusinessException e) {
+ 	   logger.error(this.getClass(),e);
+ 	   return AppConstants.FAILURE;
+ 	}
+
 
   }
 

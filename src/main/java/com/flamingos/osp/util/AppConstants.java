@@ -40,7 +40,7 @@ public class AppConstants {
   public static String LOGIN_EXCEPTION_ERRDESC = "Login failed";
   public static String FUP_TOKEN__ERRCODE = "FUPT001";
   public static String FUP_TOKEN_VERIFY_ERRCODE = "FUPTV001";
-  public static String FUP_TOKEN_ERRDESC = "Failed to generate token for FUP";
+  public static String FUP_TOKEN_ERRDESC = "Failed to send verification link for forgot password. please try again after some time.";
   public static String CHANGE_PASSWORD_ERRCODE = "CHGP001";
   public static String CHANGE_PASSWORD_ERRDESC = "Failed to update password";
   public static String PROFESSIONAL_ADD_PROFILE_EXCEPTION_ERRCODE = "PROFILE001";
@@ -113,8 +113,14 @@ public class AppConstants {
   public static final String LOGIN_SUCCESS = "Login Success";
   public static final String LOGIN_FAILURE = "Login Failed";
   public static final String USER_NOT_FOUND = "User not found";
+  public static final String EMAIL_NOT_FOUND = "Email id doesn't match. Please check and enter again.";
   public static final String VERIFICATION_LINK_NOTIFICATION =
       "A verification link send to your mail please, check your email";
+  public static final String VERIFICATION_SMS_NOTIFICATION =
+	      "A verification link send to your mobile number please, check your Mobile";
+  
+  public static final String VERIFICATION_LINK_SMS_NOTIFICATION ="A verification link send to your mail please, check your email";
+  
   public static final String VERIFICATION_LINK_NOTIFICATION_ERROR =
       "A verification link send failed";
   public static final String LINK_VERFIED_MESSAGE = "You have been Verified";
@@ -122,7 +128,8 @@ public class AppConstants {
   public static final String TOKEN_GENERATED = "New token generated sucessfully";
   public static final String TOKEN_GENERATED_FAIL = "Token generated failed";
   public static final String ADD_PROF_PROFILE = "add";
-  public static final String VIEW_PROF_PROFILE = "add";
+  public static final String VIEW_PROF_PROFILE = "view";
+  public static final String USER_CREATED_SUCCESS = "User Created Successfully.";
 
 
   public static final String USER_NAME = "USER_NAME";

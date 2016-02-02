@@ -58,7 +58,6 @@ public class SignUpDAOImpl implements SignUpDAO {
               UserDTO user = new UserDTO();
               user.setUserId(rs.getLong(AppConstants.RECORD_ID));
               user.setUserName(rs.getString(AppConstants.USER_NAME));
-              user.setUserPass(rs.getString(AppConstants.PASSWORD));
               user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
               user.setEmail(rs.getString(AppConstants.EMAIL));
               user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));

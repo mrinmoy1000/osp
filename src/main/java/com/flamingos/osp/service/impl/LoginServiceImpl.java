@@ -76,40 +76,57 @@ public class LoginServiceImpl implements LoginService {
     }
   }
 
-  @Override
-  public UserDTO checkForUserAndSendLink(UserBean userBean, HttpServletRequest request)
-      throws OSPBusinessException {
-    logger.debug("Entrying LoginService >> checkForUserAndSendLink() method");
-    try {
-      UserDTO user = loginDao.checkForUser(userBean);
-      if (user != null) {
-        String Uuid = String.valueOf(UUID.randomUUID());
-        userBean.setFupUUID(Uuid);
-        userBean.setUser_id(user.getUserId());
-        loginDao.addFUPAccessToken(userBean, fupExpireTime);
-        String link = sendLinkForForgotPassword(userBean, request);
-        logger.debug("Verfication link =  " + link + " successfully sent");
-        user.setReturnStatus(AppConstants.SUCCESS);
-        user.setReturnMessage(AppConstants.VERIFICATION_LINK_NOTIFICATION);
-      } else {
-        user = new UserDTO();
-        user.setReturnStatus(AppConstants.FAILURE);
-        user.setReturnMessage(AppConstants.USER_NOT_FOUND);
-      }
-      return user;
-    } catch (Exception ex) {
-      throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
-          AppConstants.FUP_TOKEN__ERRCODE, AppConstants.FUP_TOKEN_ERRDESC, ex);
+	@Override
+	public UserDTO checkForUserAndSendLink(UserBean userBean,
+			HttpServletRequest request) throws OSPBusinessException {
+		logger.debug("Entrying LoginService >> checkForUserAndSendLink() method");
+		try {
+			UserDTO user = loginDao.checkForUser(userBean);
+			if (user != null) {
+				String Uuid = String.valueOf(UUID.randomUUID());
+				userBean.setFupUUID(Uuid);
+				userBean.setUser_id(user.getUserId());
+				if (user.getEmail().equals(userBean.getEmail())) {
+					loginDao.addFUPAccessToken(userBean, fupExpireTime);
+					String link = sendLinkForForgotPassword(userBean, request);
+					logger.debug("Verfication link =  " + link
+							+ " successfully sent");
 
-    } finally {
-      logger.debug("Exiting LoginService << checkForUserAndSendLink() method");
-    }
+					if (link.equals(AppConstants.SUCCESS)) {
+						user.setReturnStatus(AppConstants.SUCCESS);
+						user.setReturnMessage(AppConstants.VERIFICATION_LINK_NOTIFICATION);
+					} else {
+						user.setReturnStatus(AppConstants.FAILURE);
+						user.setReturnMessage(AppConstants.FUP_TOKEN_ERRDESC);
+					}
 
-  }
+				} else {
+
+					user.setReturnStatus(AppConstants.FAILURE);
+					user.setReturnMessage(AppConstants.EMAIL_NOT_FOUND);
+				}
+
+			} else {
+				user = new UserDTO();
+				user.setReturnStatus(AppConstants.FAILURE);
+				user.setReturnMessage(AppConstants.USER_NOT_FOUND);
+			}
+			return user;
+		} catch (Exception ex) {
+			throw new OSPBusinessException(AppConstants.VERIFICATION_MODULE,
+					AppConstants.FUP_TOKEN__ERRCODE,
+					AppConstants.FUP_TOKEN_ERRDESC, ex);
+
+		} finally {
+			logger.debug("Exiting LoginService << checkForUserAndSendLink() method");
+		}
+
+	}
 
   public String sendLinkForForgotPassword(UserBean userBean, HttpServletRequest request)
       throws RuntimeException {
     logger.debug("Entrying LoginService >> sendLinkForForgotPassword() method");
+    try {
     String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
 
     String linkTobeSend =
@@ -119,8 +136,11 @@ public class LoginServiceImpl implements LoginService {
     emailService.sendMail("FUP_VERIFY", userBean.getEmail(), linkTobeSend, "",
         "Forgot Password Link", userBean.getUserName());
     logger.debug("Exiting LoginService << sendLinkForForgotPassword() method");
-    return linkTobeSend;
-
+    return AppConstants.SUCCESS;
+    } catch (OSPBusinessException e) {
+ 	   logger.error(this.getClass(),e);
+ 	   return AppConstants.FAILURE;
+ 	}
   }
 
 }

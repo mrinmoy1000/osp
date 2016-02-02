@@ -68,11 +68,9 @@ public class LoginDAOImpl implements LoginDAO {
   public UserDTO checkForUser(UserBean usrBean) throws OSPBusinessException {
     logger.debug("entrying LoginDao getUser method");
     String userNameSql =
-        "SELECT * FROM OSP_USER_CREDENTIAL WHERE  " + AppConstants.USER_NAME + "=:USERNAME and "
-            + AppConstants.EMAIL + "=:EMAIl";
+        "SELECT * FROM OSP_USER_CREDENTIAL WHERE  " + AppConstants.USER_NAME + "=:USERNAME ";
     Map<String, String> paramMap = new HashMap<String, String>();
     paramMap.put("USERNAME", usrBean.getUserName());
-    paramMap.put("EMAIl", usrBean.getEmail());
 
     try {
 

@@ -55,7 +55,7 @@ public class LoginController {
       return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
 
     } catch (OSPBusinessException e) {
-      logger.error("Error in forgot " + this.getClass(), e);
+      logger.error("Error in forgot password " + this.getClass(), e);
       user.setReturnStatus(AppConstants.FAILURE);
       user.setReturnMessage(e.getErrorDescription());
       return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
