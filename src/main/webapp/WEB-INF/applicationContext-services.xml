@@ -7,7 +7,8 @@
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-
+	<bean id="locationDao" class="com.flamingos.osp.dao.impl.LocationDAOImpl"></bean>
+	<bean id="locationService" class="com.flamingos.osp.service.impl.LocationServiceImpl"></bean>
 	<!-- config param configuration -->
 	<bean id="configLoaderDao" class="com.flamingos.osp.dao.impl.ConfigLoaderDAOImpl"></bean>
 	<bean id="configParamLoaderService"
@@ -15,10 +16,16 @@
 	<bean id="ospErrorHandler" class="com.flamingos.osp.exception.OSPErrorHandler"></bean>
 	<bean id="configParamBean" class="com.flamingos.osp.bean.ConfigParamBean"
 		init-method="loadConfigParam"></bean>
-	<!-- init-method="loadConfigParam" -->
+	<!-- master data load configuration -->
+	<bean id="masterDataLoaderDao" class="com.flamingos.osp.dao.impl.MasterDataLoaderDAOImpl"></bean>
+	<bean id="masterDataService"
+		class="com.flamingos.osp.service.impl.MasterDataServiceImpl"></bean>
+	<bean id="masterDataBean" class="com.flamingos.osp.bean.MasterDataBean"></bean>
+	<!-- init-method="loadConfigParam" init-method="loadMasterData"-->
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
 	<bean id="professionalBean" class="com.flamingos.osp.bean.OspProfessionalBean"></bean>
-	<bean id="locationService" class="com.flamingos.osp.service.impl.LocationServiceImpl"></bean>
+	
+	
 
 
 	<!-- Properties File -->

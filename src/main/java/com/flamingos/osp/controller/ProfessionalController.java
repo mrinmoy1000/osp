@@ -1,8 +1,7 @@
 package com.flamingos.osp.controller;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.CatSubCatDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
@@ -39,6 +39,8 @@ public class ProfessionalController {
   private ProfessionalService profService;
   @Autowired
   private ConfigParamBean configParamBean;
+  @Autowired
+  private MasterDataBean masterDataBean;
 
   @RequestMapping(value = "/addProfile", method = RequestMethod.GET, produces = "application/json")
   public ResponseEntity<ProfileDTO> addProfile(HttpServletRequest request) throws Exception {
@@ -49,11 +51,9 @@ public class ProfessionalController {
         configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
-    List<LocationDTO> countryList = configParamBean.getCountryList();
-
-    profileDto.setLocations(countryList);
-    List<CatSubCatDTO> categoryList = configParamBean.getCategoryList();
-    List<CatSubCatDTO> subCategoryList = configParamBean.getSubCategoryList();
+    profileDto.setLocations(masterDataBean.getCountryStateList());
+    List<CatSubCatDTO> categoryList = masterDataBean.getCategoryList();
+    List<CatSubCatDTO> subCategoryList = masterDataBean.getSubCategoryList();
     for (CatSubCatDTO category : categoryList) {
       category.setSubCatId(null);
       for (CatSubCatDTO subCategory : subCategoryList) {

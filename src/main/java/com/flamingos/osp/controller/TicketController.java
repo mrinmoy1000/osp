@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.bean.OspAddressBean;
 import com.flamingos.osp.bean.OspContactBean;
 import com.flamingos.osp.bean.OspExperienceBean;
@@ -24,13 +25,15 @@ import com.flamingos.osp.bean.OspProfessionalBean;
 public class TicketController {
   @Autowired
   ConfigParamBean configParamBean;
+  @Autowired
+  MasterDataBean masterDataBean;
 
   // @Autowired
   // TicketService ticketService;
   //
   @RequestMapping(value = "/generate", method = RequestMethod.GET)
   public ResponseEntity<String> generateTicket() {
-    configParamBean.loadConfigParam();
+    masterDataBean.loadMasterData();
     return new ResponseEntity<String>("Generate", HttpStatus.OK);
   }
 

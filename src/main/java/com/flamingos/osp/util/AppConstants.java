@@ -20,6 +20,7 @@ public class AppConstants {
   public static String FETCH_LOCATION_MODULE = "FETCH_LOCATION_MODULE";
 
   public static String CONFIG_LOADING_MODULE = "CONFIG_LOADING_MODULE";
+  public static String MASTER_DATA_LOADING_MODULE = "MASTER_DATA_LOADING_MODULE";
   public static String EMAIL_SENDING_MODULE = "EMAIL_MODULE";
   public static String SMS_SENDING_MODULE = "SMS_MODULE";
   public static String SIGN_UP_MODULE = "SIGN_UP_MODULE";
