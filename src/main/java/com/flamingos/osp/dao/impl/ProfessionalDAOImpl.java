@@ -1015,7 +1015,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
           @Override
           public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
             PreparedStatement ps =
-                con.prepareStatement(SQL_INSERT_OSP_PROF_PRESENTATION, new String[] {"PROF_PUB_ID"});
+                con.prepareStatement(SQL_INSERT_OSP_PROF_PRESENTATION, new String[] {"PROF_PRSN_ID"});
             ps.setNull(AppConstants.INT_ONE, Types.BIGINT);
             ps.setString(AppConstants.INT_TWO, presentaion.getProfPresentationName());
             ps.setLong(AppConstants.INT_THREE, professionalBean.getProfId());

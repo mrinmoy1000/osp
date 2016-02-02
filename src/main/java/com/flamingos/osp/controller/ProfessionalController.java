@@ -38,8 +38,8 @@ public class ProfessionalController {
   @Autowired
   private ConfigParamBean configParamBean;
 
-  @RequestMapping(value = "/addProfile", method = RequestMethod.GET)
-  public ProfileDTO addProfile(HttpServletRequest request) throws Exception {
+  @RequestMapping(value = "/addProfile", method = RequestMethod.GET,produces="application/json")
+  public ResponseEntity<ProfileDTO> addProfile(HttpServletRequest request) throws Exception {
     ProfileDTO profileDto = new ProfileDTO();
     List<ConfigParamDTO> genderList =
         configParamBean.getParamByCode(AppConstants.PARAM_CODE_USER_GENDER);
@@ -70,9 +70,9 @@ public class ProfessionalController {
     }
     profileDto.setCategories(categoryList);
 
-    return profileDto;
+    return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
   }
-
+  
   @RequestMapping(value = "/saveProfile",// produces = "application/json",
       method = RequestMethod.POST/* , consumes = "application/json" */)
   public ResponseEntity<Long> saveProfile(@RequestBody OspProfessionalBean professionalBean,
