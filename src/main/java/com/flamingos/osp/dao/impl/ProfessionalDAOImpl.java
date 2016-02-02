@@ -875,7 +875,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                 }
                 ps.setLong(AppConstants.INT_FIVE, professionalBean.getProfId());
                 ps.setInt(AppConstants.INT_SIX, acheivement.getActiveStatus());
-                ps.setString(AppConstants.INT_SEVEN, acheivement.getCreatedBy());
+                ps.setString(AppConstants.INT_SEVEN, professionalBean.getCreatedBy());
                 ps.setTimestamp(AppConstants.INT_EIGHT,
                     new java.sql.Timestamp(new Date().getTime()));
                 ps.setNull(AppConstants.INT_NINE, Types.VARCHAR);
@@ -925,7 +925,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                 }
                 ps.setLong(AppConstants.INT_FIVE, professionalBean.getProfId());
                 ps.setInt(AppConstants.INT_SIX, regMemNo.getActiveStatus());
-                ps.setString(AppConstants.INT_SEVEN, regMemNo.getCreatedBy());
+                ps.setString(AppConstants.INT_SEVEN, professionalBean.getCreatedBy());
                 ps.setTimestamp(AppConstants.INT_EIGHT,
                     new java.sql.Timestamp(new Date().getTime()));
                 ps.setNull(AppConstants.INT_NINE, Types.VARCHAR);
