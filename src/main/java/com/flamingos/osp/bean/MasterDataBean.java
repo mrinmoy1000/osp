@@ -1,21 +1,22 @@
 package com.flamingos.osp.bean;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.flamingos.osp.dto.CatSubCatDTO;
+import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.LocationDTO;
+import com.flamingos.osp.dto.SubCatDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OSPErrorHandler;
 import com.flamingos.osp.service.LocationService;
 import com.flamingos.osp.service.MasterDataService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.AppUtil;
-
 
 public class MasterDataBean {
   @Autowired
@@ -47,8 +48,8 @@ public class MasterDataBean {
   private List<LocationDTO> countryStateList = new ArrayList<LocationDTO>();
 
   /* OSP Categories & SubCategories */
-  private List<CatSubCatDTO> categoryList = new ArrayList<CatSubCatDTO>();
-  private List<CatSubCatDTO> subCategoryList = new ArrayList<CatSubCatDTO>();
+  private List<CategoryDTO> categoryList = new ArrayList<CategoryDTO>();
+  private List<SubCatDTO> subCategoryList = new ArrayList<SubCatDTO>();
 
   public void loadMasterData() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -106,7 +107,13 @@ public class MasterDataBean {
         }
       }
       countryStateList.addAll(countryList);
-
+      for (LocationDTO country : countryStateList) {
+        for (LocationDTO state : stateList) {
+          if (country.getLocationId() == state.getLocationParentId()) {
+            country.getChildLocations().add(state);
+          }
+        }
+      }
       for (LocationDTO district : districtList) {
         for (LocationDTO city : cityList) {
           if (district.getLocationId() == city.getLocationParentId()) {
@@ -122,27 +129,15 @@ public class MasterDataBean {
 
       }
 
-      for (LocationDTO state : stateList) {
-        for (LocationDTO district : districtList) {
-          if (state.getLocationId() == district.getLocationParentId()) {
-            state.getChildLocations().add(district);
-          }
-     
-        }
-      }
-
-      for (LocationDTO country : countryStateList) {
-        for (LocationDTO state : stateList) {
-          if (country.getLocationId() == state.getLocationParentId()) {
-            country.getChildLocations().add(state);
-          }
-        }
-      }
-
-
-
       categoryList = masterDataService.getAllCategories();
       subCategoryList = masterDataService.getAllSubCategories();
+      for (CategoryDTO category : categoryList) {
+        for (SubCatDTO subCategory : subCategoryList) {
+          if (category.getCatId() == subCategory.getCatId()) {
+            category.getSubCategoryList().add(subCategory);
+          }
+        }
+      }
 
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
@@ -199,12 +194,21 @@ public class MasterDataBean {
     return countryStateList;
   }
 
-  public List<CatSubCatDTO> getCategoryList() {
+  public List<CategoryDTO> getCategoryList() {
     return categoryList;
   }
 
-  public List<CatSubCatDTO> getSubCategoryList() {
+  public List<SubCatDTO> getSubCategoryList() {
     return subCategoryList;
+  }
+
+  public SubCatDTO getSubCategoryById(Integer subCatId) {
+    for (SubCatDTO subcategory : subCategoryList) {
+      if (subCatId == subcategory.getSubCatId()) {
+        return subcategory;
+      }
+    }
+    return null;
   }
 
 }
