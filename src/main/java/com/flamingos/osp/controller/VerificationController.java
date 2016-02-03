@@ -1,5 +1,7 @@
 package com.flamingos.osp.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,7 +58,6 @@ public class VerificationController {
     logger.debug("Entrying VerficationController >> verifySms() method");
     try {
       UserDTO userDto = profService.verifyEmailDataAndUpdateStatus(username, UUID, "sms");
-      userDto.setReturnMessage("You have been Verified");
       ModelAndView mav = new ModelAndView("linkSuccessPage");
       mav.addObject("user", userDto);
       return mav;
@@ -107,11 +108,10 @@ public class VerificationController {
 
   @RequestMapping(value = "/generateNewToken", method = RequestMethod.GET)
   public ResponseEntity<String> generateNewToken(
-      @RequestParam(value = "username", required = false) String username, @RequestParam(
-          value = "UUID", required = false) String UUID) {
+      @RequestParam(value = "username", required = false) String username,HttpServletRequest request) {
     logger.debug("Entrying VerficationController >> generateNewToken() method");
     try {
-      String successMessage = profService.verifyAndGenerateNewToken(username, UUID);
+      String successMessage = profService.verifyAndGenerateNewToken(username,request);
       return new ResponseEntity<String>(successMessage, HttpStatus.OK);
     } catch (OSPBusinessException e) {
       logger.error("Error in  generating new token" + this.getClass(), e);

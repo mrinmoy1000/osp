@@ -21,6 +21,8 @@ public interface ProfessionalDAO {
   public void smsUpdateStatus(UserBean user, AccessToken access) throws OspDaoException;
 
   public void FUPUpdateStatus(UserBean user, AccessToken access) throws OspDaoException;
+  
+  public void updateTokenStatus(UserBean user, AccessToken access) throws OspDaoException;
 
   public UserDTO getUserLinkValidCheckForEmail(UserBean user, AccessToken access)
       throws OspDaoException;

@@ -34,7 +34,7 @@ public class UserDTO {
 
   private int roleId;
 
-  private String activationStatus;
+  private int activationStatus;
 
   private Timestamp passwordExpiryTS;
 
@@ -134,11 +134,11 @@ public class UserDTO {
     this.roleId = roleId;
   }
 
-  public String getActivationStatus() {
+  public int getActivationStatus() {
     return activationStatus;
   }
 
-  public void setActivationStatus(String activationStatus) {
+  public void setActivationStatus(int activationStatus) {
     this.activationStatus = activationStatus;
   }
 

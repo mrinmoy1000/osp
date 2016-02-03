@@ -60,8 +60,6 @@ public class SignUpDAOImpl implements SignUpDAO {
               user.setUserName(rs.getString(AppConstants.USER_NAME));
               user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
               user.setEmail(rs.getString(AppConstants.EMAIL));
-              user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
-
               return user;
             }
           });
@@ -93,8 +91,6 @@ public class SignUpDAOImpl implements SignUpDAO {
               user.setUserPass(rs.getString(AppConstants.PASSWORD));
               user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
               user.setEmail(rs.getString(AppConstants.EMAIL));
-              user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
-
               return user;
             }
           });
@@ -122,8 +118,6 @@ public class SignUpDAOImpl implements SignUpDAO {
               user.setUserPass(rs.getString(AppConstants.PASSWORD));
               user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
               user.setEmail(rs.getString(AppConstants.EMAIL));
-              user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
-
               return user;
             }
           });
@@ -156,9 +150,9 @@ public class SignUpDAOImpl implements SignUpDAO {
     userDetailsMap.addValue(AppConstants.CONTACT_NUMBER, user.getContactNumber());
     userDetailsMap.addValue(AppConstants.CARD_EXPIRY_DATE, new Timestamp(new Date().getTime()));
     userDetailsMap.addValue(AppConstants.NO_OF_ATTEMPTS, 0);
-    userDetailsMap.addValue(AppConstants.EMAIL_VERIFIED, 0);
-    userDetailsMap.addValue(AppConstants.SMS_VERIFIED, 0);
-    userDetailsMap.addValue(AppConstants.ACTIVATION_STATUS, 0);
+    userDetailsMap.addValue(AppConstants.EMAIL_VERIFIED, user.getEmailVerified());
+    userDetailsMap.addValue(AppConstants.SMS_VERIFIED, user.getSmsVerfied());
+    userDetailsMap.addValue(AppConstants.ACTIVATION_STATUS, user.getActiveStatus());
     userDetailsMap.addValue(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
     userDetailsMap.addValue(AppConstants.CREATED_BY, user.getUserName());
     userDetailsMap.addValue(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
@@ -185,7 +179,7 @@ public class SignUpDAOImpl implements SignUpDAO {
     accessTokenMapforEmail.put(AppConstants.UUID, user.getEmailUUID());
     accessTokenMapforEmail.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
         + (1 * emailExpireTime * 60 * 60 * 1000)));
-    accessTokenMapforEmail.put(AppConstants.IS_USED, 0);
+    accessTokenMapforEmail.put(AppConstants.IS_USED, user.getTokenIsUsed());
     accessTokenMapforEmail.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
     accessTokenMapforEmail.put(AppConstants.UPDATE_TS, null);
     accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
@@ -200,7 +194,7 @@ public class SignUpDAOImpl implements SignUpDAO {
     accessTokenMapforSms.put(AppConstants.UUID, user.getSmsUUID());
     accessTokenMapforSms.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
         + (1 * smsExpireTime * 60 * 60 * 1000)));
-    accessTokenMapforSms.put(AppConstants.IS_USED, 0);
+    accessTokenMapforSms.put(AppConstants.IS_USED,user.getTokenIsUsed());
     accessTokenMapforSms.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
     accessTokenMapforSms.put(AppConstants.UPDATE_TS, null);
     accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());

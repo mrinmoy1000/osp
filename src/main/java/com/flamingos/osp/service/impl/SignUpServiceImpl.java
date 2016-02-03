@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.SignUpDAO;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -48,6 +50,8 @@ public class SignUpServiceImpl implements SignUpService {
 
   @Autowired
   SmsService smsService;
+  @Autowired
+  private ConfigParamBean configParamBean;
 
   private static final Logger logger = Logger.getLogger(SignUpServiceImpl.class);
 
@@ -128,9 +132,22 @@ public class SignUpServiceImpl implements SignUpService {
     userBean.setSmsUUID(String.valueOf(UUID.randomUUID()));
     String encryptedPassword = encDecUtil.getEncodedValue(userBean.getPassword());
     userBean.setPassword(encryptedPassword);
-    userBean.setActiveStatus(0);
-    userBean.setEmailVerified(0);
-    userBean.setSmsVerfied(0);
+    ConfigParamDTO oParamUserStatus =
+            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
+                AppConstants.PARAM_NAME_USER_STATUS_INACTIVE);
+    userBean.setActiveStatus(oParamUserStatus.getParameterid());
+    ConfigParamDTO oParamEmailStatus =
+            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_CONTACT_VERIFIED,
+                AppConstants.PARAM_NAME_EMAIL_NOT_VERIFIED);
+    userBean.setEmailVerified(oParamEmailStatus.getParameterid());
+    ConfigParamDTO oParamSMSStatus =
+            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_CONTACT_VERIFIED,
+                AppConstants.PARAM_NAME_PHONE_NOT_VERIFIED);
+    userBean.setSmsVerfied(oParamSMSStatus.getParameterid());
+    ConfigParamDTO oParamTokenUsed =
+            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_TOKEN_STATUS,
+                AppConstants.PARAM_NAME_NOT_YET_USED);
+    userBean.setTokenIsUsed(oParamTokenUsed.getParameterid());
     signUpDao.createNewUser(userBean, emailExpireTime, smsExpireTime);
     logger.debug("Exiting SignUpService << createNewUser method");
 
@@ -150,8 +167,7 @@ public class SignUpServiceImpl implements SignUpService {
             + Uuid;
     String generatelinkTobeSend =
         request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + request.getContextPath() + "/generateNewToken?username=" + encryptedUserName
-            + "&UUID=" + Uuid;
+            + request.getContextPath() + "/generateNewToken?username=" + encryptedUserName;
     emailService.sendMail("EMAIL_VERIFY", userBean.getEmail(), linkTobeSend, generatelinkTobeSend,
         emailVerficationMessage, userBean.getUserName());
     logger.info("verfication email  link send = " + linkTobeSend);
@@ -171,9 +187,8 @@ public class SignUpServiceImpl implements SignUpService {
     try {
     String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
     String Uuid = userBean.getSmsUUID();
-    String linkTobeSend =
-        request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-            + request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="
+  //  String linkTobeSend =request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="+ Uuid;
+      String linkTobeSend = "http://192.168.0.21:8080/osp/verifySms?username=" + encryptedUserName + "&UUID="
             + Uuid;
     smsService.sendSms(String.valueOf(userBean.getContactNumber()), "SMS_VERIFY", linkTobeSend);
     logger.info("verfication sms link send = " + linkTobeSend);

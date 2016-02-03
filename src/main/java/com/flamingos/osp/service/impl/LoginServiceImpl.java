@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.LoginDAO;
 import com.flamingos.osp.dao.SignUpDAO;
+import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.EmailService;
@@ -32,6 +34,8 @@ public class LoginServiceImpl implements LoginService {
   EncoderDecoderUtil encDecUtil;
   @Autowired
   EmailService emailService;
+  @Autowired
+  private ConfigParamBean configParamBean;
 
   @Value("${fup.expire.time}")
   private int fupExpireTime;
@@ -50,16 +54,29 @@ public class LoginServiceImpl implements LoginService {
           userDTO.setReturnStatus(AppConstants.FAILURE);
           userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
         } else {
-          UserDTO profUser = signUpDao.checkForProfessionalRecordId(loginBean);
-          userDTO.setReturnStatus(AppConstants.SUCCESS);
-          if (profUser.getUserId() != 0) {
-            userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
-            userDTO.setUserId(profUser.getUserId());
-          } else {
-            userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
-          }
+        	 ConfigParamDTO oParamUserStatus =
+        	            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
+        	                AppConstants.PARAM_NAME_USER_STATUS_ACTIVE);
+        	if(oParamUserStatus.getParameterid()==userDTO.getActivationStatus())
+        	{
+        		 UserDTO profUser = signUpDao.checkForProfessionalRecordId(loginBean);
+                 userDTO.setReturnStatus(AppConstants.SUCCESS);
+                 if (profUser.getUserId() != 0) {
+                   userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
+                   userDTO.setUserId(profUser.getUserId());
+                 } else {
+                   userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
+                 }
 
-          userDTO.setUserPass("");
+                 userDTO.setUserPass("");
+        		
+        	}else
+        	{
+        		userDTO.setReturnStatus(AppConstants.FAILURE);
+                userDTO.setReturnMessage(AppConstants.USER_ID_NOT_ACTIVE);
+        		
+        	}
+         
         }
       } else {
         userDTO = new UserDTO();

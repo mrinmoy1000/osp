@@ -81,13 +81,22 @@ public class AppConstants {
   public static String PARAM_CODE_LOCATION_NAME_STATE = "STATE";
   public static String PARAM_CODE_LOCATION_NAME_AREA = "AREA";
   public static String PARAM_CODE_LOCATION_NAME_DISTRICT = "DISTRICT";
-
+  public static String PARAM_NAME_USER_STATUS_ACTIVE = "ACTIVE";
   public static String PARAM_CODE_USER_GENDER = "USER_GENDER";
   public static String PARAM_NAME_GENDER_MALE = "MALE";
   public static String PARAM_NAME_GENDER_FEMALE = "FEMALE";
   public static String PARAM_NAME_GENDER_NOT_SHARED = "NOT SHARED";
   public static String PARAM_NAME_GENDER_OTHER = "OTHER";
   public static String COMM_TEMPLATE_SUB_CATEGORY="COMM_TEMPLATE_SUB_CATEGORY";
+  public static String PARAM_CODE_TOKEN_STATUS = "TOKEN_STATUS";
+  public static String PARAM_NAME_NOT_YET_USED = "NOT_YET_USED";
+  public static String PARAM_NAME_ALREADY_USED = "ALREADY_USED";
+  public static String PARAM_CODE_CONTACT_VERIFIED = "CONTACT_VERIFIED";
+  public static String PARAM_NAME_EMAIL_VERIFIED = "EMAIL_VERIFIED";
+  public static String PARAM_NAME_PHONE_VERIFIED = "PHONE_VERIFIED";
+  public static String PARAM_NAME_USER_STATUS_INACTIVE = "INACTIVE";
+  public static String PARAM_NAME_EMAIL_NOT_VERIFIED = "EMAIL_NOT_VERIFIED";
+  public static String PARAM_NAME_PHONE_NOT_VERIFIED = "PHONE_NOT_VERIFIED";
 
   public static String PARAM_CODE_MARITIAL_STATUS = "MARITIAL_STATUS";
 
@@ -108,20 +117,23 @@ public class AppConstants {
   public static final String VALID = "valid";
   public static final String INVALID = "invalid";
   public static final String INVALID_LINK = "Sorry link has got expired.";
+  public static final String INVALID_LINK_MSG = "Sorry link has got expired.";
+
   public static final String LINK_VERFIED = "y";
   public static final String LINK_NOT_VERFIED = "n";
   public static final String EMAIL_TYPE = "email";
   public static final String SMS_TYPE = "sms";
   public static final String LOGIN_SUCCESS = "Login Success";
-  public static final String LOGIN_FAILURE = "Login Failed";
+  public static final String LOGIN_FAILURE = "You Have Entered Wrong Credentials";
   public static final String USER_NOT_FOUND = "User not found";
+  public static final String USER_ID_NOT_ACTIVE = "User Id Not Activated";
   public static final String EMAIL_NOT_FOUND = "Email id doesn't match. Please check and enter again.";
   public static final String VERIFICATION_LINK_NOTIFICATION =
       "A verification link send to your mail please, check your email";
   public static final String VERIFICATION_SMS_NOTIFICATION =
 	      "A verification link send to your mobile number please, check your Mobile";
   
-  public static final String VERIFICATION_LINK_SMS_NOTIFICATION ="A verification link send to your mail please, check your email";
+  public static final String VERIFICATION_LINK_SMS_NOTIFICATION ="A verification link send to your mail and mobile please, check your email and mobile";
   
   public static final String VERIFICATION_LINK_NOTIFICATION_ERROR =
       "A verification link send failed";
@@ -129,6 +141,7 @@ public class AppConstants {
   public static final String CHANGE_PASSWORD_MESSAGE = "Password changed successfully";
   public static final String TOKEN_GENERATED = "New token generated sucessfully";
   public static final String TOKEN_GENERATED_FAIL = "Token generated failed";
+  public static final String TOKEN_INVALID_MSG = "You are not eligible for generating new token. Please check your email or mobile number for verification link";
   public static final String ADD_PROF_PROFILE = "add";
   public static final String VIEW_PROF_PROFILE = "view";
   public static final String USER_CREATED_SUCCESS = "User Created Successfully.";

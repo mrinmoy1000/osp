@@ -51,7 +51,7 @@ public class LoginDAOImpl implements LoginDAO {
           user.setUserName(rs.getString(AppConstants.USER_NAME));
           user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
           user.setEmail(rs.getString(AppConstants.EMAIL));
-          user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
+          user.setActivationStatus(rs.getInt(AppConstants.ACTIVATION_STATUS));
           return user;
         }
       });
@@ -82,8 +82,7 @@ public class LoginDAOImpl implements LoginDAO {
           user.setUserName(rs.getString(AppConstants.USER_NAME));
           user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
           user.setEmail(rs.getString(AppConstants.EMAIL));
-          user.setActivationStatus(rs.getString(AppConstants.ACTIVATION_STATUS));
-
+          user.setActivationStatus(rs.getInt(AppConstants.ACTIVATION_STATUS));
           return user;
         }
       });

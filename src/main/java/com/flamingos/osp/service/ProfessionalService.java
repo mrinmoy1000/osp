@@ -12,7 +12,7 @@ public interface ProfessionalService {
   public UserDTO verifyEmailDataAndUpdateStatus(String username, String UUID, String type)
       throws OSPBusinessException;
 
-  public String verifyAndGenerateNewToken(String username, String UUID) throws OSPBusinessException;
+  public String verifyAndGenerateNewToken(String username,HttpServletRequest request) throws OSPBusinessException;
 
   public UserDTO verifyForgotPassword(String username, String UUID, String type)
       throws OSPBusinessException;

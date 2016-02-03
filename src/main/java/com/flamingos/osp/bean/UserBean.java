@@ -24,8 +24,17 @@ public class UserBean {
   private String lastName;
   private long user_id;
   public String commonUUID;
+  private int tokenIsUsed;
 
-  public String getCommonUUID() {
+  public int getTokenIsUsed() {
+	return tokenIsUsed;
+}
+
+public void setTokenIsUsed(int tokenIsUsed) {
+	this.tokenIsUsed = tokenIsUsed;
+}
+
+public String getCommonUUID() {
     return commonUUID;
   }
 
