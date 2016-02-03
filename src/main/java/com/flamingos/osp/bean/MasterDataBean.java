@@ -1,7 +1,6 @@
 package com.flamingos.osp.bean;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,7 @@ import com.flamingos.osp.service.LocationService;
 import com.flamingos.osp.service.MasterDataService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.AppUtil;
+
 
 public class MasterDataBean {
   @Autowired
@@ -106,14 +106,41 @@ public class MasterDataBean {
         }
       }
       countryStateList.addAll(countryList);
-      for(LocationDTO country:countryStateList){
-        for(LocationDTO state:stateList){
-          if(country.getLocationId()==state.getLocationParentId()){
+
+      for (LocationDTO district : districtList) {
+        for (LocationDTO city : cityList) {
+          if (district.getLocationId() == city.getLocationParentId()) {
+            district.getChildLocations().add(city);
+          }
+        }
+
+        for (LocationDTO area : areaList) {
+          if (district.getLocationId() == area.getLocationParentId()) {
+            district.getChildLocations().add(area);
+          }
+        }
+
+      }
+
+      for (LocationDTO state : stateList) {
+        for (LocationDTO district : districtList) {
+          if (state.getLocationId() == district.getLocationParentId()) {
+            state.getChildLocations().add(district);
+          }
+     
+        }
+      }
+
+      for (LocationDTO country : countryStateList) {
+        for (LocationDTO state : stateList) {
+          if (country.getLocationId() == state.getLocationParentId()) {
             country.getChildLocations().add(state);
           }
         }
       }
-      
+
+
+
       categoryList = masterDataService.getAllCategories();
       subCategoryList = masterDataService.getAllSubCategories();
 
@@ -127,6 +154,7 @@ public class MasterDataBean {
       ospErrorHandler.handleGenericException(AppConstants.MASTER_DATA_LOADING_MODULE, gne);
     }
   }
+
   public TemplateBean getTemplateByName(String name) {
     return templateMapByName.get(name);
   }
@@ -134,6 +162,7 @@ public class MasterDataBean {
   public TemplateBean getTemplateById(String id) {
     return templateMapByName.get(id);
   }
+
   public List<RoleBean> getAllRoles() {
     return lstRoles;
   }
@@ -165,8 +194,8 @@ public class MasterDataBean {
   public List<LocationDTO> getAreaList() {
     return areaList;
   }
-  
-  public List<LocationDTO> getCountryStateList(){
+
+  public List<LocationDTO> getCountryStateList() {
     return countryStateList;
   }
 
