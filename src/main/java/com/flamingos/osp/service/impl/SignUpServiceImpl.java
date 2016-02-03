@@ -187,9 +187,9 @@ public class SignUpServiceImpl implements SignUpService {
     try {
     String encryptedUserName = encDecUtil.getEncodedValue(userBean.getUserName());
     String Uuid = userBean.getSmsUUID();
-  //  String linkTobeSend =request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="+ Uuid;
-      String linkTobeSend = "http://192.168.0.21:8080/osp/verifySms?username=" + encryptedUserName + "&UUID="
-            + Uuid;
+    String linkTobeSend =request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()+ request.getContextPath() + "/verifySms?username=" + encryptedUserName + "&UUID="+ Uuid;
+   //   String linkTobeSend = "http://192.168.0.21:8080/osp/verifySms?username=" + encryptedUserName + "&UUID="
+     //       + Uuid;
     smsService.sendSms(String.valueOf(userBean.getContactNumber()), "SMS_VERIFY", linkTobeSend);
     logger.info("verfication sms link send = " + linkTobeSend);
     logger.debug("Exiting SignUpService <<  sendVerificationLinkinSms() method");
