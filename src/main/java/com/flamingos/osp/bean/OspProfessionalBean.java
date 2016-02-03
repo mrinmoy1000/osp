@@ -49,8 +49,26 @@ public class OspProfessionalBean implements Serializable {
   private Date updatedTs;
   private String createdBy;
   private String updatedBy;
+  private boolean dndStatus;
+  private boolean emailStatus;
 
-  /**
+  public boolean isDndStatus() {
+	return dndStatus;
+}
+
+public void setDndStatus(boolean dndStatus) {
+	this.dndStatus = dndStatus;
+}
+
+public boolean isEmailStatus() {
+	return emailStatus;
+}
+
+public void setEmailStatus(boolean emailStatus) {
+	this.emailStatus = emailStatus;
+}
+
+/**
    * @return the profId
    */
   public Long getProfId() {

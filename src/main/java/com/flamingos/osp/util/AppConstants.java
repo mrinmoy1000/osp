@@ -87,6 +87,7 @@ public class AppConstants {
   public static String PARAM_NAME_GENDER_FEMALE = "FEMALE";
   public static String PARAM_NAME_GENDER_NOT_SHARED = "NOT SHARED";
   public static String PARAM_NAME_GENDER_OTHER = "OTHER";
+  public static String COMM_TEMPLATE_SUB_CATEGORY="COMM_TEMPLATE_SUB_CATEGORY";
 
   public static String PARAM_CODE_MARITIAL_STATUS = "MARITIAL_STATUS";
 
