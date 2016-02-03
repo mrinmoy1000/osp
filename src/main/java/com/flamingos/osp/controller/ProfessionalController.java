@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
-import com.flamingos.osp.dto.CatSubCatDTO;
+import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
@@ -52,19 +52,7 @@ public class ProfessionalController {
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
     profileDto.setLocations(masterDataBean.getCountryStateList());
-    List<CatSubCatDTO> categoryList = masterDataBean.getCategoryList();
-    List<CatSubCatDTO> subCategoryList = masterDataBean.getSubCategoryList();
-    for (CatSubCatDTO category : categoryList) {
-      category.setSubCatId(null);
-      for (CatSubCatDTO subCategory : subCategoryList) {
-        if (category.getCatId() == subCategory.getCatId()) {
-          subCategory.setCatId(null);
-          category.getSubCategoryList().add(subCategory);
-        }
-      }
-    }
-    profileDto.setCategories(categoryList);
-
+    profileDto.setCategories(masterDataBean.getCategoryList());
     return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
   }
 

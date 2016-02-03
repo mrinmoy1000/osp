@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.SmsService;
 import com.flamingos.osp.sms.SmS;
@@ -21,13 +22,15 @@ public class SmsServiceImpl implements SmsService {
   private SmsGateWay smsGateway;
   @Autowired
   private ConfigParamBean configParamBean;
+  @Autowired
+  private MasterDataBean masterDataBean;
 
   @Override
   public void sendSms(String recipient, String templateName, String content)
       throws OSPBusinessException {
     try {
       SmS sms = new SmS();
-      sms.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
+      sms.setTemplateName(masterDataBean.getTemplateByName(templateName).getTempFilePath());
       sms.setRecipient(recipient);
       sms.setURL(content);
       sms.setUsername(userId);

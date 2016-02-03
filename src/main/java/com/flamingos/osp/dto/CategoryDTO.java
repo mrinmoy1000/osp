@@ -10,17 +10,16 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @SuppressWarnings("serial")
 @JsonInclude(Include.NON_NULL)
-public class CatSubCatDTO implements Serializable {
+public class CategoryDTO implements Serializable {
 
   private static final long serialVersionUID = -7711894580442445802L;
 
   private Integer catId;
-  private Integer subCatId;
   @JsonIgnore
   private String catName;
   private String displayName;
   @JsonInclude(Include.NON_EMPTY)
-  private List<CatSubCatDTO> subCategoryList = new ArrayList<CatSubCatDTO>();
+  private List<SubCatDTO> subCategoryList = new ArrayList<SubCatDTO>();
 
   public Integer getCatId() {
     return catId;
@@ -28,14 +27,6 @@ public class CatSubCatDTO implements Serializable {
 
   public void setCatId(Integer catId) {
     this.catId = catId;
-  }
-
-  public Integer getSubCatId() {
-    return subCatId;
-  }
-
-  public void setSubCatId(Integer subCatId) {
-    this.subCatId = subCatId;
   }
 
   public String getCatName() {
@@ -54,11 +45,11 @@ public class CatSubCatDTO implements Serializable {
     this.displayName = displayName;
   }
 
-  public List<CatSubCatDTO> getSubCategoryList() {
+  public List<SubCatDTO> getSubCategoryList() {
     return subCategoryList;
   }
 
-  public void setSubCategoryList(List<CatSubCatDTO> subCategoryList) {
+  public void setSubCategoryList(List<SubCatDTO> subCategoryList) {
     this.subCategoryList = subCategoryList;
   }
 

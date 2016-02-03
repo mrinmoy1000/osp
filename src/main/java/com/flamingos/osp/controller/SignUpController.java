@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dto.ConfigParamDTO;
@@ -31,6 +32,8 @@ public class SignUpController {
 
   @Autowired
   private ConfigParamBean configParamBean;
+  @Autowired
+  private MasterDataBean masterDataBean;
 
   @RequestMapping(value = "/register", produces = "application/json", method = RequestMethod.POST,
       consumes = "application/json")
@@ -43,7 +46,7 @@ public class SignUpController {
           configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
               AppConstants.PARAM_NAME_PROFESSIONAL);
 
-      RoleBean oRoleProfessional = configParamBean.getRoleByName(AppConstants.ROLE_ADMINISTRATOR);
+      RoleBean oRoleProfessional = masterDataBean.getRoleByName(AppConstants.ROLE_ADMINISTRATOR);
       userBean.setRecordType(oParamProfessional.getParameterid());
       userBean.setRoleId(oRoleProfessional.getRoleId());
 

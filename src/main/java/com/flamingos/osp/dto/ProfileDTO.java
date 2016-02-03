@@ -16,7 +16,7 @@ public class ProfileDTO implements Serializable {
 
   private List<LocationDTO> locations = new ArrayList<LocationDTO>();
 
-  private List<CatSubCatDTO> categories = new ArrayList<CatSubCatDTO>();
+  private List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
 
   public List<ConfigParamDTO> getGenders() {
     return genders;
@@ -42,11 +42,11 @@ public class ProfileDTO implements Serializable {
     this.locations = locations;
   }
 
-  public List<CatSubCatDTO> getCategories() {
+  public List<CategoryDTO> getCategories() {
     return categories;
   }
 
-  public void setCategories(List<CatSubCatDTO> categories) {
+  public void setCategories(List<CategoryDTO> categories) {
     this.categories = categories;
   }
 

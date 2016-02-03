@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.email.EmailGateway;
 import com.flamingos.osp.email.Mail;
 import com.flamingos.osp.exception.OSPBusinessException;
@@ -19,12 +20,14 @@ public class EmailServiceImpl implements EmailService {
   private EmailGateway emailGateway;
   @Autowired
   private ConfigParamBean configParamBean;
+  @Autowired
+  private MasterDataBean masterDataBean;
 
   public void sendMail(String templateName, String toemailId, String content, String content2,
       String subject, String addresseeName) throws OSPBusinessException {
     try {
       Mail mail = new Mail();
-      mail.setTemplateName(configParamBean.getTemplateByName(templateName).getTempFilePath());
+      mail.setTemplateName(masterDataBean.getTemplateByName(templateName).getTempFilePath());
       mail.setMailTo(toemailId);
       mail.setVerifyURL(content);
       mail.setGenerateURL(content2);

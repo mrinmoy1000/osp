@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.MasterDataLoaderDAO;
-import com.flamingos.osp.dto.CatSubCatDTO;
+import com.flamingos.osp.dto.CategoryDTO;
+import com.flamingos.osp.dto.SubCatDTO;
 import com.flamingos.osp.service.MasterDataService;
 
 public class MasterDataServiceImpl implements MasterDataService {
@@ -26,12 +27,12 @@ public class MasterDataServiceImpl implements MasterDataService {
   }
 
   @Override
-  public List<CatSubCatDTO> getAllCategories() throws Exception {
+  public List<CategoryDTO> getAllCategories() throws Exception {
     return masterDataLoaderDao.getAllCategories();
   }
 
   @Override
-  public List<CatSubCatDTO> getAllSubCategories() throws Exception {
+  public List<SubCatDTO> getAllSubCategories() throws Exception {
     return masterDataLoaderDao.getAllSubCategories();
   }
 

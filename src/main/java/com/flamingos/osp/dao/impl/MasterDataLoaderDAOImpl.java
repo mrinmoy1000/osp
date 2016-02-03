@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.MasterDataLoaderDAO;
-import com.flamingos.osp.dto.CatSubCatDTO;
+import com.flamingos.osp.dto.CategoryDTO;
+import com.flamingos.osp.dto.SubCatDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
-import com.flamingos.osp.mapper.CatSubCatRowMapper;
+import com.flamingos.osp.mapper.CategoryRowMapper;
 import com.flamingos.osp.mapper.RoleMapper;
+import com.flamingos.osp.mapper.SubCategoryRowMapper;
 import com.flamingos.osp.mapper.TemplateRowMapper;
 import com.flamingos.osp.util.AppConstants;
 
@@ -55,11 +57,11 @@ public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLo
   }
 
   @Override
-  public List<CatSubCatDTO> getAllCategories() throws Exception {
-    List<CatSubCatDTO> categoryList = null;
+  public List<CategoryDTO> getAllCategories() throws Exception {
+    List<CategoryDTO> categoryList = null;
     Object[] values = new Object[] {1};
     categoryList =
-        getJdbcTemplate().query(QUERY_OSP_CATEGORY_SELECT, values, new CatSubCatRowMapper());
+        getJdbcTemplate().query(QUERY_OSP_CATEGORY_SELECT, values, new CategoryRowMapper());
     if (null == categoryList) {
       throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
           AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
@@ -68,11 +70,11 @@ public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLo
   }
 
   @Override
-  public List<CatSubCatDTO> getAllSubCategories() throws Exception {
-    List<CatSubCatDTO> subCategoryList = null;
+  public List<SubCatDTO> getAllSubCategories() throws Exception {
+    List<SubCatDTO> subCategoryList = null;
     Object[] values = new Object[] {1};
     subCategoryList =
-        getJdbcTemplate().query(QUERY_OSP_SUBCATEGORY_SELECT, values, new CatSubCatRowMapper());
+        getJdbcTemplate().query(QUERY_OSP_SUBCATEGORY_SELECT, values, new SubCategoryRowMapper());
     if (null == subCategoryList) {
       throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
           AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
