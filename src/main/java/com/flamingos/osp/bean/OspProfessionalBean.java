@@ -49,22 +49,13 @@ public class OspProfessionalBean implements Serializable {
   private Date updatedTs;
   private String createdBy;
   private String updatedBy;
-  private boolean dndStatus;
-  private boolean emailStatus;
+  private String emailStatus;
 
-  public boolean isDndStatus() {
-	return dndStatus;
-}
-
-public void setDndStatus(boolean dndStatus) {
-	this.dndStatus = dndStatus;
-}
-
-public boolean isEmailStatus() {
+public String getEmailStatus() {
 	return emailStatus;
 }
 
-public void setEmailStatus(boolean emailStatus) {
+public void setEmailStatus(String emailStatus) {
 	this.emailStatus = emailStatus;
 }
 
