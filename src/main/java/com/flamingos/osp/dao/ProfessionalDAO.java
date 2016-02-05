@@ -51,8 +51,7 @@ public interface ProfessionalDAO {
 
   public void saveProfPresentation(OspProfessionalBean professionalBean) throws OspDaoException;
 
-  public void approveProfile(OspProfessionalBean professionalBean, int param_id)
-      throws OspDaoException;
+  public void approveProfile(OspProfessionalBean professionalBean)throws OspDaoException;
 
   public List<OspProfessionalDTO> getAllProfessionalDetails() throws OspDaoException;
 

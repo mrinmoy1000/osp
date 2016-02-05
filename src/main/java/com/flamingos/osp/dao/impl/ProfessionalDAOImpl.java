@@ -142,7 +142,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
   }
 
   @Override
-  public void approveProfile(OspProfessionalBean professionalBean, int param_id)
+  public void approveProfile(OspProfessionalBean professionalBean)
       throws OspDaoException {
     logger.debug("Entering ProfessionalDao >> approveProfile() method");
     try {
@@ -341,15 +341,17 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
 
       String emailSql =
           "select count(up.RECORD_ID) from OSP_USER_CREDENTIAL up , OSP_ACCESS_TOKEN acc where"
-              + " up." + AppConstants.USER_NAME + "= :user_name and " + " acc."
+              + " up." + AppConstants.USER_NAME + "= :user_name and " + "( acc."
               + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT" 
-              + " and acc." + AppConstants.IS_USED + "=:"+AppConstants.IS_USED
+              + " and acc." + AppConstants.IS_USED + "=:"+AppConstants.IS_USED+")"
+              +" or acc." + AppConstants.IS_USED + "=:"+AppConstants.IS_USED
               + " and  acc."+ AppConstants.RECORD_ID + "= up." + AppConstants.RECORD_ID +
               " and " + "acc."+ AppConstants.TYPE + "=:" + AppConstants.TYPE;
       Map<String, Object> paramMap = new HashMap<String, Object>();
       paramMap.put("user_name", user.getUserName());
       paramMap.put("EXPIRY_DT", access.getExpireTime());
       paramMap.put(AppConstants.IS_USED, user.getTokenIsUsed());
+      paramMap.put(AppConstants.IS_USED, user.getActiveStatus());
       paramMap.put(AppConstants.TYPE, user.getTokenType());
       return namedJdbcTemplate.queryForInt(emailSql, paramMap);
     } catch (EmptyResultDataAccessException e) {
@@ -412,7 +414,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
       });
     } catch (EmptyResultDataAccessException e) {
       logger.error("no record found . Explicitly throwing exception", e);
-      throw new OspDaoException();
+      return null;
     } finally {
       logger.debug("Exiting ProfessionalDao << checkForForgotPassword() method");
     }
@@ -478,7 +480,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
     List<OspProfessionalDTO> professionalDetailList = null;
     try {
 
-      String getProSql = "select * from OSP_PROFESSIONAL op where  op.PROF_ID = ope.PROF_ID";
+      String getProSql = "select * from OSP_PROFESSIONAL op where  op.PROF_ID < 5";
 
       professionalDetailList =
           namedJdbcTemplate.query(getProSql, new RowMapper<OspProfessionalDTO>() {
@@ -1077,7 +1079,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
                 + ",acc."+ AppConstants.IS_USED + " = :" + AppConstants.IS_USED
                 +" where up."
                 + AppConstants.USER_NAME + " = :" + AppConstants.USER_NAME + " and "
-                + AppConstants.TOKEN_EXPIRY_DT + "> :EXPIRY_DT and " 
+                + AppConstants.TOKEN_EXPIRY_DT + "< :EXPIRY_DT and " 
                 +"acc."+ AppConstants.IS_USED + " = :" + AppConstants.IS_USED
                 + " and acc."+ AppConstants.TYPE + "=:" + AppConstants.TYPE
                 + " and  up." + AppConstants.RECORD_ID+ " = acc." + AppConstants.RECORD_ID;
@@ -1087,7 +1089,7 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
         paramMap.put(AppConstants.IS_USED, user.getActiveStatus());
         paramMap.put(AppConstants.USER_NAME, user.getUserName());
         paramMap.put("EXPIRY_DT", access.getExpireTime());
-        paramMap.put(AppConstants.IS_USED, user.getTokenIsUsed());
+        paramMap.put(AppConstants.IS_USED, user.getActiveStatus());
         paramMap.put(AppConstants.TYPE, user.getTokenType());
     namedJdbcTemplate.update(updateEmailStatusSql, paramMap);
     logger.debug("Exiting ProfessionalDao << emailUpdateStatus() method");
