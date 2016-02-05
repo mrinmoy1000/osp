@@ -51,6 +51,8 @@ public class ProfessionalController {
         configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
+    profileDto.setParamId(configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS, AppConstants.PARAM_NAME_INITIAL).getParameterid());
+    
     profileDto.setLocations(masterDataBean.getCountryStateList());
     profileDto.setCategories(masterDataBean.getCategoryList());
     return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
