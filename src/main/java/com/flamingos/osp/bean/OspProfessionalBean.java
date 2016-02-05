@@ -5,6 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 public class OspProfessionalBean implements Serializable {
 
@@ -17,11 +21,13 @@ public class OspProfessionalBean implements Serializable {
   private String profMiddleName;
   private String profLastName;
   private String profEmpId;
+  @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date profDob;
   private Integer profGender;
   private String profNationality;
   private String profPan;
   private Integer profMeritalStatus;
+  @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date profMerriageAnniversary;
   private Integer dndActivatedFlag;
   private Byte[] profSignature;
