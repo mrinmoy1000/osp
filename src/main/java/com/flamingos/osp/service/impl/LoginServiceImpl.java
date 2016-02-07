@@ -85,6 +85,7 @@ public class LoginServiceImpl implements LoginService {
 							userDTO.setUserId(profUser.getUserId());
 						} else {
 							userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
+						
 						}
 						}
 						if(userDTO.getTypeId()==oParamAdmin.getParameterid())

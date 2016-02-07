@@ -70,7 +70,9 @@ public interface ProfessionalDAO {
 
   public List<OspAddressBean> fetchAddressDetails(long id);
 
-  public void saveProfAcheivements(OspProfessionalBean professionalBean) throws Exception;
+  public void saveProfAcheivements(OspProfessionalBean professionalBean) throws OspDaoException;
 
-  public void saveProfRegMemNos(OspProfessionalBean professionalBean) throws Exception;
+  public void saveProfRegMemNos(OspProfessionalBean professionalBean) throws OspDaoException;
+  
+  public OspProfessionalDTO getProfessionaDetailsByRecordId(long recordId) throws OspDaoException;
 }

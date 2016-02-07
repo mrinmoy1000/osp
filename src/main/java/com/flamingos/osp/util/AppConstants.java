@@ -114,6 +114,7 @@ public class AppConstants {
 
   public static final String SUCCESS = "success";
   public static final String FAILURE = "fail";
+  public static final String NOT_FOUND = "notFound";
   public static final String ERROR = "error";
   public static final String VALID = "valid";
   public static final String INVALID = "invalid";

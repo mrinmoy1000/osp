@@ -2,6 +2,7 @@ package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +17,9 @@ import org.springframework.util.StringUtils;
 
 import com.flamingos.osp.bean.AccessToken;
 import com.flamingos.osp.bean.ConfigParamBean;
+import com.flamingos.osp.bean.OspExperienceBean;
+import com.flamingos.osp.bean.OspProfAcademicsBean;
+import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
 import com.flamingos.osp.dao.AddressDAO;
@@ -29,6 +33,7 @@ import com.flamingos.osp.dao.ProfSubCategoryDAO;
 import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dao.SignUpDAO;
 import com.flamingos.osp.dto.ConfigParamDTO;
+import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspDaoException;
@@ -318,7 +323,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 				profDAO.saveProfAcheivements(professional);
 				profDAO.saveProfRegMemNos(professional);
 			}
-		} catch (Exception ex) {
+		} catch (OspDaoException ex) {
 			ex.printStackTrace();
 			throw new OSPBusinessException(
 					AppConstants.PROFESSIONAL_ADD_PROFILE_MODULE,
@@ -371,4 +376,57 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 			logger.debug("Exiting ProfessionalService << verifyForgotPassword() method....");
 		}
 	}
+
+	@Override
+	  public OspProfessionalDTO professionalDetailsbyProfId(long profId) throws OSPBusinessException {
+	    OspProfessionalDTO profDetails = null;
+	    List<OspProfSpecializationBean> specializationList = null;
+	    List<OspProfAcademicsBean> qualificationList = null;
+	    List<OspExperienceBean> experienceList = null;
+	    try {
+	      specializationList = profDAO.getProfSpecializationList(profId);
+	      qualificationList = profDAO.getProfQualificationList(profId);
+	      experienceList = profDAO.getProfExperienceList(profId);
+	      profDetails = profDAO.getProfessionalDetails(profId);
+	      if (profDetails != null) {
+	        profDetails.setExperienceList(experienceList);
+	        profDetails.setQualificationList(qualificationList);
+	        profDetails.setSpecializationList(specializationList);
+	      }
+	    } catch (OspDaoException exp) {
+	      throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
+	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+
+	    }
+	    return profDetails;
+	  }
+	
+	
+	@Override
+	  public OspProfessionalDTO professionalDetailsbyRecordID(long recordId) throws OSPBusinessException {
+	    OspProfessionalDTO profDetails = null;
+	    List<OspProfSpecializationBean> specializationList = null;
+	    List<OspProfAcademicsBean> qualificationList = null;
+	    List<OspExperienceBean> experienceList = null;
+	    try {
+	      profDetails=profDAO.getProfessionaDetailsByRecordId(recordId);
+	      specializationList = profDAO.getProfSpecializationList(profDetails.getProfId());
+	      qualificationList = profDAO.getProfQualificationList(profDetails.getProfId());
+	      experienceList = profDAO.getProfExperienceList(profDetails.getProfId());
+	      profDetails = profDAO.getProfessionalDetails(profDetails.getProfId());
+	      if (profDetails != null) {
+	        profDetails.setExperienceList(experienceList);
+	        profDetails.setQualificationList(qualificationList);
+	        profDetails.setSpecializationList(specializationList);
+	      }
+	    } catch (OspDaoException exp) {
+	      throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
+	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+
+	    }
+	    return profDetails;
+	  }
+
 }
