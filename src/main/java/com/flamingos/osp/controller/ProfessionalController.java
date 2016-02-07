@@ -70,20 +70,41 @@ public class ProfessionalController {
   @RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
   public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(
       @RequestParam(value = "profId") Long id) {
-    logger.debug(" Entering AdminController.getProfessionalDetails");
+    logger.debug(" Entering ProfessionalController.getProfessionalDetails");
     OspProfessionalDTO prof = null;
     try {
-      prof = adminService.professionalDetails(id);
+      prof = profService.professionalDetailsbyProfId(id);
       return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
     } catch (OSPBusinessException e) {
-      logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
+      logger.error(" Exception occured in ProfessionalController.getProfessionalDetails" + e.getMessage());
       prof = new OspProfessionalDTO();
       prof.setReturnStatus(AppConstants.FAILURE);
       prof.setReturnMessage(e.getMessage());
       return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
 
     } finally {
-      logger.debug(" Exiting AdminController.getProfessionalDetails");
+      logger.debug(" Exiting ProfessionalController.getProfessionalDetails");
+    }
+
+  }
+  
+  @RequestMapping(value = "/viewProfilebyRecord", method = RequestMethod.GET)
+  public ResponseEntity<OspProfessionalDTO> getProfessionalDetailsbyRecordID(
+      @RequestParam(value = "recordId") Long id) {
+    logger.debug(" Entering ProfessionalController.getProfessionalDetails");
+    OspProfessionalDTO prof = null;
+    try {
+      prof = profService.professionalDetailsbyRecordID(id);
+      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
+    } catch (OSPBusinessException e) {
+      logger.error(" Exception occured in ProfessionalController.getProfessionalDetails" + e.getMessage());
+      prof = new OspProfessionalDTO();
+      prof.setReturnStatus(AppConstants.FAILURE);
+      prof.setReturnMessage(AppConstants.NOT_FOUND);
+      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
+
+    } finally {
+      logger.debug(" Exiting ProfessionalController.getProfessionalDetails");
     }
 
   }
