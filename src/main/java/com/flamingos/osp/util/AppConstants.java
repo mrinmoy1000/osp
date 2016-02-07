@@ -9,8 +9,7 @@ public class AppConstants {
 
   public static String ADMIN_APPROVE_PROFILE_MODULE = "ADMIN_APPROVAL_MODULE";
   public static String ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRCODE = "ADMIN001";
-  public static String ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC =
-      "Professional Approval Failed";
+  public static String ADMIN_APPROVE_PROFILE_MODULE_EXCEPTION_ERRDESC = "Professional Approval Failed";
 
 
   public static String ADMIN_FETCH_PROFILE_MODULE = "ADMIN_DATARETRIVAL_MODULE";
@@ -219,4 +218,7 @@ public class AppConstants {
   public static final int INT_THOUSAND = 1000;
   /** Magic Number Constants - */
 
+  public static String UPLOAD_PROFILE_PIC_MODULE_EXCEPTION_ERRCODE = "UPLD001";
+  public static String PHOTO_UPLOAD_MODULE = "UPLOAD_PROFILE_PIC_MODULE";
+  public static String PHOTO_UPLOAD_MODULE_EXCEPTION_ERRDESC = "Upload Profile Pic failed";
 }
