@@ -51,8 +51,6 @@ public class ProfessionalController {
         configParamBean.getParamByCode(AppConstants.PARAM_CODE_MARITIAL_STATUS);
     profileDto.setGenders(genderList);
     profileDto.setMaritalStatus(maritialStatusList);
-    profileDto.setParamId(configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS, AppConstants.PARAM_NAME_INITIAL).getParameterid());
-    
     profileDto.setLocations(masterDataBean.getCountryStateList());
     profileDto.setCategories(masterDataBean.getCategoryList());
     return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
@@ -70,41 +68,20 @@ public class ProfessionalController {
   @RequestMapping(value = "/viewProfile", method = RequestMethod.GET)
   public ResponseEntity<OspProfessionalDTO> getProfessionalDetails(
       @RequestParam(value = "profId") Long id) {
-    logger.debug(" Entering ProfessionalController.getProfessionalDetails");
+    logger.debug(" Entering AdminController.getProfessionalDetails");
     OspProfessionalDTO prof = null;
     try {
-      prof = profService.professionalDetailsbyProfId(id);
+      prof = adminService.professionalDetails(id);
       return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
     } catch (OSPBusinessException e) {
-      logger.error(" Exception occured in ProfessionalController.getProfessionalDetails" + e.getMessage());
+      logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
       prof = new OspProfessionalDTO();
       prof.setReturnStatus(AppConstants.FAILURE);
       prof.setReturnMessage(e.getMessage());
       return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
 
     } finally {
-      logger.debug(" Exiting ProfessionalController.getProfessionalDetails");
-    }
-
-  }
-  
-  @RequestMapping(value = "/viewProfilebyRecord", method = RequestMethod.GET)
-  public ResponseEntity<OspProfessionalDTO> getProfessionalDetailsbyRecordID(
-      @RequestParam(value = "recordId") Long id) {
-    logger.debug(" Entering ProfessionalController.getProfessionalDetails");
-    OspProfessionalDTO prof = null;
-    try {
-      prof = profService.professionalDetailsbyRecordID(id);
-      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
-    } catch (OSPBusinessException e) {
-      logger.error(" Exception occured in ProfessionalController.getProfessionalDetails" + e.getMessage());
-      prof = new OspProfessionalDTO();
-      prof.setReturnStatus(AppConstants.FAILURE);
-      prof.setReturnMessage(AppConstants.NOT_FOUND);
-      return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
-
-    } finally {
-      logger.debug(" Exiting ProfessionalController.getProfessionalDetails");
+      logger.debug(" Exiting AdminController.getProfessionalDetails");
     }
 
   }

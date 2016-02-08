@@ -37,8 +37,12 @@ public class AdminServiceImpl implements AdminService {
   @Override
   public String approveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OSPBusinessException {
+
     try {
-      profDao.approveProfile(professional);
+
+      professional.getActionTaken();
+
+      profDao.approveProfile(professional, 1);
       return AppConstants.SUCCESS;
     } catch (OspDaoException ex) {
       throw new OSPBusinessException(AppConstants.ADMIN_APPROVE_PROFILE_MODULE,

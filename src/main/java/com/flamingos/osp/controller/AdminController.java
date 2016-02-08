@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.dto.OspProfessionalDTO;
-import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.service.AdminService;
 import com.flamingos.osp.util.AppConstants;
@@ -29,24 +28,19 @@ public class AdminController {
 
   @RequestMapping(value = "/approveProfile", produces = "application/json",
       method = RequestMethod.PUT, consumes = "application/json")
-  public ResponseEntity<UserDTO> approveProfile(@RequestBody OspProfessionalBean professionalBean,
+  public ResponseEntity<String> approveProfile(@RequestBody OspProfessionalBean professionalBean,
       HttpServletRequest request) throws Exception {
     logger.debug(" Entering AdminController.approveProfile");
     String successMessage = null;
-    UserDTO userDto = new UserDTO();
     try {
       successMessage = adminService.approveProfile(professionalBean, request);
-      userDto.setReturnStatus(successMessage);
-      userDto.setReturnMessage("Successfully status updated");
     } catch (OSPBusinessException e) {
       logger
           .error(" Exception occured in AdminController.approveProfile" + e.getErrorDescription());
       successMessage = e.getErrorDescription();
-      userDto.setReturnStatus(AppConstants.FAILURE);
-      userDto.setReturnMessage(successMessage);
     }
     logger.debug(" Exiting AdminController.approveProfile");
-    return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
+    return new ResponseEntity<String>(successMessage, HttpStatus.OK);
   }
 
   @RequestMapping(value = "/profDetails", method = RequestMethod.GET)

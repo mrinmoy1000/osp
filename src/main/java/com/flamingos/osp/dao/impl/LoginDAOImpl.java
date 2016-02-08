@@ -52,7 +52,6 @@ public class LoginDAOImpl implements LoginDAO {
           user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
           user.setEmail(rs.getString(AppConstants.EMAIL));
           user.setActivationStatus(rs.getInt(AppConstants.ACTIVATION_STATUS));
-          user.setTypeId(rs.getInt(AppConstants.RECORD_TYPE));
           return user;
         }
       });
@@ -102,9 +101,6 @@ public class LoginDAOImpl implements LoginDAO {
     ConfigParamDTO oParamFUPChannel =
         configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
             AppConstants.PARAM_NAME_FUP);
-    ConfigParamDTO oParamTokenUsed =
-            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_TOKEN_STATUS,
-                AppConstants.PARAM_NAME_NOT_YET_USED);
     String insertAccessToken =
         "INSERT INTO OSP_ACCESS_TOKEN VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
             + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
@@ -117,7 +113,7 @@ public class LoginDAOImpl implements LoginDAO {
     accessTokenMapforFUP.put(AppConstants.UUID, user.getFupUUID());
     accessTokenMapforFUP.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
         + (1 * fupExpireTime * 60 * 60 * 1000)));
-    accessTokenMapforFUP.put(AppConstants.IS_USED,oParamTokenUsed.getParameterid());
+    accessTokenMapforFUP.put(AppConstants.IS_USED, 0);
     accessTokenMapforFUP.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
     accessTokenMapforFUP.put(AppConstants.UPDATE_TS, null);
     accessTokenMapforFUP.put(AppConstants.CREATED_BY, user.getUserName());

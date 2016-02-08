@@ -14,7 +14,7 @@ public class UserBean {
   private String fupUUID;
   private int smsVerfied;
   private int emailVerified;
-  private int userType;
+  private int userTypeCD;
   private int roleId;
   private int recordType;
   private int tokenType;
@@ -240,15 +240,15 @@ public String getCommonUUID() {
   /**
    * @return the userTypeCD
    */
-  public int getUserType() {
-    return userType;
+  public int getUserTypeCD() {
+    return userTypeCD;
   }
 
   /**
    * @param userTypeCD the userTypeCD to set
    */
-  public void setUserType(int userType) {
-    this.userType = userType;
+  public void setUserTypeCD(int userTypeCD) {
+    this.userTypeCD = userTypeCD;
   }
 
   /**

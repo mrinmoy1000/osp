@@ -5,16 +5,12 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class OspExperienceBean implements Serializable {
 
   private static final Logger logger = Logger.getLogger(OspExperienceBean.class);
   private static final long serialVersionUID = 1L;
   private Long profExpId;
-  @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date profExpBeginDt;
-  @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date profExpEndDt;
   private String profExpDesc;
   private Long profId;

@@ -46,7 +46,7 @@ public class SignUpController {
           configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
               AppConstants.PARAM_NAME_PROFESSIONAL);
 
-      RoleBean oRoleProfessional = masterDataBean.getRoleByName(AppConstants.ROLE_PROFESSIONAL);
+      RoleBean oRoleProfessional = masterDataBean.getRoleByName(AppConstants.ROLE_ADMINISTRATOR);
       userBean.setRecordType(oParamProfessional.getParameterid());
       userBean.setRoleId(oRoleProfessional.getRoleId());
 

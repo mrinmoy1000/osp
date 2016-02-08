@@ -17,16 +17,6 @@ public class ProfileDTO implements Serializable {
   private List<LocationDTO> locations = new ArrayList<LocationDTO>();
 
   private List<CategoryDTO> categories = new ArrayList<CategoryDTO>();
-  
-  private int paramId;
-
-  public int getParamId() {
-    return paramId;
-  }
-
-  public void setParamId(int paramId) {
-    this.paramId = paramId;
-  }
 
   public List<ConfigParamDTO> getGenders() {
     return genders;

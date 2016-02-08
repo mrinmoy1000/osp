@@ -18,17 +18,14 @@
 		init-method="loadConfigParam"></bean>
 	<!-- master data load configuration -->
 	<bean id="masterDataLoaderDao" class="com.flamingos.osp.dao.impl.MasterDataLoaderDAOImpl"></bean>
-	<bean id="masterDataService" class="com.flamingos.osp.service.impl.MasterDataServiceImpl"></bean>
-	<bean id="masterDataBean" class="com.flamingos.osp.bean.MasterDataBean"
-		init-method="loadMasterData"></bean>
-	<!-- init-method="loadConfigParam" init-method="loadMasterData" -->
+	<bean id="masterDataService"
+		class="com.flamingos.osp.service.impl.MasterDataServiceImpl"></bean>
+	<bean id="masterDataBean" class="com.flamingos.osp.bean.MasterDataBean" init-method="loadMasterData"></bean>
+	<!-- init-method="loadConfigParam" init-method="loadMasterData"-->
 	<bean id="userBean" class="com.flamingos.osp.bean.UserBean"></bean>
 	<bean id="professionalBean" class="com.flamingos.osp.bean.OspProfessionalBean"></bean>
-
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="50000000" />
-	</bean>
+	
+	
 
 
 	<!-- Properties File -->

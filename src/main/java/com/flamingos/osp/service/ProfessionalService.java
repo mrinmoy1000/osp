@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.flamingos.osp.bean.OspProfessionalBean;
 import com.flamingos.osp.bean.UserBean;
-import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.UserDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OspServiceException;
@@ -27,10 +26,6 @@ public interface ProfessionalService {
 
   public void approveProfile(OspProfessionalBean professional, HttpServletRequest request)
       throws OspServiceException;
-  
-  public OspProfessionalDTO professionalDetailsbyRecordID(long recordId) throws OSPBusinessException;
-  
-  public OspProfessionalDTO professionalDetailsbyProfId(long profId) throws OSPBusinessException;
 
 
 }

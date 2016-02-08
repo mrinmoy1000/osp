@@ -107,7 +107,13 @@ public class MasterDataBean {
         }
       }
       countryStateList.addAll(countryList);
-
+      for (LocationDTO country : countryStateList) {
+        for (LocationDTO state : stateList) {
+          if (country.getLocationId() == state.getLocationParentId()) {
+            country.getChildLocations().add(state);
+          }
+        }
+      }
       for (LocationDTO district : districtList) {
         for (LocationDTO city : cityList) {
           if (district.getLocationId() == city.getLocationParentId()) {
@@ -122,24 +128,6 @@ public class MasterDataBean {
         }
 
       }
-
-      for (LocationDTO state : stateList) {
-        for (LocationDTO district : districtList) {
-          if (state.getLocationId() == district.getLocationParentId()) {
-            state.getChildLocations().add(district);
-          }
-
-        }
-      }
-
-      for (LocationDTO country : countryStateList) {
-        for (LocationDTO state : stateList) {
-          if (country.getLocationId() == state.getLocationParentId()) {
-            country.getChildLocations().add(state);
-          }
-        }
-      }
-
 
       categoryList = masterDataService.getAllCategories();
       subCategoryList = masterDataService.getAllSubCategories();
