@@ -45,14 +45,15 @@ public class LoginDAOImpl implements LoginDAO {
       return namedJdbcTemplate.queryForObject(loginCheckSql, paramMap, new RowMapper<UserDTO>() {
         @Override
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-          UserDTO user = new UserDTO();
-          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-          user.setUserPass(rs.getString(AppConstants.PASSWORD));
-          user.setUserName(rs.getString(AppConstants.USER_NAME));
-          user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-          user.setEmail(rs.getString(AppConstants.EMAIL));
-          user.setActivationStatus(rs.getInt(AppConstants.ACTIVATION_STATUS));
-          return user;
+        	  UserDTO user = new UserDTO();
+              user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+              user.setUserPass(rs.getString(AppConstants.PASSWORD));
+              user.setUserName(rs.getString(AppConstants.USER_NAME));
+              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
+              user.setEmail(rs.getString(AppConstants.EMAIL));
+              user.setActivationStatus(rs.getInt(AppConstants.ACTIVATION_STATUS));
+              user.setTypeId(rs.getInt(AppConstants.RECORD_TYPE));
+              return user;
         }
       });
 

@@ -289,7 +289,7 @@ public class SignUpDAOImpl implements SignUpDAO {
   	      return null;
 
   	    } finally {
-  	      logger.debug("Exiting SignUpDao << findByUserName() method");
+  	      logger.debug("Exiting SignUpDao << getUserDetailsByRecordId() method");
   	    }
 
   	  }

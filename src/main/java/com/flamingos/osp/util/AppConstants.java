@@ -62,6 +62,7 @@ public class AppConstants {
   public static String PARAM_CODE_USER_STATUS = "USER_STATUS";
   public static String PARAM_CODE_USER_TYPE = "USER_TYPE";
   public static String PARAM_NAME_PROFESSIONAL = "PROFESSIONAL";
+  public static String PARAM_NAME_ADMINISTRATOR = "ADMIN";
   public static String PARAM_NAME_CLIENT = "CLIENT";
   public static String PARAM_NAME_ALL = "ALL";
   public static String PARAM_CODE_COMM_CHANNEL = "COMM_CHANNEL";

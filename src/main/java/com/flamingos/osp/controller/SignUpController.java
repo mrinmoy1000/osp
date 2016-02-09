@@ -89,7 +89,7 @@ public class SignUpController {
   @RequestMapping(value = "/getUserDetails", produces = "application/json", method = RequestMethod.GET)
   public ResponseEntity<UserDTO> userDetailsByUserId(@RequestParam(value = "user_id") long user_id)
       throws Exception {
-    logger.debug("Entrying SignupController >> checkUserName() method");
+    logger.debug("Entrying SignupController >> userDetailsByUserId() method");
 
     UserDTO userDto = new UserDTO();
     try {
@@ -101,7 +101,7 @@ public class SignUpController {
       // logger.error("Error in checking User name " + this.getClass(), exp);
       return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
     } finally {
-      logger.debug("Exiting SignupController << checkUserName() method");
+      logger.debug("Exiting SignupController << userDetailsByUserId() method");
     }
 
   }

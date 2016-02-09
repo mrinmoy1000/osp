@@ -234,10 +234,10 @@ public class SignUpServiceImpl implements SignUpService {
           UserDTO userDTOForUserDetails = signUpDao.getUserDetailsByRecordId(recordId);
           return userDTOForUserDetails;
         } catch (OspDaoException exp) {
-          throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
-              AppConstants.SIGN_UP_EXCEPTION_ERRCODE, AppConstants.SIGN_UP_EXCEPTION_ERRDESC);
+          throw new OSPBusinessException(AppConstants.LOGIN_MODULE,
+              AppConstants.LOGIN_EXCEPTION_ERRCODE, "Failed to get user details");
         } finally {
-          logger.debug("Exiting SignUpService <<  checkUserName() method");
+          logger.debug("Exiting SignUpService <<  getUserDetailsByRecordId() method");
         }
   }
 }

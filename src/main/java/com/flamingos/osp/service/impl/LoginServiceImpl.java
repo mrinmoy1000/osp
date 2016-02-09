@@ -42,56 +42,74 @@ public class LoginServiceImpl implements LoginService {
   private static final Logger logger = Logger.getLogger(LoginServiceImpl.class);
 
   @Override
-  public UserDTO login(UserBean loginBean) throws OSPBusinessException {
-    logger.debug("Entrying LoginService >> login() method");
-    String encryptedPassword = encDecUtil.getEncodedValue(loginBean.getPassword());
-    loginBean.setPassword(encryptedPassword);
-    try {
-      UserDTO userDTO = loginDao.getUser(loginBean);
-      if (userDTO != null) {
-        if (!userDTO.getUserPass().equals(encryptedPassword)) {
-          userDTO = new UserDTO();
-          userDTO.setReturnStatus(AppConstants.FAILURE);
-          userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
-        } else {
-        	 ConfigParamDTO oParamUserStatus =
-        	            configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_STATUS,
-        	                AppConstants.PARAM_NAME_USER_STATUS_ACTIVE);
-        	if(oParamUserStatus.getParameterid()==userDTO.getActivationStatus())
-        	{
-        		 UserDTO profUser = signUpDao.checkForProfessionalRecordId(loginBean);
-                 userDTO.setReturnStatus(AppConstants.SUCCESS);
-                 if (profUser.getUserId() != 0) {
-                   userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
-                   userDTO.setUserId(profUser.getUserId());
-                 } else {
-                   userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
-                 }
+	public UserDTO login(UserBean loginBean) throws OSPBusinessException {
+		logger.debug("Entrying LoginService >> login() method");
+		String encryptedPassword = encDecUtil.getEncodedValue(loginBean
+				.getPassword());
+		loginBean.setPassword(encryptedPassword);
+		try {
+			UserDTO userDTO = loginDao.getUser(loginBean);
+			if (userDTO != null) {
+				
+				if (!userDTO.getUserPass().equals(encryptedPassword)) {
+					userDTO = new UserDTO();
+					userDTO.setReturnStatus(AppConstants.FAILURE);
+					userDTO.setReturnMessage(AppConstants.LOGIN_FAILURE);
+				} else {
+					ConfigParamDTO oParamUserStatus = configParamBean
+							.getParameterByCodeName(
+									AppConstants.PARAM_CODE_USER_STATUS,
+									AppConstants.PARAM_NAME_USER_STATUS_ACTIVE);
+					if (oParamUserStatus.getParameterid() == userDTO.getActivationStatus()) {
+						userDTO.setReturnStatus(AppConstants.SUCCESS);
+						 ConfigParamDTO oParamProfessional =
+						          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
+						              AppConstants.PARAM_NAME_PROFESSIONAL);
+						 ConfigParamDTO oParamAdmin =
+						          configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_USER_TYPE,
+						              AppConstants.PARAM_NAME_ADMINISTRATOR);
 
-                 userDTO.setUserPass("");
-        		
-        	}else
-        	{
-        		userDTO.setReturnStatus(AppConstants.FAILURE);
-                userDTO.setReturnMessage(AppConstants.USER_ID_NOT_ACTIVE);
-        		
-        	}
-         
-        }
-      } else {
-        userDTO = new UserDTO();
-        userDTO.setReturnStatus(AppConstants.FAILURE);
-        userDTO.setReturnMessage(AppConstants.USER_NOT_FOUND);
-      }
+						if(userDTO.getTypeId()==oParamProfessional.getParameterid())
+						{
+						
+						loginBean.setUser_id(userDTO.getUserId());
+						UserDTO profUser = signUpDao
+								.checkForProfessionalRecordId(loginBean);
+						
+						if (null!=profUser && profUser.getUserId() != 0) {
+							userDTO.setReturnMessage(AppConstants.VIEW_PROF_PROFILE);
+							//userDTO.setUserId(profUser.getUserId());
+						} else {
+							userDTO.setReturnMessage(AppConstants.ADD_PROF_PROFILE);
+						
+						}
+						}
+						if(userDTO.getTypeId()==oParamAdmin.getParameterid())
+						{
+						  userDTO.setReturnMessage(AppConstants.PARAM_NAME_ADMINISTRATOR);
+						}
+						userDTO.setUserPass("");
 
-      return userDTO;
-    } catch (Exception exp) {
-      throw new OSPBusinessException(AppConstants.LOGIN_MODULE,
-          AppConstants.LOGIN_EXCEPTION_ERRCODE, AppConstants.LOGIN_EXCEPTION_ERRDESC, exp);
-    } finally {
-      logger.debug("Entrying LoginService << login() method");
-    }
-  }
+					} else {
+						userDTO.setReturnStatus(AppConstants.FAILURE);
+						userDTO.setReturnMessage(AppConstants.USER_ID_NOT_ACTIVE);
+					}
+				}
+				} else {
+				userDTO = new UserDTO();
+				userDTO.setReturnStatus(AppConstants.FAILURE);
+				userDTO.setReturnMessage(AppConstants.USER_NOT_FOUND);
+			}
+			userDTO.setUserPass("");
+			return userDTO;
+		} catch (Exception exp) {
+			throw new OSPBusinessException(AppConstants.LOGIN_MODULE,
+					AppConstants.LOGIN_EXCEPTION_ERRCODE,
+					AppConstants.LOGIN_EXCEPTION_ERRDESC, exp);
+		} finally {
+			logger.debug("Entrying LoginService << login() method");
+		}
+	}
 
 	@Override
 	public UserDTO checkForUserAndSendLink(UserBean userBean,
