@@ -2,16 +2,12 @@ package com.flamingos.osp.bean;
 
 import java.io.Serializable;
 import java.util.Date;
-
-import org.apache.log4j.Logger;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_NULL)
 public class OspAddressBean implements Serializable {
 
-  private static final Logger LOGGER = Logger.getLogger(OspAddressBean.class);
   private static final long serialVersionUID = 1L;
 
   public int addressId;

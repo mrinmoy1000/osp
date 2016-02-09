@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 public class OspProfessionalBean implements Serializable {
 
-  private static final Logger LOGGER = Logger.getLogger(OspProfessionalBean.class);
   private static final long serialVersionUID = 1L;
 
   private Long profId;

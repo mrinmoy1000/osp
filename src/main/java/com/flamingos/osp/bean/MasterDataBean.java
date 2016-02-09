@@ -1,13 +1,10 @@
 package com.flamingos.osp.bean;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.dto.SubCatDTO;

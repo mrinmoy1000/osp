@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
-import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OSPErrorHandler;
 import com.flamingos.osp.service.ConfigParamLoaderService;
-import com.flamingos.osp.service.LocationService;
-import com.flamingos.osp.service.MasterDataService;
 import com.flamingos.osp.util.AppConstants;
 import com.flamingos.osp.util.AppUtil;
 
