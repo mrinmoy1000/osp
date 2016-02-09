@@ -29,268 +29,331 @@ import com.flamingos.osp.util.AppConstants;
 
 @Repository
 public class SignUpDAOImpl implements SignUpDAO {
-  private static final Logger logger = Logger.getLogger(SignUpDAOImpl.class);
-  @Autowired
-  private JdbcTemplate jdbcTemplate;
-  @Autowired
-  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	private static final Logger logger = Logger.getLogger(SignUpDAOImpl.class);
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-  @Autowired
-  private ConfigParamBean configParamBean;
+	@Autowired
+	private ConfigParamBean configParamBean;
 
-  private final String getUserSql = "SELECT " + AppConstants.RECORD_ID + ","
-      + AppConstants.USER_NAME + "," + AppConstants.PASSWORD + "," + AppConstants.CONTACT_NUMBER
-      + "," + AppConstants.EMAIL + "," + AppConstants.ACTIVATION_STATUS
-      + " FROM OSP_USER_CREDENTIAL WHERE ";
+	private final String getUserSql = "SELECT " + AppConstants.RECORD_ID + ","
+			+ AppConstants.USER_NAME + "," + AppConstants.PASSWORD + ","
+			+ AppConstants.CONTACT_NUMBER + "," + AppConstants.EMAIL + ","
+			+ AppConstants.ACTIVATION_STATUS
+			+ " FROM OSP_USER_CREDENTIAL WHERE ";
 
-  @Override
-  public UserDTO findByUserName(String userName) throws OspDaoException {
-    logger.debug("Entrying SignUpDao >> findByUserName() method");
-    String userNameSql = getUserSql + AppConstants.USER_NAME + "=:username";
-    Map<String, String> paramMap = new HashMap<String, String>();
-    paramMap.put("username", userName);
+	@Override
+	public UserDTO findByUserName(String userName) throws OspDaoException {
+		logger.debug("Entrying SignUpDao >> findByUserName() method");
+		String userNameSql = getUserSql + AppConstants.USER_NAME + "=:username";
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("username", userName);
 
-    try {
-      return namedParameterJdbcTemplate.queryForObject(userNameSql, paramMap,
-          new RowMapper<UserDTO>() {
-            @Override
-            public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-              UserDTO user = new UserDTO();
-              user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-              user.setUserName(rs.getString(AppConstants.USER_NAME));
-              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-              user.setEmail(rs.getString(AppConstants.EMAIL));
-              return user;
-            }
-          });
-    } catch (EmptyResultDataAccessException e) {
-      logger.error("no record found . Explicitly throwing exception", e);
-      return null;
+		try {
+			return namedParameterJdbcTemplate.queryForObject(userNameSql,
+					paramMap, new RowMapper<UserDTO>() {
+						@Override
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+							user.setUserName(rs
+									.getString(AppConstants.USER_NAME));
+							user.setUserContact(rs
+									.getString(AppConstants.CONTACT_NUMBER));
+							user.setEmail(rs.getString(AppConstants.EMAIL));
+							return user;
+						}
+					});
+		} catch (EmptyResultDataAccessException e) {
+			logger.error("no record found . Explicitly throwing exception", e);
+			return null;
 
-    } finally {
-      logger.debug("Exiting SignUpDao << findByUserName() method");
-    }
+		} finally {
+			logger.debug("Exiting SignUpDao << findByUserName() method");
+		}
 
-  }
+	}
 
-  @Override
-  public UserDTO findByContact(Long contact) throws OSPBusinessException {
+	@Override
+	public UserDTO findByContact(Long contact) throws OSPBusinessException {
 
-    String contactSql = getUserSql + AppConstants.CONTACT_NUMBER + "=:contact";
-    Map<String, Long> paramMap = new HashMap<String, Long>();
-    paramMap.put("contact", contact);
+		String contactSql = getUserSql + AppConstants.CONTACT_NUMBER
+				+ "=:contact";
+		Map<String, Long> paramMap = new HashMap<String, Long>();
+		paramMap.put("contact", contact);
 
-    try {
-      return namedParameterJdbcTemplate.queryForObject(contactSql, paramMap,
-          new RowMapper<UserDTO>() {
-            @Override
-            public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-              UserDTO user = new UserDTO();
-              user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-              user.setUserName(rs.getString(AppConstants.USER_NAME));
-              user.setUserPass(rs.getString(AppConstants.PASSWORD));
-              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-              user.setEmail(rs.getString(AppConstants.EMAIL));
-              return user;
-            }
-          });
-    } catch (EmptyResultDataAccessException e) {
-      return null;
+		try {
+			return namedParameterJdbcTemplate.queryForObject(contactSql,
+					paramMap, new RowMapper<UserDTO>() {
+						@Override
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+							user.setUserName(rs
+									.getString(AppConstants.USER_NAME));
+							user.setUserPass(rs
+									.getString(AppConstants.PASSWORD));
+							user.setUserContact(rs
+									.getString(AppConstants.CONTACT_NUMBER));
+							user.setEmail(rs.getString(AppConstants.EMAIL));
+							return user;
+						}
+					});
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 
-    }
+		}
 
-  }
+	}
 
-  @Override
-  public UserDTO findByEmailAddress(String email) throws OSPBusinessException {
+	@Override
+	public UserDTO findByEmailAddress(String email) throws OSPBusinessException {
 
-    String emailSql = getUserSql + AppConstants.EMAIL + "=:email";
-    Map<String, String> paramMap = new HashMap<String, String>();
-    paramMap.put("email", email);
-    try {
-      return namedParameterJdbcTemplate.queryForObject(emailSql, paramMap,
-          new RowMapper<UserDTO>() {
-            @Override
-            public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-              UserDTO user = new UserDTO();
-              user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-              user.setUserName(rs.getString(AppConstants.USER_NAME));
-              user.setUserPass(rs.getString(AppConstants.PASSWORD));
-              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-              user.setEmail(rs.getString(AppConstants.EMAIL));
-              return user;
-            }
-          });
-    } catch (EmptyResultDataAccessException e) {
-      return null;
+		String emailSql = getUserSql + AppConstants.EMAIL + "=:email";
+		Map<String, String> paramMap = new HashMap<String, String>();
+		paramMap.put("email", email);
+		try {
+			return namedParameterJdbcTemplate.queryForObject(emailSql,
+					paramMap, new RowMapper<UserDTO>() {
+						@Override
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+							user.setUserName(rs
+									.getString(AppConstants.USER_NAME));
+							user.setUserPass(rs
+									.getString(AppConstants.PASSWORD));
+							user.setUserContact(rs
+									.getString(AppConstants.CONTACT_NUMBER));
+							user.setEmail(rs.getString(AppConstants.EMAIL));
+							return user;
+						}
+					});
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 
-    }
+		}
 
-  }
+	}
 
-  @Override
-  public void createNewUser(UserBean user, int emailExpireTime, int smsExpireTime)
-      throws OspDaoException {
+	@Override
+	public void createNewUser(UserBean user, int emailExpireTime,
+			int smsExpireTime) throws OspDaoException {
 
-    String sql =
-        "INSERT INTO OSP_USER_CREDENTIAL"
-            + "      (USER_NAME,RECORD_ID,ROLE_ID,RECORD_TYPE,USER_CRED,USER_FIRST_NAME,USER_MIDDLE_NAME,USER_LAST_NAME,USER_REG_EMAIL,USER_REG_PHONE,CRED_EXPIRY_DATE,NO_OF_ATTEMPTS,EMAIL_VERYFIED,SMS_VERIFIED,ACTIVATION_STATUS,LAST_LOGIN_TS,CREATED_BY,CREATED_TS,UPDATED_BY,UPDATED_TS) "
-            + "VALUES(:USER_NAME,:RECORD_ID,:ROLE_ID, :RECORD_TYPE, :USER_CRED, :USER_FIRST_NAME, :USER_MIDDLE_NAME, :USER_LAST_NAME,:USER_REG_EMAIL,:USER_REG_PHONE, :CRED_EXPIRY_DATE, :NO_OF_ATTEMPTS, :EMAIL_VERYFIED, :SMS_VERIFIED, :ACTIVATION_STATUS,  :LAST_LOGIN_TS, :CREATED_BY, :CREATED_TS, :UPDATED_BY, :UPDATED_TS )";
+		String sql = "INSERT INTO OSP_USER_CREDENTIAL"
+				+ "      (USER_NAME,RECORD_ID,ROLE_ID,RECORD_TYPE,USER_CRED,USER_FIRST_NAME,USER_MIDDLE_NAME,USER_LAST_NAME,USER_REG_EMAIL,USER_REG_PHONE,CRED_EXPIRY_DATE,NO_OF_ATTEMPTS,EMAIL_VERYFIED,SMS_VERIFIED,ACTIVATION_STATUS,LAST_LOGIN_TS,CREATED_BY,CREATED_TS,UPDATED_BY,UPDATED_TS) "
+				+ "VALUES(:USER_NAME,:RECORD_ID,:ROLE_ID, :RECORD_TYPE, :USER_CRED, :USER_FIRST_NAME, :USER_MIDDLE_NAME, :USER_LAST_NAME,:USER_REG_EMAIL,:USER_REG_PHONE, :CRED_EXPIRY_DATE, :NO_OF_ATTEMPTS, :EMAIL_VERYFIED, :SMS_VERIFIED, :ACTIVATION_STATUS,  :LAST_LOGIN_TS, :CREATED_BY, :CREATED_TS, :UPDATED_BY, :UPDATED_TS )";
 
-    MapSqlParameterSource userDetailsMap = new MapSqlParameterSource();
-    userDetailsMap.addValue(AppConstants.USER_NAME, user.getUserName());
-    userDetailsMap.addValue(AppConstants.RECORD_ID, user.getId());
-    userDetailsMap.addValue(AppConstants.ROLE_ID, user.getRoleId());
-    userDetailsMap.addValue(AppConstants.RECORD_TYPE, user.getRecordType());
-    userDetailsMap.addValue(AppConstants.PASSWORD, user.getPassword());
-    userDetailsMap.addValue(AppConstants.FIRST_NAME, user.getFirstName());
-    userDetailsMap.addValue(AppConstants.MIDDLE_NAME, user.getMiddleName());
-    userDetailsMap.addValue(AppConstants.LAST_NAME, user.getLastName());
-    userDetailsMap.addValue(AppConstants.EMAIL, user.getEmail());
-    userDetailsMap.addValue(AppConstants.CONTACT_NUMBER, user.getContactNumber());
-    userDetailsMap.addValue(AppConstants.CARD_EXPIRY_DATE, new Timestamp(new Date().getTime()));
-    userDetailsMap.addValue(AppConstants.NO_OF_ATTEMPTS, 0);
-    userDetailsMap.addValue(AppConstants.EMAIL_VERIFIED, user.getEmailVerified());
-    userDetailsMap.addValue(AppConstants.SMS_VERIFIED, user.getSmsVerfied());
-    userDetailsMap.addValue(AppConstants.ACTIVATION_STATUS, user.getActiveStatus());
-    userDetailsMap.addValue(AppConstants.LOGIN_TS, new Timestamp(new Date().getTime()));
-    userDetailsMap.addValue(AppConstants.CREATED_BY, user.getUserName());
-    userDetailsMap.addValue(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
-    userDetailsMap.addValue(AppConstants.UPDATE_BY, null);
-    userDetailsMap.addValue(AppConstants.UPDATE_TS, null);
+		MapSqlParameterSource userDetailsMap = new MapSqlParameterSource();
+		userDetailsMap.addValue(AppConstants.USER_NAME, user.getUserName());
+		userDetailsMap.addValue(AppConstants.RECORD_ID, user.getId());
+		userDetailsMap.addValue(AppConstants.ROLE_ID, user.getRoleId());
+		userDetailsMap.addValue(AppConstants.RECORD_TYPE, user.getRecordType());
+		userDetailsMap.addValue(AppConstants.PASSWORD, user.getPassword());
+		userDetailsMap.addValue(AppConstants.FIRST_NAME, user.getFirstName());
+		userDetailsMap.addValue(AppConstants.MIDDLE_NAME, user.getMiddleName());
+		userDetailsMap.addValue(AppConstants.LAST_NAME, user.getLastName());
+		userDetailsMap.addValue(AppConstants.EMAIL, user.getEmail());
+		userDetailsMap.addValue(AppConstants.CONTACT_NUMBER,
+				user.getContactNumber());
+		userDetailsMap.addValue(AppConstants.CARD_EXPIRY_DATE, new Timestamp(
+				new Date().getTime()));
+		userDetailsMap.addValue(AppConstants.NO_OF_ATTEMPTS, 0);
+		userDetailsMap.addValue(AppConstants.EMAIL_VERIFIED,
+				user.getEmailVerified());
+		userDetailsMap
+				.addValue(AppConstants.SMS_VERIFIED, user.getSmsVerfied());
+		userDetailsMap.addValue(AppConstants.ACTIVATION_STATUS,
+				user.getActiveStatus());
+		userDetailsMap.addValue(AppConstants.LOGIN_TS,
+				new Timestamp(new Date().getTime()));
+		userDetailsMap.addValue(AppConstants.CREATED_BY, user.getUserName());
+		userDetailsMap.addValue(AppConstants.CREATED_TS, new Timestamp(
+				new Date().getTime()));
+		userDetailsMap.addValue(AppConstants.UPDATE_BY, null);
+		userDetailsMap.addValue(AppConstants.UPDATE_TS, null);
 
-    KeyHolder key = new GeneratedKeyHolder();
-    namedParameterJdbcTemplate.update(sql, userDetailsMap, key);
-    long getInsertedUser = (Long) key.getKey();
+		KeyHolder key = new GeneratedKeyHolder();
+		namedParameterJdbcTemplate.update(sql, userDetailsMap, key);
+		long getInsertedUser = (Long) key.getKey();
 
-    String insertAccessToken =
-        "INSERT INTO OSP_ACCESS_TOKEN VALUES " + "(:" + AppConstants.USER_ID + "," + ":"
-            + AppConstants.TYPE + "," + ":" + AppConstants.UUID + "," + ":"
-            + AppConstants.TOKEN_EXPIRY_DT + "," + ":" + AppConstants.IS_USED + "," + ":"
-            + AppConstants.CREATED_TS + "," + ":" + AppConstants.UPDATED_TS + "," + ":"
-            + AppConstants.CREATED_BY + "," + ":" + AppConstants.UPDATED_BY + ")";
+		String insertAccessToken = "INSERT INTO OSP_ACCESS_TOKEN VALUES "
+				+ "(:"
+				+ AppConstants.USER_ID
+				+ ","
+				+ ":"
+				+ AppConstants.TYPE
+				+ ","
+				+ ":"
+				+ AppConstants.UUID
+				+ ","
+				+ ":"
+				+ AppConstants.TOKEN_EXPIRY_DT
+				+ ","
+				+ ":"
+				+ AppConstants.IS_USED
+				+ ","
+				+ ":"
+				+ AppConstants.CREATED_TS
+				+ ","
+				+ ":"
+				+ AppConstants.UPDATED_TS
+				+ ","
+				+ ":"
+				+ AppConstants.CREATED_BY
+				+ ","
+				+ ":"
+				+ AppConstants.UPDATED_BY
+				+ ")";
 
-    ConfigParamDTO oParamEmailChannel =
-        configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
-            AppConstants.PARAM_NAME_EMAIL);
-    Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
-    accessTokenMapforEmail.put(AppConstants.USER_ID, getInsertedUser);
-    accessTokenMapforEmail.put(AppConstants.TYPE, oParamEmailChannel.getParameterid());
-    accessTokenMapforEmail.put(AppConstants.UUID, user.getEmailUUID());
-    accessTokenMapforEmail.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
-        + (1 * emailExpireTime * 60 * 60 * 1000)));
-    accessTokenMapforEmail.put(AppConstants.IS_USED, user.getTokenIsUsed());
-    accessTokenMapforEmail.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
-    accessTokenMapforEmail.put(AppConstants.UPDATE_TS, null);
-    accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
-    accessTokenMapforEmail.put(AppConstants.UPDATE_BY, null);
-    namedParameterJdbcTemplate.update(insertAccessToken, accessTokenMapforEmail);
-    ConfigParamDTO oParamSMSChannel =
-        configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
-            AppConstants.PARAM_NAME_SMS);
-    Map<String, Object> accessTokenMapforSms = new HashMap<String, Object>();
-    accessTokenMapforSms.put(AppConstants.USER_ID, getInsertedUser);
-    accessTokenMapforSms.put(AppConstants.TYPE, oParamSMSChannel.getParameterid());
-    accessTokenMapforSms.put(AppConstants.UUID, user.getSmsUUID());
-    accessTokenMapforSms.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(new Date().getTime()
-        + (1 * smsExpireTime * 60 * 60 * 1000)));
-    accessTokenMapforSms.put(AppConstants.IS_USED,user.getTokenIsUsed());
-    accessTokenMapforSms.put(AppConstants.CREATED_TS, new Timestamp(new Date().getTime()));
-    accessTokenMapforSms.put(AppConstants.UPDATE_TS, null);
-    accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());
-    accessTokenMapforSms.put(AppConstants.UPDATE_BY, null);
-    namedParameterJdbcTemplate.update(insertAccessToken, accessTokenMapforSms);
-  }
+		ConfigParamDTO oParamEmailChannel = configParamBean
+				.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
+						AppConstants.PARAM_NAME_EMAIL);
+		Map<String, Object> accessTokenMapforEmail = new HashMap<String, Object>();
+		accessTokenMapforEmail.put(AppConstants.USER_ID, getInsertedUser);
+		accessTokenMapforEmail.put(AppConstants.TYPE,
+				oParamEmailChannel.getParameterid());
+		accessTokenMapforEmail.put(AppConstants.UUID, user.getEmailUUID());
+		accessTokenMapforEmail.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(
+				new Date().getTime() + (1 * emailExpireTime * 60 * 60 * 1000)));
+		accessTokenMapforEmail.put(AppConstants.IS_USED, user.getTokenIsUsed());
+		accessTokenMapforEmail.put(AppConstants.CREATED_TS, new Timestamp(
+				new Date().getTime()));
+		accessTokenMapforEmail.put(AppConstants.UPDATE_TS, null);
+		accessTokenMapforEmail.put(AppConstants.CREATED_BY, user.getUserName());
+		accessTokenMapforEmail.put(AppConstants.UPDATE_BY, null);
+		namedParameterJdbcTemplate.update(insertAccessToken,
+				accessTokenMapforEmail);
+		ConfigParamDTO oParamSMSChannel = configParamBean
+				.getParameterByCodeName(AppConstants.PARAM_CODE_COMM_CHANNEL,
+						AppConstants.PARAM_NAME_SMS);
+		Map<String, Object> accessTokenMapforSms = new HashMap<String, Object>();
+		accessTokenMapforSms.put(AppConstants.USER_ID, getInsertedUser);
+		accessTokenMapforSms.put(AppConstants.TYPE,
+				oParamSMSChannel.getParameterid());
+		accessTokenMapforSms.put(AppConstants.UUID, user.getSmsUUID());
+		accessTokenMapforSms.put(AppConstants.TOKEN_EXPIRY_DT, new Timestamp(
+				new Date().getTime() + (1 * smsExpireTime * 60 * 60 * 1000)));
+		accessTokenMapforSms.put(AppConstants.IS_USED, user.getTokenIsUsed());
+		accessTokenMapforSms.put(AppConstants.CREATED_TS, new Timestamp(
+				new Date().getTime()));
+		accessTokenMapforSms.put(AppConstants.UPDATE_TS, null);
+		accessTokenMapforSms.put(AppConstants.CREATED_BY, user.getUserName());
+		accessTokenMapforSms.put(AppConstants.UPDATE_BY, null);
+		namedParameterJdbcTemplate.update(insertAccessToken,
+				accessTokenMapforSms);
+	}
 
-  @Override
-  public String updateUser(UserBean user) throws OspDaoException {
-    // TODO Auto-generated method stub
-    return null;
-  }
+	@Override
+	public String updateUser(UserBean user) throws OspDaoException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-  @Override
-  public UserDTO checkForProfessional(UserBean user) throws OspDaoException {
-    String profSql = "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.PROF_ID + "=:PROF_ID";
-    Map<String, Long> paramMap = new HashMap<String, Long>();
-    paramMap.put("PROF_ID", user.getProf_id());
+	@Override
+	public UserDTO checkForProfessional(UserBean user) throws OspDaoException {
+		String profSql = "SELECT * from OSP_PROFESSIONAL  where "
+				+ AppConstants.PROF_ID + "=:PROF_ID";
+		Map<String, Long> paramMap = new HashMap<String, Long>();
+		paramMap.put("PROF_ID", user.getProf_id());
 
-    try {
+		try {
 
-      return namedParameterJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
-        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-          UserDTO user = new UserDTO();
-          user.setUserId(rs.getLong(AppConstants.RECORD_ID));
-          return user;
-        }
-      });
+			return namedParameterJdbcTemplate.queryForObject(profSql, paramMap,
+					new RowMapper<UserDTO>() {
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.RECORD_ID));
+							return user;
+						}
+					});
 
-    } catch (RuntimeException e) {
-      throw new OspDaoException(e);
-    }
-  }
+		} catch (RuntimeException e) {
+			throw new OspDaoException(e);
+		}
+	}
 
-  @Override
-  public void mapUserAndProfessional(long recordId, long profId) throws OspDaoException {
-    try {
-      String updateEmailStatusSql =
-          " UPDATE OSP_PROFESSIONAL prof  " + "  SET RECORD_ID = ? where prof."
-              + AppConstants.PROF_ID + " = ?";
-      int count = jdbcTemplate.update(updateEmailStatusSql, new Object[] {recordId, profId});
-      if (count != 1) {
-        throw new OspDaoException();
-      }
-    } catch (RuntimeException exp) {
-      throw new OspDaoException(exp);
-    }
-  }
+	@Override
+	public void mapUserAndProfessional(long recordId, long profId)
+			throws OspDaoException {
+		try {
+			String updateEmailStatusSql = " UPDATE OSP_PROFESSIONAL prof  "
+					+ "  SET RECORD_ID = ? where prof." + AppConstants.PROF_ID
+					+ " = ?";
+			int count = jdbcTemplate.update(updateEmailStatusSql, new Object[] {
+					recordId, profId });
+			if (count != 1) {
+				throw new OspDaoException();
+			}
+		} catch (RuntimeException exp) {
+			throw new OspDaoException(exp);
+		}
+	}
 
-  @Override
-  public UserDTO checkForProfessionalRecordId(UserBean user) throws OspDaoException {
-    String profSql =
-        "SELECT * from OSP_PROFESSIONAL  where " + AppConstants.RECORD_ID + "=:USER_ID";
-    Map<String, Long> paramMap = new HashMap<String, Long>();
-    paramMap.put("USER_ID", user.getUser_id());
+	@Override
+	public UserDTO checkForProfessionalRecordId(UserBean user)
+			throws OspDaoException {
+		String profSql = "SELECT * from OSP_PROFESSIONAL  where "
+				+ AppConstants.RECORD_ID + "=:USER_ID";
+		Map<String, Long> paramMap = new HashMap<String, Long>();
+		paramMap.put("USER_ID", user.getUser_id());
 
-    try {
-      return namedParameterJdbcTemplate.queryForObject(profSql, paramMap, new RowMapper<UserDTO>() {
-        public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-          UserDTO user = new UserDTO();
-          user.setUserId(rs.getLong(AppConstants.PROF_ID));
-          return user;
-        }
-      });
+		try {
+			return namedParameterJdbcTemplate.queryForObject(profSql, paramMap,
+					new RowMapper<UserDTO>() {
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserId(rs.getLong(AppConstants.PROF_ID));
+							return user;
+						}
+					});
 
-    } catch (EmptyResultDataAccessException e) {
-      return null;
-    }
-  }
-  @Override
-  public UserDTO getUserDetailsByRecordId(long userId) throws OspDaoException {
-  	    logger.debug("Entrying SignUpDao >> getUserDetailsByRecordId() method");
-  	    String userNameSql = "Select * from OSP_USER_CREDENTIAL WHERE "+ AppConstants.RECORD_ID + "=:id";
-  	    Map<String, Long> paramMap = new HashMap<String, Long>();
-  	    paramMap.put("id", userId);
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+	}
 
-  	    try {
-  	      return namedParameterJdbcTemplate.queryForObject(userNameSql, paramMap,
-  	          new RowMapper<UserDTO>() {
-  	            @Override
-  	            public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
-  	              UserDTO user = new UserDTO();
-  	              user.setUserFirstName(rs.getString(AppConstants.USER_FIRST_NAME));
-  	              user.setUserLastName(rs.getString(AppConstants.USER_LAST_NAME));
-  	              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
-  	              user.setEmail(rs.getString(AppConstants.EMAIL));
-  	              return user;
-  	            }
-  	          });
-  	    } catch (EmptyResultDataAccessException e) {
-  	      logger.error("no record found . Explicitly throwing exception", e);
-  	      return null;
+	@Override
+	public UserDTO getUserDetailsByRecordId(long userId) throws OspDaoException {
+		logger.debug("Entrying SignUpDao >> getUserDetailsByRecordId() method");
+		String userNameSql = "Select * from OSP_USER_CREDENTIAL WHERE "
+				+ AppConstants.RECORD_ID + "=:id";
+		Map<String, Long> paramMap = new HashMap<String, Long>();
+		paramMap.put("id", userId);
 
-  	    } finally {
-  	      logger.debug("Exiting SignUpDao << getUserDetailsByRecordId() method");
-  	    }
+		try {
+			return namedParameterJdbcTemplate.queryForObject(userNameSql,
+					paramMap, new RowMapper<UserDTO>() {
+						@Override
+						public UserDTO mapRow(ResultSet rs, int rowNum)
+								throws SQLException {
+							UserDTO user = new UserDTO();
+							user.setUserFirstName(rs
+									.getString(AppConstants.USER_FIRST_NAME));
+							user.setUserLastName(rs
+									.getString(AppConstants.USER_LAST_NAME));
+							user.setUserContact(rs
+									.getString(AppConstants.CONTACT_NUMBER));
+							user.setEmail(rs.getString(AppConstants.EMAIL));
+							user.setUserName(rs
+									.getString(AppConstants.USER_NAME));
+							return user;
+						}
+					});
+		} catch (EmptyResultDataAccessException e) {
+			logger.error("no record found . Explicitly throwing exception", e);
+			return null;
 
-  	  }
+		} finally {
+			logger.debug("Exiting SignUpDao << getUserDetailsByRecordId() method");
+		}
+
+	}
 }

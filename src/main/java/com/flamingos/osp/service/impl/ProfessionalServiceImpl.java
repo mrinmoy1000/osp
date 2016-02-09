@@ -1,8 +1,11 @@
 package com.flamingos.osp.service.impl;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -281,7 +284,14 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 		try {
 			String userId = AppUtil.trimLeadingTrailingQuote(request
 					.getHeader("userId"));
+
+			if (StringUtils.isEmpty(userId)) {
+				UserDTO user = signUpDAO.getUserDetailsByRecordId(professional
+						.getRecordId());
+				userId = user.getUserName();
+			}
 			if (!StringUtils.isEmpty(userId)) {
+				Date currentTime = new Date();
 				professional.setCreatedBy(userId);
 				professional.setUpdatedBy(userId);
 				if (professional.isDndStatus()) {
@@ -290,6 +300,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 					professional.setDndActivatedFlag(1);
 				}
 				if (professional.isEmailStatus()) {
+					String subscId;
 					for (ConfigParamDTO param : configParamBean
 							.getParamByCode(AppConstants.COMM_TEMPLATE_SUB_CATEGORY)) {
 						if (professional.getProfSubscId() == null) {
