@@ -1,6 +1,5 @@
 package com.flamingos.osp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.flamingos.osp.bean.ConfigParamBean;
 import com.flamingos.osp.bean.MasterDataBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
-import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
-import com.flamingos.osp.dto.LocationDTO;
 import com.flamingos.osp.dto.OspProfessionalDTO;
 import com.flamingos.osp.dto.ProfileDTO;
 import com.flamingos.osp.exception.OSPBusinessException;

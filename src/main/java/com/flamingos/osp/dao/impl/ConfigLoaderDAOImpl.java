@@ -4,17 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
-
-import com.flamingos.osp.bean.RoleBean;
-import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDAO;
-import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
-import com.flamingos.osp.mapper.CategoryRowMapper;
 import com.flamingos.osp.mapper.ConfigParamRowMapper;
-import com.flamingos.osp.mapper.RoleMapper;
-import com.flamingos.osp.mapper.TemplateRowMapper;
 import com.flamingos.osp.util.AppConstants;
 
 @Repository

@@ -2,10 +2,7 @@ package com.flamingos.osp.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.springframework.jdbc.core.RowMapper;
-
-import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.SubCatDTO;
 
 public class SubCategoryRowMapper implements RowMapper<SubCatDTO> {

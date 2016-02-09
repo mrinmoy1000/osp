@@ -1,14 +1,9 @@
 package com.flamingos.osp.service.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.flamingos.osp.bean.RoleBean;
-import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.ConfigLoaderDAO;
-import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.ConfigParamDTO;
 import com.flamingos.osp.service.ConfigParamLoaderService;
 

@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 public class ProfileDTO implements Serializable {
 
-  private static final Logger logger = Logger.getLogger(ProfileDTO.class);
   private static final long serialVersionUID = 1L;
 
   private List<ConfigParamDTO> genders = new ArrayList<ConfigParamDTO>();

@@ -334,7 +334,8 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
     }
   }
 
-  @Override
+  @SuppressWarnings("deprecation")
+@Override
   public int getTokenCheck(UserBean user, AccessToken access) throws OspDaoException {
     logger.debug("Entrying ProfessionalDao >> getTokenCheck() method");
     try {
