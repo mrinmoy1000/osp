@@ -264,4 +264,33 @@ public class SignUpDAOImpl implements SignUpDAO {
       return null;
     }
   }
+  @Override
+  public UserDTO getUserDetailsByRecordId(long userId) throws OspDaoException {
+  	    logger.debug("Entrying SignUpDao >> getUserDetailsByRecordId() method");
+  	    String userNameSql = "Select * from OSP_USER_CREDENTIAL WHERE "+ AppConstants.RECORD_ID + "=:id";
+  	    Map<String, Long> paramMap = new HashMap<String, Long>();
+  	    paramMap.put("id", userId);
+
+  	    try {
+  	      return namedParameterJdbcTemplate.queryForObject(userNameSql, paramMap,
+  	          new RowMapper<UserDTO>() {
+  	            @Override
+  	            public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+  	              UserDTO user = new UserDTO();
+  	              user.setUserFirstName(rs.getString(AppConstants.USER_FIRST_NAME));
+  	              user.setUserLastName(rs.getString(AppConstants.USER_LAST_NAME));
+  	              user.setUserContact(rs.getString(AppConstants.CONTACT_NUMBER));
+  	              user.setEmail(rs.getString(AppConstants.EMAIL));
+  	              return user;
+  	            }
+  	          });
+  	    } catch (EmptyResultDataAccessException e) {
+  	      logger.error("no record found . Explicitly throwing exception", e);
+  	      return null;
+
+  	    } finally {
+  	      logger.debug("Exiting SignUpDao << findByUserName() method");
+  	    }
+
+  	  }
 }

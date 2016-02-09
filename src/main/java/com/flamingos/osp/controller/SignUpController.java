@@ -86,7 +86,25 @@ public class SignUpController {
     }
 
   }
+  @RequestMapping(value = "/getUserDetails", produces = "application/json", method = RequestMethod.GET)
+  public ResponseEntity<UserDTO> userDetailsByUserId(@RequestParam(value = "user_id") long user_id)
+      throws Exception {
+    logger.debug("Entrying SignupController >> checkUserName() method");
 
+    UserDTO userDto = new UserDTO();
+    try {
+      userDto = signUpService.getUserDetailsByRecordId(user_id);
+      return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
+    } catch (OSPBusinessException exp) {
+      userDto.setReturnStatus(AppConstants.FAILURE);
+      userDto.setReturnMessage(exp.getMessage());
+      // logger.error("Error in checking User name " + this.getClass(), exp);
+      return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
+    } finally {
+      logger.debug("Exiting SignupController << checkUserName() method");
+    }
+
+  }
   public ResponseEntity<String> deleteUser(@PathVariable("userId") String userId) {
     return new ResponseEntity<String>("success", HttpStatus.OK);
   }

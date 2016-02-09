@@ -113,6 +113,7 @@ public class AppConstants {
 
   public static final String SUCCESS = "success";
   public static final String FAILURE = "fail";
+  public static final String NOT_FOUND = "notFound";
   public static final String ERROR = "error";
   public static final String VALID = "valid";
   public static final String INVALID = "invalid";
@@ -148,6 +149,9 @@ public class AppConstants {
 
 
   public static final String USER_NAME = "USER_NAME";
+  public static final String USER_FIRST_NAME = "USER_FIRST_NAME";
+  public static final String USER_MIDDLE_NAME = "USER_MIDDLE_NAME";
+  public static final String USER_LAST_NAME = "USER_LAST_NAME";
   public static final String RECORD_ID = "RECORD_ID";
   public static final String ROLE_ID = "ROLE_ID";
   public static final String RECORD_TYPE = "RECORD_TYPE";

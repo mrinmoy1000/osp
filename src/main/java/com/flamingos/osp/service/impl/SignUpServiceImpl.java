@@ -228,4 +228,16 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
   }
+  @Override
+  public UserDTO getUserDetailsByRecordId(long recordId) throws OspDaoException {
+      try {
+          UserDTO userDTOForUserDetails = signUpDao.getUserDetailsByRecordId(recordId);
+          return userDTOForUserDetails;
+        } catch (OspDaoException exp) {
+          throw new OSPBusinessException(AppConstants.SIGN_UP_MODULE,
+              AppConstants.SIGN_UP_EXCEPTION_ERRCODE, AppConstants.SIGN_UP_EXCEPTION_ERRDESC);
+        } finally {
+          logger.debug("Exiting SignUpService <<  checkUserName() method");
+        }
+  }
 }

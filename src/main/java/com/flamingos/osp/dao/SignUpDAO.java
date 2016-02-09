@@ -22,4 +22,6 @@ public interface SignUpDAO {
   public UserDTO checkForProfessionalRecordId(UserBean user) throws OspDaoException;
 
   public void mapUserAndProfessional(long userId, long professionalId) throws OspDaoException;
+  
+  public UserDTO getUserDetailsByRecordId(long userId) throws OspDaoException;
 }

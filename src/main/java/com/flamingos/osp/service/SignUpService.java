@@ -26,5 +26,7 @@ public interface SignUpService {
 
   public String sendVerificationLinkinSms(UserBean userBean, HttpServletRequest request)
       throws OspServiceException;
+  
+  public UserDTO getUserDetailsByRecordId(long recordId) throws OspDaoException;
 
 }

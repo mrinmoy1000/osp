@@ -1092,5 +1092,68 @@ public class ProfessionalDAOImpl implements ProfessionalDAO {
     namedJdbcTemplate.update(updateEmailStatusSql, paramMap);
     logger.debug("Exiting ProfessionalDao << emailUpdateStatus() method");
   }
+  
+  @Override
+	public OspProfessionalDTO getProfessionaDetailsByRecordId(long recordId) throws OspDaoException {
+
+		logger.debug("Entrying ProfessionalDao >> getProfessionaDetailsByRecordId() method");
+
+		OspProfessionalDTO professionalDetail = null;
+
+		try {
+
+			Map<String, Object> paramMap = new HashMap<String, Object>();
+			paramMap.put("record_id", recordId);
+
+			String getProSql = "select * from OSP_PROFESSIONAL op where op.RECORD_ID = :record_id ";
+
+			professionalDetail = namedJdbcTemplate.queryForObject(getProSql, paramMap,
+					new RowMapper<OspProfessionalDTO>() {
+						@Override
+						public OspProfessionalDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+							OspProfessionalDTO prof = new OspProfessionalDTO();
+
+							prof.setProfId(rs.getInt(1));
+							prof.setRecordId(rs.getInt(2));
+							prof.setProfFirstName(rs.getString(3));
+							prof.setProfMiddleName(rs.getString(4));
+							prof.setProfLastName(rs.getString(5));
+							prof.setProfEmpId(rs.getString(6));
+							prof.setProfDob(rs.getDate(7));
+							prof.setProfGender(rs.getInt(8));
+							prof.setProfNationality(rs.getString(9));
+							prof.setProfPan(rs.getString(10));
+							prof.setProfMeritalStatus(rs.getInt(11));
+							prof.setProfMerriageAnniversary(rs.getDate(12));
+							prof.setDndActivatedFlag(rs.getInt(13));
+							prof.setProfSignature(rs.getBytes(14));
+							prof.setProfPhotograph(rs.getString(15));
+							prof.setProfSubscId(rs.getString(16));
+							prof.setProfPublicId(rs.getString(17));
+							prof.setProfFees(rs.getDouble(18));
+							prof.setProfRemark(rs.getString(19));
+							prof.setStatus(rs.getInt(20));
+							prof.setCreatedBy(rs.getString(21));
+							prof.setCreatedTs(rs.getTimestamp(22));
+
+							prof.setAddressList(fetchAddressDetails(prof.getProfId()));
+							prof.setContactList(fetchContactDetails(prof.getProfId()));
+
+							return prof;
+						}
+					});
+			
+			return professionalDetail;
+
+		} catch (DataAccessException exp) {
+			logger.error("ProfessionalDao.getProfessionaDetailsByRecordId() method thrown exception" + exp.getMessage());
+			throw new OspDaoException(exp);
+
+		}
+		finally{
+		logger.debug("Exiting ProfessionalDao << getProfessionaDetailsByRecordId() method");
+		
+		}
+	}
 
 }
