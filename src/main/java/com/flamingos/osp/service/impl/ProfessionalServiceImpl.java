@@ -28,7 +28,7 @@ import com.flamingos.osp.dao.ExperienceBeanDAO;
 import com.flamingos.osp.dao.ProfAcademicsBeanDAO;
 import com.flamingos.osp.dao.ProfAddressMapDAO;
 import com.flamingos.osp.dao.ProfContactMapDAO;
-import com.flamingos.osp.dao.ProfSpecializationAO;
+import com.flamingos.osp.dao.ProfSpecializationDAO;
 import com.flamingos.osp.dao.ProfSubCategoryDAO;
 import com.flamingos.osp.dao.ProfessionalDAO;
 import com.flamingos.osp.dao.SignUpDAO;
@@ -57,7 +57,7 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	@Autowired
 	private ProfAcademicsBeanDAO academicsDAO;
 	@Autowired
-	private ProfSpecializationAO specializationDAO;
+	private ProfSpecializationDAO specializationDAO;
 	@Autowired
 	private ProfSubCategoryDAO profSubCatDAO;
 	@Autowired

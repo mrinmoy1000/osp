@@ -14,12 +14,12 @@ import org.springframework.stereotype.Repository;
 
 import com.flamingos.osp.bean.OspProfSpecializationBean;
 import com.flamingos.osp.bean.OspProfessionalBean;
-import com.flamingos.osp.dao.ProfSpecializationAO;
+import com.flamingos.osp.dao.ProfSpecializationDAO;
 import com.flamingos.osp.exception.OspDaoException;
 import com.flamingos.osp.util.AppConstants;
 
 @Repository
-public class ProfSpecializationDAOImpl implements ProfSpecializationAO {
+public class ProfSpecializationDAOImpl implements ProfSpecializationDAO {
   @Autowired
   private JdbcTemplate jdbcTemplate;
 
