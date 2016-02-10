@@ -48,6 +48,7 @@ public class LoginServiceImpl implements LoginService {
 				.getPassword());
 		loginBean.setPassword(encryptedPassword);
 		try {
+			loginBean.setUserName(loginBean.getUserName().toUpperCase());
 			UserDTO userDTO = loginDao.getUser(loginBean);
 			if (userDTO != null) {
 				
