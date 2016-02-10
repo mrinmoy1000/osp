@@ -148,6 +148,7 @@ public class SignUpServiceImpl implements SignUpService {
             configParamBean.getParameterByCodeName(AppConstants.PARAM_CODE_TOKEN_STATUS,
                 AppConstants.PARAM_NAME_NOT_YET_USED);
     userBean.setTokenIsUsed(oParamTokenUsed.getParameterid());
+    userBean.setUserName(userBean.getUserName().toUpperCase());
     signUpDao.createNewUser(userBean, emailExpireTime, smsExpireTime);
     logger.debug("Exiting SignUpService << createNewUser method");
 
