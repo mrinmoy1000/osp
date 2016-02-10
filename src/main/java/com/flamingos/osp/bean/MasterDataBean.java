@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.flamingos.osp.dto.CategoryDTO;
 import com.flamingos.osp.dto.LocationDTO;
+import com.flamingos.osp.dto.OSPErrorDTO;
 import com.flamingos.osp.dto.SubCatDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.exception.OSPErrorHandler;
@@ -47,6 +48,9 @@ public class MasterDataBean {
   /* OSP Categories & SubCategories */
   private List<CategoryDTO> categoryList = new ArrayList<CategoryDTO>();
   private List<SubCatDTO> subCategoryList = new ArrayList<SubCatDTO>();
+  
+  /* OSP Errors and Descriptions*/
+  private List<OSPErrorDTO> errorList=new ArrayList<OSPErrorDTO>();
 
   public void loadMasterData() {
     Map<String, String> logMap = new HashMap<String, String>();
@@ -135,6 +139,8 @@ public class MasterDataBean {
           }
         }
       }
+      
+      errorList=masterDataService.getErrorList();
 
     } catch (OSPBusinessException ospEx) {
       if ("".equalsIgnoreCase(ospEx.getModuleName())) {
@@ -206,6 +212,24 @@ public class MasterDataBean {
       }
     }
     return null;
+  }
+  
+  public OSPErrorDTO getErrorByName(String errorName){
+    for(OSPErrorDTO errorDto:errorList){
+      if(errorName.equalsIgnoreCase(errorDto.getErrorName())){
+        return errorDto;
+      }
+    }
+    return new OSPErrorDTO();
+  }
+  
+  public OSPErrorDTO getErrorByCode(String errorCode){
+    for(OSPErrorDTO errorDto:errorList){
+      if(errorCode.equalsIgnoreCase(errorDto.getErrorCode())){
+        return errorDto;
+      }
+    }
+    return new OSPErrorDTO();
   }
 
 }

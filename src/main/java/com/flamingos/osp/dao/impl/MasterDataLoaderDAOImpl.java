@@ -8,9 +8,11 @@ import com.flamingos.osp.bean.RoleBean;
 import com.flamingos.osp.bean.TemplateBean;
 import com.flamingos.osp.dao.MasterDataLoaderDAO;
 import com.flamingos.osp.dto.CategoryDTO;
+import com.flamingos.osp.dto.OSPErrorDTO;
 import com.flamingos.osp.dto.SubCatDTO;
 import com.flamingos.osp.exception.OSPBusinessException;
 import com.flamingos.osp.mapper.CategoryRowMapper;
+import com.flamingos.osp.mapper.OSPErrorMapper;
 import com.flamingos.osp.mapper.RoleMapper;
 import com.flamingos.osp.mapper.SubCategoryRowMapper;
 import com.flamingos.osp.mapper.TemplateRowMapper;
@@ -26,6 +28,8 @@ public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLo
   private String QUERY_OSP_SUBCATEGORY_SELECT;
   @Value("${query_osp_role_select}")
   private String QUERY_OSP_ROLE_SELECT;
+  @Value("${query_osp_error_desc_select}")
+  private String QUERY_OSP_ERROR_DESC_SELECT;
 
   @Override
   public List<TemplateBean> getAllTemplate() throws OSPBusinessException {
@@ -80,6 +84,18 @@ public class MasterDataLoaderDAOImpl extends BaseDAOImpl implements MasterDataLo
           AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
     }
     return subCategoryList;
+  }
+
+  @Override
+  public List<OSPErrorDTO> getErrorList() throws Exception {
+    List<OSPErrorDTO> errorList = null;
+    errorList =
+        getJdbcTemplate().query(QUERY_OSP_ERROR_DESC_SELECT,new OSPErrorMapper());
+    if (null == errorList) {
+      throw new OSPBusinessException(AppConstants.CONFIG_LOADING_MODULE,
+          AppConstants.DB_NO_RECORD_FOUND_ERRCODE, AppConstants.DB_NO_RECORD_FOUND_ERRMSG);
+    }
+    return errorList;
   }
 
 }
