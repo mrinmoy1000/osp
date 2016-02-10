@@ -397,9 +397,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	        profDetails.setSpecializationList(specializationList);
 	      }
 	    } catch (OspDaoException exp) {
-	      throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
-	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
-	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+	      throw new OSPBusinessException(AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE,
+	          AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+	          AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
 
 	    }
 	    return profDetails;
@@ -424,9 +424,9 @@ public class ProfessionalServiceImpl implements ProfessionalService {
 	        profDetails.setSpecializationList(specializationList);
 	      }
 	    } catch (OspDaoException exp) {
-	      throw new OSPBusinessException(AppConstants.ADMIN_FETCH_PROFILE_MODULE,
-	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
-	          AppConstants.ADMIN_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
+	      throw new OSPBusinessException(AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE,
+              AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE_EXCEPTION_ERRCODE,
+              AppConstants.PROFESSIONAL_FETCH_PROFILE_MODULE_EXCEPTION_ERRDESC, exp);
 
 	    }
 	    return profDetails;

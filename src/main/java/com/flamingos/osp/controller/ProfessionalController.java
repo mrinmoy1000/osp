@@ -53,8 +53,7 @@ public class ProfessionalController {
     return new ResponseEntity<ProfileDTO>(profileDto, HttpStatus.OK);
   }
 
-  @RequestMapping(value = "/saveProfile",// produces = "application/json",
-      method = RequestMethod.POST/* , consumes = "application/json" */)
+  @RequestMapping(value = "/saveProfile", method = RequestMethod.POST)
   public ResponseEntity<Long> saveProfile(@RequestBody OspProfessionalBean professionalBean,
       HttpServletRequest request) throws Exception {
     profService.saveProfile(professionalBean, request);
@@ -68,7 +67,7 @@ public class ProfessionalController {
     logger.debug(" Entering AdminController.getProfessionalDetails");
     OspProfessionalDTO prof = null;
     try {
-      prof = adminService.professionalDetails(id);
+      prof = profService.professionalDetailsbyProfId(id);
       return new ResponseEntity<OspProfessionalDTO>(prof, HttpStatus.OK);
     } catch (OSPBusinessException e) {
       logger.error(" Exception occured in AdminController.getProfessionalDetails" + e.getMessage());
